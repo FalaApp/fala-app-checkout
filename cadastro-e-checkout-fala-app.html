@@ -28,16 +28,17 @@ body{
 .bga{width:500px;height:500px;top:-80px;right:-80px;background:radial-gradient(circle,rgba(116,235,213,.055) 0,transparent 65%)}
 .bgb{width:400px;height:400px;bottom:-60px;left:-80px;background:radial-gradient(circle,rgba(172,182,229,.045) 0,transparent 65%)}
 
-.logo-wrap{margin-bottom:24px;opacity:0;animation:fd .4s ease .05s forwards}
+.logo-wrap{position:relative;z-index:1;margin-bottom:24px;opacity:0;animation:fd .4s ease .05s forwards}
 .logo-wrap svg{width:160px;height:auto;display:block}
 
-.prog{display:flex;align-items:center;gap:8px;margin-bottom:24px;opacity:0;animation:fd .4s ease .12s forwards}
+.prog{position:relative;z-index:1;display:flex;align-items:center;gap:8px;margin-bottom:24px;opacity:0;animation:fd .4s ease .12s forwards}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--bord);transition:all .3s}
 .dot.active{width:26px;border-radius:4px;background:linear-gradient(90deg,var(--ga),var(--gb))}
 .dot.done{background:var(--merc)}
 .plbl{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;margin-left:4px}
 
 .card{
+  position:relative;z-index:1;
   background:var(--surf);border:1px solid var(--bord);border-radius:24px;
   padding:40px 44px;width:100%;max-width:580px;position:relative;
   backdrop-filter:blur(16px);
@@ -269,12 +270,264 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
 .suc h2{font-family:'Bree Serif',serif;font-size:24px;font-weight:400;color:var(--sapp);margin-bottom:12px}
 .suc p{font-size:14px;color:var(--muted);line-height:1.7;font-weight:300}
 .sbadge{display:inline-block;margin-top:20px;background:rgba(135,202,195,.1);border:1px solid rgba(135,202,195,.22);border-radius:8px;padding:6px 16px;font-size:12px;color:var(--merc);font-weight:700;letter-spacing:.5px}
-.footer{margin-top:22px;text-align:center;font-size:12px;color:var(--muted);line-height:1.7;font-weight:300}
+.footer{position:relative;z-index:1;margin-top:22px;text-align:center;font-size:12px;color:var(--muted);line-height:1.7;font-weight:300}
 .footer a{color:var(--merc);text-decoration:none;font-weight:600}
 @media(max-width:480px){.card{padding:28px 18px}.row{grid-template-columns:1fr;gap:0}}
+
+#bgCanvas{
+  position:fixed;inset:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;
+}
+
+/* ── stagger animation ── */
+@keyframes featIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+.plan-item.sel .feat{opacity:0;animation:featIn .28s ease forwards}
+.plan-item.sel .feat:nth-child(1){animation-delay:.08s}
+.plan-item.sel .feat:nth-child(2){animation-delay:.14s}
+.plan-item.sel .feat:nth-child(3){animation-delay:.20s}
+.plan-item.sel .feat:nth-child(4){animation-delay:.26s}
+.plan-item.sel .feat:nth-child(5){animation-delay:.32s}
+.plan-item.sel .feat:nth-child(6){animation-delay:.38s}
+.plan-item.sel .feat:nth-child(7){animation-delay:.44s}
+
+/* ── feat icon individual colors ── */
+.feat .fi{width:16px;height:16px;flex-shrink:0}
+.feat.hl .fi{color:var(--ga)}
+.feat.no .fi{color:rgba(244,127,164,.4)}
+
+/* ── exclusive pill ── */
+.feat.hl span{color:var(--merc);opacity:1;font-weight:700}
+.feat.hl::after{
+  content:'exclusivo';font-size:9px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.6px;
+  padding:1px 7px;border-radius:20px;margin-left:6px;
+  background:rgba(116,235,213,.1);color:var(--ga);
+  border:1px solid rgba(116,235,213,.2);
+  white-space:nowrap;
+}
+
+/* ── economia box ── */
+.eco-box{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(247,201,72,.06);
+  border:1px solid rgba(247,201,72,.15);
+  border-radius:9px;padding:8px 12px;margin-bottom:12px;
+  font-size:12px;font-weight:700;color:var(--promo-a);
+  animation:featIn .3s ease .5s both;
+}
+.eco-box svg{width:14px;height:14px;flex-shrink:0}
+
+/* ── upgrade hint ── */
+.upgrade-hint{
+  display:flex;align-items:flex-start;gap:8px;
+  background:rgba(172,182,229,.05);
+  border:1px solid rgba(172,182,229,.12);
+  border-radius:9px;padding:9px 12px;margin-bottom:12px;
+  font-size:11px;color:var(--muted);line-height:1.5;
+  animation:featIn .3s ease .55s both;
+}
+.upgrade-hint svg{width:13px;height:13px;flex-shrink:0;color:var(--wisp);margin-top:1px}
+.upgrade-hint strong{color:var(--wisp);font-weight:700}
+
+/* ── CTA inside expand ── */
+.exp-cta{
+  width:100%;margin-top:14px;
+  background:linear-gradient(135deg,var(--ga),var(--gb));
+  color:var(--mid);border:none;border-radius:11px;
+  font-family:'Bree Serif',serif;font-size:14px;
+  padding:12px 16px;cursor:pointer;
+  transition:all .22s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  animation:featIn .3s ease .6s both;
+}
+.exp-cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(116,235,213,.2)}
+.exp-cta:active{transform:none}
+.plan-item.promo-plan .exp-cta{
+  background:linear-gradient(135deg,var(--promo-a),var(--promo-b));
+}
+.plan-item.promo-plan .exp-cta:hover{box-shadow:0 10px 28px rgba(247,201,72,.2)}
+
+/* ── degradê animado nos botões ── */
+@keyframes gradFlow {
+  0%   { background-position: 0% 50% }
+  50%  { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+.btn, .exp-cta {
+  background: linear-gradient(135deg, var(--ga), var(--gb), #a8edea, var(--ga));
+  background-size: 300% 300%;
+  animation: gradFlow 4s ease infinite;
+}
+.plan-item.promo-plan .exp-cta {
+  background: linear-gradient(135deg, var(--promo-a), var(--promo-b), #fde68a, var(--promo-a));
+  background-size: 300% 300%;
+  animation: gradFlow 4s ease infinite;
+}
+
+/* ── escala geral maior ── */
+body { font-size: 16px; }
+.card { max-width: 660px; padding: 48px 52px; border-radius: 28px; }
+.logo-wrap svg { width: 200px !important; }
+.ch h1 { font-size: 28px; margin-bottom: 10px; }
+.ch p { font-size: 15px; }
+
+/* planos */
+.plan-head { padding: 18px 20px; gap: 16px; }
+.ph-name { font-size: 16px; }
+.ph-sub { font-size: 13px; }
+.ph-price { font-size: 17px; }
+.ph-price span { font-size: 12px !important; }
+.radio { width: 24px; height: 24px; }
+.rdot { width: 10px; height: 10px; }
+.badge { font-size: 11px; padding: 3px 11px; }
+
+/* expand */
+.expand-inner { padding: 20px 20px 22px; }
+.exp-price-val { font-size: 34px; }
+.exp-price-unit { font-size: 14px; }
+.exp-tagline { font-size: 14px; margin-bottom: 16px; }
+.feat { font-size: 14px; gap: 10px; }
+.feat .fi { width: 18px; height: 18px; }
+.feat.hl::after { font-size: 10px; padding: 2px 9px; }
+.int-label { font-size: 11px; }
+.chip { font-size: 12px; padding: 4px 14px; }
+.franquia { font-size: 13px; padding: 10px 14px; }
+.promo-notice-text { font-size: 13px; }
+.eco-box { font-size: 13px; padding: 10px 14px; }
+.upgrade-hint { font-size: 12px; padding: 10px 14px; }
+.exp-cta { font-size: 16px; padding: 14px 18px; border-radius: 13px; }
+.plan-separator { font-size: 11px; }
+
+/* step 2 */
+.sel-pill { font-size: 15px; padding: 13px 16px; }
+label { font-size: 12px; }
+input { font-size: 15px; padding: 13px 15px 13px 44px; }
+.iw .ico { width: 18px; height: 18px; left: 14px; }
+.div { font-size: 12px; margin: 24px 0 18px; }
+.err { font-size: 12px; }
+.hint { font-size: 12px; }
+.btn { font-size: 18px; padding: 17px; border-radius: 16px; }
+.btn-ghost { font-size: 15px; padding: 15px; border-radius: 16px; }
+
+/* success */
+.suc h2 { font-size: 28px; }
+.suc p { font-size: 15px; }
+.sbadge { font-size: 14px; padding: 8px 20px; }
+
+/* progress dots */
+.plbl { font-size: 13px; }
+
+/* footer */
+.footer { font-size: 13px; }
+
+/* ── ribbon diagonal ── */
+.plan-ribbon {
+  position: absolute;
+  bottom: 0; left: 0;
+  background: linear-gradient(135deg, var(--promo-a), var(--promo-b));
+  background-size: 300% 300%;
+  animation: gradFlow 3s ease infinite;
+  color: #1a1000;
+  font-size: 10px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: .8px;
+  padding: 4px 14px;
+  border-radius: 0 10px 0 14px;
+  box-shadow: 0 -1px 12px rgba(247,201,72,.2);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── success screen ── */
+.suc { display:none; text-align:center; padding: 8px 0; }
+.sicon {
+  width: 84px; height: 84px; margin: 0 auto 24px;
+  background: rgba(116,235,213,.08);
+  border: 1px solid rgba(135,202,195,.22);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  animation: popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+.sicon::after {
+  content:'';position:absolute;inset:-7px;border-radius:50%;
+  border:2px solid rgba(116,235,213,.12);
+  animation:ripple 2.2s ease infinite;
+}
+@keyframes ripple{0%{transform:scale(1);opacity:1}100%{transform:scale(1.4);opacity:0}}
+.sicon svg { width:36px;height:36px;color:var(--merc); }
+.suc h2 {
+  font-family:'Bree Serif',serif;font-size:26px;font-weight:400;
+  color:var(--sapp);margin-bottom:10px;
+  animation:rise .4s ease .2s both;
+}
+.suc > p {
+  font-size:14px;color:var(--muted);line-height:1.7;font-weight:300;
+  animation:rise .4s ease .28s both;
+}
+.sbadge {
+  display:inline-block;margin:18px auto 0;
+  background:rgba(135,202,195,.08);
+  border:1px solid rgba(135,202,195,.2);
+  border-radius:8px;padding:6px 18px;
+  font-size:12px;color:var(--merc);font-weight:700;letter-spacing:.5px;
+  animation:rise .4s ease .35s both;
+}
+
+/* próximos passos */
+.suc-steps {
+  display:flex;flex-direction:column;gap:0;
+  margin: 24px 0 4px;
+  text-align:left;
+  border:1px solid var(--bord);
+  border-radius:16px;overflow:hidden;
+  animation:rise .4s ease .42s both;
+}
+.suc-step {
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 18px;
+  border-bottom:1px solid var(--bord);
+  transition:background .2s;
+}
+.suc-step:last-child{border-bottom:none}
+.suc-step:hover{background:rgba(255,255,255,.025)}
+.suc-step-num {
+  width:26px;height:26px;flex-shrink:0;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--ga),var(--gb));
+  color:var(--mid);
+  font-size:12px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:1px;
+}
+.suc-step-txt { display:flex;flex-direction:column;gap:2px; }
+.suc-step-txt strong { font-size:13px;font-weight:700;color:var(--sapp); }
+.suc-step-txt span { font-size:12px;color:var(--muted);font-weight:400;line-height:1.5; }
+
+/* botão login */
+.btn-login {
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;margin-top:20px;
+  background:linear-gradient(135deg,var(--ga),var(--gb),#a8edea,var(--ga));
+  background-size:300% 300%;
+  animation:gradFlow 4s ease infinite, rise .4s ease .5s both;
+  color:var(--mid);border:none;border-radius:16px;
+  font-family:'Bree Serif',serif;font-size:17px;
+  padding:17px;cursor:pointer;
+  text-decoration:none;
+  transition:transform .22s,box-shadow .22s;
+}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(116,235,213,.22)}
+.btn-login:active{transform:none}
+
+.suc-hint {
+  margin-top:16px;font-size:12px;color:var(--muted);font-weight:400;
+  animation:rise .4s ease .58s both;
+}
 </style>
 </head>
 <body>
+<canvas id="bgCanvas"></canvas>
 <div class="bc bc1"></div><div class="bc bc2"></div>
 <div class="bg bga"></div><div class="bg bgb"></div>
 <div class="logo-wrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="82 198 332 112" width="332" height="112" data-bbox="86.775 203.164 325.143 105.672" style="">
@@ -301,52 +554,11 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
 
   <div class="plan-list">
 
-    <!-- INTRO (PROMO) -->
-    <div class="plan-item promo-plan" onclick="selPlan(this)" data-id="intro" data-lbl="Plano Intro · R$29,90/mês (promo 2 meses)">
-      <div class="plan-head">
-        <div class="radio"><div class="rdot"></div></div>
-        <div class="ph-info">
-          <div class="ph-name">Intro</div>
-          <div class="ph-sub">15k palavras · 200 disparos</div>
-        </div>
-        <div class="ph-right">
-          <span class="ph-price">R$29,90<span style="font-size:10px;font-family:Nunito,sans-serif;opacity:.7">/mês</span></span>
-          <span class="badge b-promo">Oferta Limitada</span>
-        </div>
-      </div>
-      <div class="plan-expand">
-        <div class="expand-inner">
-          <div class="exp-price">
-            <span class="exp-price-val">R$29,90</span>
-            <span class="exp-price-unit">/ mês</span>
-          </div>
-          <div class="promo-notice">
-            <svg class="promo-notice-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-            </svg>
-            <div class="promo-notice-text">
-              <strong>Preço promocional por 2 meses.</strong><br>
-              <span>Após esse período, o plano migra automaticamente para o Small (R$247/mês) ou você pode fazer upgrade.</span>
-            </div>
-          </div>
-          <div class="exp-tagline">Para dar o primeiro passo no atendimento com IA.</div>
-          <div class="features">
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Respostas automáticas via IA</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Escuta áudios enviados pelos contatos</span></div>
-            <div class="feat no"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg><span>Follow-up automático</span></div>
-            <div class="feat no"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg><span>Leitura de imagens</span></div>
-            <div class="feat no"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg><span>Resposta em áudio</span></div>
-            <div class="feat no"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg><span>Encaminhamentos avançados</span></div>
-          </div>
-          <div class="franquia"><strong>Franquia mensal:</strong> 15.000 palavras · 200 disparos</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="plan-separator">Planos completos</div>
+    
 
     <!-- SMALL -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="small" data-lbl="Atendimento Small · R$247/mês">
+    <div class="plan-item promo-plan" onclick="selPlan(this)" data-id="small" data-lbl="Plano Small · R$29,90 no 1º mês, depois R$247/mês">
+      <div class="plan-ribbon">Oferta Limitada</div>
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -354,20 +566,41 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
           <div class="ph-sub">120k palavras · 7.500 disparos</div>
         </div>
         <div class="ph-right">
-          <span class="ph-price">R$247<span style="font-size:10px;font-family:Nunito,sans-serif;opacity:.7">/mês</span></span>
-          <span class="badge b-def">Inicial</span>
+          <span class="ph-price"><span style="font-size:11px;font-family:Nunito,sans-serif;text-decoration:line-through;opacity:.45;margin-right:3px">R$247</span>R$29,90<span style="font-size:10px;font-family:Nunito,sans-serif;opacity:.7"> 1º mês</span></span>
+          <span class="badge b-promo">R$29,90 no 1º mês</span>
         </div>
       </div>
       <div class="plan-expand">
         <div class="expand-inner">
           <div class="exp-price"><span class="exp-price-val">R$247,00</span><span class="exp-price-unit">/ mês</span></div>
-          <div class="exp-tagline">Para iniciar a comunicação simplificada.</div>
+                    <div class="upgrade-hint">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            <span>Por <strong>+R$200/mês</strong>, o Smart adiciona follow-up automático e integração com Google Calendar.</span>
+          </div>
+          <div class="promo-notice">
+            <svg class="promo-notice-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            </svg>
+            <div class="promo-notice-text">
+              <strong>R$29,90 apenas no primeiro mês.</strong><br>
+              <span>A partir do 2º mês, R$247/mês. Cancele quando quiser.</span>
+            </div>
+          </div>
+          <div class="eco-box">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Você economiza R$217,10 só no primeiro mês
+          </div>
+<div class="exp-tagline">Para iniciar a comunicação simplificada.</div>
           <div class="features">
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Respostas automáticas via IA</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Escuta áudios enviados pelos contatos</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Realiza encaminhamentos</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Respostas automáticas via IA</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Escuta áudios enviados pelos contatos</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Realiza encaminhamentos</span></div>
           </div>
           <div class="franquia"><strong>Franquia mensal:</strong> 120.000 palavras · 7.500 disparos</div>
+          <button class="exp-cta" onclick="selAndContinue(event, this)">
+            Escolher este plano
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -388,13 +621,17 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
       <div class="plan-expand">
         <div class="expand-inner">
           <div class="exp-price"><span class="exp-price-val">R$447,00</span><span class="exp-price-unit">/ mês</span></div>
-          <div class="exp-tagline">Para automação inteligente e eficiente.</div>
+                    <div class="upgrade-hint">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            <span>Por <strong>+R$300/mês</strong>, o Scale adiciona resposta em áudio, MCP Server e Kommo CRM.</span>
+          </div>
+<div class="exp-tagline">Para automação inteligente e eficiente.</div>
           <div class="features">
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Respostas automáticas via IA</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Escuta áudios enviados pelos contatos</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Realiza encaminhamentos</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Lê imagens</span></div>
-            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Faz follow-up</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Respostas automáticas via IA</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Escuta áudios enviados pelos contatos</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Realiza encaminhamentos</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Lê imagens</span></div>
+            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>Faz follow-up</span></div>
           </div>
           <div class="int-section">
             <div class="int-label">Integrações inclusas</div>
@@ -404,6 +641,10 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
             </div>
           </div>
           <div class="franquia"><strong>Franquia mensal:</strong> 240.000 palavras · 15.000 disparos</div>
+          <button class="exp-cta" onclick="selAndContinue(event, this)">
+            Escolher este plano
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -426,12 +667,12 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
           <div class="exp-price"><span class="exp-price-val">R$747,00</span><span class="exp-price-unit">/ mês</span></div>
           <div class="exp-tagline">Para crescimento adaptável e escalável.</div>
           <div class="features">
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Respostas automáticas via IA</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Escuta áudios enviados pelos contatos</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Realiza encaminhamentos</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Lê imagens</span></div>
-            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Faz follow-up</span></div>
-            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Responde em áudio</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Respostas automáticas via IA</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Escuta áudios enviados pelos contatos</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Realiza encaminhamentos</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Lê imagens</span></div>
+            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>Faz follow-up</span></div>
+            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-3-3m3 3l3-3M9.172 16.172a4 4 0 010-5.656"/></svg><span>Responde em áudio</span></div>
           </div>
           <div class="int-section">
             <div class="int-label">Integrações inclusas</div>
@@ -443,6 +684,10 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
             </div>
           </div>
           <div class="franquia"><strong>Franquia mensal:</strong> 500.000 palavras · 30.000 disparos</div>
+          <button class="exp-cta" onclick="selAndContinue(event, this)">
+            Escolher este plano
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -465,13 +710,13 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
           <div class="exp-price"><span class="exp-price-val" style="font-size:22px">Sob consulta</span></div>
           <div class="exp-tagline">Para quem busca um nível superior de personalização.</div>
           <div class="features">
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Respostas automáticas via IA</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Escuta áudios enviados pelos contatos</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Realiza encaminhamentos</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Lê imagens</span></div>
-            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Faz follow-up</span></div>
-            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Responde em áudio</span></div>
-            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Integrado a outras plataformas</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Respostas automáticas via IA</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Escuta áudios enviados pelos contatos</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Realiza encaminhamentos</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Lê imagens</span></div>
+            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>Faz follow-up</span></div>
+            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-3-3m3 3l3-3M9.172 16.172a4 4 0 010-5.656"/></svg><span>Responde em áudio com a sua voz</span></div>
+            <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg><span>Integrado a outras plataformas</span></div>
           </div>
           <div class="int-section">
             <div class="int-label">Integrações inclusas</div>
@@ -484,6 +729,10 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
             </div>
           </div>
           <div class="franquia"><strong>Franquia mensal:</strong> Sob consulta</div>
+          <button class="exp-cta" onclick="selAndContinue(event, this)">
+            Escolher este plano
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -543,28 +792,31 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
     <div class="div">Endereço</div>
     <div class="row">
       <div class="field">
-        <label>CEP</label>
+        <label>CEP <span class="req">*</span></label>
         <div class="iw">
           <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-          <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+          <input type="text" id="cep" placeholder="00000-000" maxlength="9" required>
         </div>
+        <div class="err" id="eCep">CEP obrigatório.</div>
         <div class="hint">Preenche automaticamente</div>
       </div>
       <div class="field">
-        <label>Estado</label>
+        <label>Estado <span class="req">*</span></label>
         <div class="iw">
           <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-          <input type="text" id="state" placeholder="PE" maxlength="2" style="text-transform:uppercase">
-        </div>
+          <input type="text" id="state" placeholder="PE" maxlength="2" style="text-transform:uppercase" required>
+        <div class="err" id="eState">Estado obrigatório.</div>
+      </div>
       </div>
     </div>
     <div class="row">
       <div class="field">
-        <label>Cidade</label>
+        <label>Cidade <span class="req">*</span></label>
         <div class="iw">
           <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-          <input type="text" id="city" placeholder="Recife">
+          <input type="text" id="city" placeholder="Recife" required>
         </div>
+        <div class="err" id="eCity">Cidade obrigatória.</div>
       </div>
       <div class="field">
         <label>Bairro</label>
@@ -575,11 +827,12 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
       </div>
     </div>
     <div class="field">
-      <label>Logradouro</label>
+      <label>Logradouro <span class="req">*</span></label>
       <div class="iw">
         <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-        <input type="text" id="addr" placeholder="Rua das Flores, 123">
+        <input type="text" id="addr" placeholder="Rua das Flores, 123" required>
       </div>
+      <div class="err" id="eAddr">Logradouro obrigatório.</div>
     </div>
     <button type="submit" class="btn" id="btnSub">
       <div class="bi"><div class="spinner"></div><span class="btxt">Concluir Cadastro</span></div>
@@ -590,12 +843,51 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
 
 <!-- ── STEP 3 ── -->
 <div id="s3" class="suc">
+
+  <!-- ícone animado -->
   <div class="sicon">
     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
   </div>
-  <h2>Cadastro realizado!</h2>
-  <p>Tudo certo! Em instantes você receberá<br>uma confirmação no WhatsApp. 📲</p>
+
+  <h2>Bem-vindo ao FalaApp!</h2>
+  <p>Seu cadastro foi realizado com sucesso.<br>Em instantes você receberá uma confirmação no WhatsApp.</p>
+
+  <!-- ID badge -->
   <div class="sbadge" id="sbadge">Cadastro confirmado ✓</div>
+
+  <!-- próximos passos -->
+  <div class="suc-steps">
+    <div class="suc-step">
+      <div class="suc-step-num">1</div>
+      <div class="suc-step-txt">
+        <strong>Acesse o painel</strong>
+        <span>Entre no admin e configure seu assistente virtual</span>
+      </div>
+    </div>
+    <div class="suc-step">
+      <div class="suc-step-num">2</div>
+      <div class="suc-step-txt">
+        <strong>Aguarde o WhatsApp</strong>
+        <span>Enviaremos os dados de acesso em instantes</span>
+      </div>
+    </div>
+    <div class="suc-step">
+      <div class="suc-step-num">3</div>
+      <div class="suc-step-txt">
+        <strong>Ative seu atendimento</strong>
+        <span>Conecte seu número e o assistente já começa a responder</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA login -->
+  <a href="https://admin.fala.app.br" target="_blank" class="btn-login">
+    Acessar o Painel
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+  </a>
+
+  <p class="suc-hint">Qualquer dúvida, fale com a gente pelo WhatsApp 👋</p>
+
 </div>
 
 </div><!-- /card -->
@@ -678,6 +970,11 @@ document.getElementById('form').addEventListener('submit',async function(e){
   if(cpf.length!==11&&cpf.length!==14){sh('eCpf');mk('cpf');ok=false}else{hd('eCpf');um('cpf')}
   const phone=document.getElementById('phone').value.replace(/\D/g,'');
   if(phone.length<10){sh('eTel');mk('phone');ok=false}else{hd('eTel');um('phone')}
+  const cep=document.getElementById('cep').value.replace(/\D/g,'');
+  if(cep.length<8){sh('eCep');mk('cep');ok=false}else{hd('eCep');um('cep')}
+  if(!v('state')){sh('eState');mk('state');ok=false}else{hd('eState');um('state')}
+  if(!v('city')){sh('eCity');mk('city');ok=false}else{hd('eCity');um('city')}
+  if(!v('addr')){sh('eAddr');mk('addr');ok=false}else{hd('eAddr');um('addr')}
   if(!ok)return;
   const btn=document.getElementById('btnSub');
   btn.classList.add('loading');btn.disabled=true;
@@ -693,26 +990,186 @@ document.getElementById('form').addEventListener('submit',async function(e){
     _meta:{origin:'falaapp-cadastro',ts:new Date().toISOString()}
   };
   Object.keys(body).forEach(k=>body[k]===undefined&&delete body[k]);
-  try{
-    const res=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    const data=await res.json();
-    if(res.ok){
-      document.getElementById('s2').style.display='none';
-      document.getElementById('s3').style.display='block';
-      if(data.id)document.getElementById('sbadge').textContent='ID: '+data.id;
-      dot('d2','done');dot('d3','active');
-      document.getElementById('plbl').textContent='Concluído!';
-    } else throw new Error(data.message||'Erro ao cadastrar');
-  }catch(err){
-    alert('Erro: '+(err.message||'Tente novamente.'));
-    btn.classList.remove('loading');btn.disabled=false;
-  }
+  // PREVIEW MODE — remove ao conectar webhook real
+  await new Promise(r => setTimeout(r, 1200)); // simula delay
+  document.getElementById('s2').style.display='none';
+  document.getElementById('s3').style.display='block';
+  document.getElementById('sbadge').textContent='ID: FA-2024-00001';
+  dot('d2','done');dot('d3','active');
+  document.getElementById('plbl').textContent='Concluído!';
 });
 function v(id){return document.getElementById(id).value.trim()}
 function sh(id){document.getElementById(id).style.display='block'}
 function hd(id){document.getElementById(id).style.display='none'}
 function mk(id){document.getElementById(id).classList.add('invalid')}
+
+function selAndContinue(e, btn){
+  e.stopPropagation(); // evita deselecionar ao clicar no botão
+  const item = btn.closest('.plan-item');
+  if(!item.classList.contains('sel')){
+    selPlan(item);
+  }
+  setTimeout(goS2, 120);
+}
+
+// Auto-seleciona o plano Smart ao carregar
+window.addEventListener('DOMContentLoaded', function(){
+  const smart = document.querySelector('.plan-item[data-id="smart"]');
+  if(smart) selPlan(smart);
+});
 function um(id){document.getElementById(id).classList.remove('invalid')}
+
+// ── Animated background canvas ──────────────────────────────
+(function(){
+  const canvas = document.getElementById('bgCanvas');
+  const ctx    = canvas.getContext('2d');
+
+  const COLORS = ['rgba(116,235,213,', 'rgba(172,182,229,', 'rgba(135,202,195,', 'rgba(197,243,246,'];
+  const N = 22; // number of particles
+
+  function resize(){
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Icon draw functions (canvas paths)
+  // Each returns without stroking — caller sets style then calls stroke/fill
+  const icons = [
+    // Chat bubble
+    function(ctx, s){
+      ctx.beginPath();
+      const r = s*.38;
+      ctx.moveTo(-s*.5+r, -s*.38);
+      ctx.arcTo( s*.5, -s*.38,  s*.5,  s*.15, r);
+      ctx.arcTo( s*.5,  s*.22, -s*.5,  s*.22, r);
+      ctx.lineTo( s*.05, s*.22);
+      ctx.lineTo(-s*.15, s*.44);
+      ctx.lineTo(-s*.18, s*.22);
+      ctx.arcTo(-s*.5,  s*.22, -s*.5, -s*.38, r);
+      ctx.closePath();
+    },
+    // Lightning bolt (AI / fast)
+    function(ctx, s){
+      ctx.beginPath();
+      ctx.moveTo( s*.12, -s*.5);
+      ctx.lineTo(-s*.2,   s*.02);
+      ctx.lineTo( s*.06,  s*.02);
+      ctx.lineTo(-s*.12,  s*.5);
+      ctx.lineTo( s*.26,  s*.02);  // fixed: was -s*.06 → s*.06 for rightward notch
+      // actually let's simplify
+      ctx.closePath();
+    },
+    // Star / sparkle  
+    function(ctx, s){
+      ctx.beginPath();
+      const spikes = 4, outer = s*.44, inner = s*.18;
+      for(let i = 0; i < spikes*2; i++){
+        const angle = (i * Math.PI / spikes) - Math.PI/2;
+        const r2 = (i%2===0) ? outer : inner;
+        if(i===0) ctx.moveTo(Math.cos(angle)*r2, Math.sin(angle)*r2);
+        else       ctx.lineTo(Math.cos(angle)*r2, Math.sin(angle)*r2);
+      }
+      ctx.closePath();
+    },
+    // Phone
+    function(ctx, s){
+      ctx.beginPath();
+      const rr = s*.12;
+      ctx.moveTo(-s*.28+rr, -s*.48);
+      ctx.arcTo( s*.28, -s*.48,  s*.28,  s*.48, rr);
+      ctx.arcTo( s*.28,  s*.48, -s*.28,  s*.48, rr);
+      ctx.arcTo(-s*.28,  s*.48, -s*.28, -s*.48, rr);
+      ctx.arcTo(-s*.28, -s*.48,  s*.28, -s*.48, rr);
+      ctx.closePath();
+      // home button circle
+      ctx.moveTo(0, s*.3);
+      ctx.arc(0, s*.3, s*.08, 0, Math.PI*2);
+    },
+    // Wi-fi / signal arcs
+    function(ctx, s){
+      ctx.beginPath();
+      ctx.arc(0, s*.1, s*.44, Math.PI*1.2, Math.PI*1.8);
+      ctx.moveTo(0, s*.1);
+      ctx.arc(0, s*.1, s*.28, Math.PI*1.2, Math.PI*1.8);
+      ctx.moveTo(0, s*.1);
+      ctx.arc(0, s*.1, s*.12, Math.PI*1.2, Math.PI*1.8);
+      // dot
+      ctx.moveTo(s*.06, s*.1);
+      ctx.arc(0, s*.1, s*.04, 0, Math.PI*2);
+    },
+    // Message lines (3 horizontal lines = "text")
+    function(ctx, s){
+      [-s*.28, -s*.05, s*.18].forEach((y,i)=>{
+        const w = i===1 ? s*.38 : s*.48;
+        ctx.moveTo(-w/2, y);
+        ctx.lineTo( w/2, y);
+      });
+    },
+  ];
+
+  // Build particles
+  const particles = Array.from({length: N}, ()=>{
+    const ci = Math.floor(Math.random()*COLORS.length);
+    const ii = Math.floor(Math.random()*icons.length);
+    return {
+      x:   Math.random() * window.innerWidth,
+      y:   Math.random() * window.innerHeight,
+      vx:  (Math.random()-.5) * .28,
+      vy:  (Math.random()-.5) * .22,
+      rot: Math.random()*Math.PI*2,
+      vr:  (Math.random()-.5) * .004,
+      s:   18 + Math.random()*22,
+      a:   Math.random()*.045 + .018,  // very subtle opacity
+      color: ci,
+      icon:  ii,
+      phase: Math.random()*Math.PI*2,  // for breathing
+    };
+  });
+
+  let t = 0;
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    t += .012;
+
+    particles.forEach(p => {
+      // breathe opacity
+      const breath = p.a + Math.sin(t + p.phase)*.012;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+
+      const col = COLORS[p.color];
+      ctx.strokeStyle = col + Math.min(breath, .08) + ')';
+      ctx.fillStyle   = col + Math.min(breath*.4, .04) + ')';
+      ctx.lineWidth   = 1.2;
+      ctx.lineCap     = 'round';
+      ctx.lineJoin    = 'round';
+
+      icons[p.icon](ctx, p.s);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+
+      // drift
+      p.x   += p.vx;
+      p.y   += p.vy;
+      p.rot += p.vr;
+
+      // wrap
+      const pad = 80;
+      if(p.x < -pad) p.x = canvas.width  + pad;
+      if(p.x > canvas.width  + pad) p.x = -pad;
+      if(p.y < -pad) p.y = canvas.height + pad;
+      if(p.y > canvas.height + pad) p.y = -pad;
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
 </script>
 </body>
 </html>
