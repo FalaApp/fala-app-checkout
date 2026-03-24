@@ -557,7 +557,7 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
     
 
     <!-- SMALL -->
-    <div class="plan-item promo-plan" onclick="selPlan(this)" data-id="small" data-lbl="Plano Small · R$29,90 no 1º mês, depois R$247/mês">
+    <div class="plan-item promo-plan" onclick="selPlan(this)" data-id="small" data-lbl="Plano Small · R$29,90 no 1º mês, depois R$247/mês" data-url="https://www.asaas.com/c/pb3subljdogwkqvv">
       <div class="plan-ribbon">Oferta Limitada</div>
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
@@ -606,7 +606,7 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
     </div>
 
     <!-- SMART -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="smart" data-lbl="Atendimento Smart · R$447/mês">
+    <div class="plan-item" onclick="selPlan(this)" data-id="smart" data-lbl="Atendimento Smart · R$447/mês" data-url="https://www.asaas.com/c/0l1wp2ozq67qnxex">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -650,7 +650,7 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
     </div>
 
     <!-- SCALE -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="scale" data-lbl="Atendimento Scale · R$747/mês">
+    <div class="plan-item" onclick="selPlan(this)" data-id="scale" data-lbl="Atendimento Scale · R$747/mês" data-url="https://www.asaas.com/c/okrruokkx76cig83">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -693,7 +693,7 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
     </div>
 
     <!-- QUANTUM -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="quantum" data-lbl="Plano Quantum · Sob consulta">
+    <div class="plan-item" onclick="selPlan(this)" data-id="quantum" data-lbl="Plano Quantum · Sob consulta" data-url="https://wa.me/558137884110">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -739,7 +739,7 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
 
   </div><!-- /plan-list -->
 
-  <button class="btn" id="btnS1" onclick="goS2()" disabled>
+  <button class="btn" id="btnS1" onclick="goPayment()" disabled>
     <div class="bi"><span class="btxt">Continuar →</span></div>
   </button>
 </div>
@@ -1004,12 +1004,18 @@ function hd(id){document.getElementById(id).style.display='none'}
 function mk(id){document.getElementById(id).classList.add('invalid')}
 
 function selAndContinue(e, btn){
-  e.stopPropagation(); // evita deselecionar ao clicar no botão
+  e.stopPropagation();
   const item = btn.closest('.plan-item');
-  if(!item.classList.contains('sel')){
-    selPlan(item);
-  }
-  setTimeout(goS2, 120);
+  selPlan(item);
+  const url = item.dataset.url;
+  if(url){ window.open(url, '_blank'); }
+}
+
+function goPayment(){
+  if(!plan) return;
+  const item = document.querySelector(`.plan-item[data-id="${plan.id}"]`);
+  const url = item && item.dataset.url;
+  if(url){ window.open(url, '_blank'); }
 }
 
 // Auto-seleciona o plano Smart ao carregar
