@@ -1,0 +1,23 @@
+{
+  "name": "fala-app-checkout",
+  "version": "1.0.0",
+  "description": "página de cadastro e finalização de pagamento do fala app para contratação via asaas.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FalaApp/fala-app-checkout.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FalaApp/fala-app-checkout/issues"
+  },
+  "homepage": "https://github.com/FalaApp/fala-app-checkout#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
