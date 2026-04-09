@@ -273,7 +273,37 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
 .sbadge{display:inline-block;margin-top:20px;background:rgba(135,202,195,.1);border:1px solid rgba(135,202,195,.22);border-radius:8px;padding:6px 16px;font-size:12px;color:var(--merc);font-weight:700;letter-spacing:.5px}
 .footer{position:relative;z-index:1;margin-top:22px;text-align:center;font-size:12px;color:var(--muted);line-height:1.7;font-weight:300}
 .footer a{color:var(--merc);text-decoration:none;font-weight:600}
-@media(max-width:480px){.card{padding:28px 18px}.row{grid-template-columns:1fr;gap:0}}
+@media(max-width:599px){
+  body{padding:32px 12px}
+  .logo-wrap svg{width:140px !important}
+  .card{padding:24px 16px;border-radius:20px}
+  .ch h1{font-size:22px;margin-bottom:8px}
+  .ch p{font-size:13px}
+
+  /* plan head — layout compacto */
+  .plan-head{padding:12px 14px;gap:10px;align-items:flex-start}
+  .ph-info{min-width:0}
+  .ph-name{font-size:14px}
+  .ph-sub{font-size:11px;white-space:normal}
+  .ph-right{align-items:flex-end;flex-shrink:0;gap:3px}
+  .ph-price{font-size:14px;white-space:nowrap}
+  .badge{font-size:10px;padding:2px 8px;white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis}
+
+  /* expand */
+  .expand-inner{padding:14px 14px 16px}
+  .exp-price-val{font-size:26px}
+  .feat{font-size:13px}
+  .exp-cta{font-size:15px;padding:13px 14px}
+
+  /* step 2 */
+  .row{grid-template-columns:1fr;gap:0}
+  input{font-size:16px}/* 16px evita zoom no iOS */
+  .btn{font-size:16px;padding:15px}
+  .btn-ghost{font-size:14px;padding:13px}
+
+  /* ribbon */
+  .plan-ribbon{font-size:9px;padding:3px 10px}
+}
 
 #bgCanvas{
   position:fixed;inset:0;width:100%;height:100%;
@@ -365,7 +395,8 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
   animation: gradFlow 4s ease infinite;
 }
 
-/* ── escala geral maior ── */
+/* ── escala geral maior (desktop only) ── */
+@media(min-width:600px){
 body { font-size: 16px; }
 .card { max-width: 660px; padding: 48px 52px; border-radius: 28px; }
 .logo-wrap svg { width: 200px !important; }
@@ -420,6 +451,7 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
 
 /* footer */
 .footer { font-size: 13px; }
+}
 
 /* ── ribbon diagonal ── */
 .plan-ribbon {
@@ -526,8 +558,19 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
   animation:rise .4s ease .58s both;
 }
 </style>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJ6B6LGZ');</script>
+<!-- End Google Tag Manager -->
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJ6B6LGZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <canvas id="bgCanvas"></canvas>
 <div class="bc bc1"></div><div class="bc bc2"></div>
 <div class="bg bga"></div><div class="bg bgb"></div>
@@ -607,7 +650,7 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
     </div>
 
     <!-- SMART -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="smart" data-lbl="Atendimento Smart · R$447/mês" data-url="https://www.asaas.com/c/0l1wp2ozq67qnxex">
+    <div class="plan-item" onclick="selPlan(this)" data-id="smart" data-lbl="Atendimento Smart · R$447/mês" data-url="https://www.asaas.com/c/2wj1eus4bpbuu4zn">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -694,7 +737,7 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
     </div>
 
     <!-- QUANTUM -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="quantum" data-lbl="Plano Quantum · Sob consulta" data-url="https://wa.me/558137884110">
+    <div class="plan-item" onclick="selPlan(this)" data-id="quantum" data-lbl="Plano Quantum · Sob consulta" data-url="https://wa.me/5581937884110">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -1019,10 +1062,10 @@ function goPayment(){
   if(url){ window.open(url, '_blank'); }
 }
 
-// Auto-seleciona o plano Smart ao carregar
+// Auto-seleciona o plano Small (R$29,90 no 1º mês) ao carregar
 window.addEventListener('DOMContentLoaded', function(){
-  const smart = document.querySelector('.plan-item[data-id="smart"]');
-  if(smart) selPlan(smart);
+  const small = document.querySelector('.plan-item[data-id="small"]');
+  if(small) selPlan(small);
 });
 function um(id){document.getElementById(id).classList.remove('invalid')}
 
