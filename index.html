@@ -944,6 +944,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 const WEBHOOK='https://SEU_N8N_URL/webhook/cadastro-asaas';
 let plan=null;
 
+// ── GTM dataLayer helper ─────────────────────────────────────
+window.dataLayer = window.dataLayer || [];
+function gtmPush(event, params){
+  dataLayer.push(Object.assign({event: event}, params || {}));
+}
+
 function selPlan(el){
   const was=el.classList.contains('sel');
   document.querySelectorAll('.plan-item').forEach(c=>c.classList.remove('sel'));
@@ -952,6 +958,7 @@ function selPlan(el){
     plan={id:el.dataset.id,label:el.dataset.lbl};
     document.getElementById('btnS1').disabled=false;
     setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+    gtmPush('plan_selected', {plan_id: plan.id, plan_name: plan.label});
   } else {
     plan=null;
     document.getElementById('btnS1').disabled=true;
@@ -967,6 +974,7 @@ function goS2(){
   dot('d1','done');dot('d2','active');
   document.getElementById('plbl').textContent='Seus dados';
   window.scrollTo({top:0,behavior:'smooth'});
+  gtmPush('checkout_step_2', {plan_id: plan.id, plan_name: plan.label});
 }
 function goS1(){
   document.getElementById('s2').style.display='none';
@@ -1034,6 +1042,7 @@ document.getElementById('form').addEventListener('submit',async function(e){
     _meta:{origin:'falaapp-cadastro',ts:new Date().toISOString()}
   };
   Object.keys(body).forEach(k=>body[k]===undefined&&delete body[k]);
+  gtmPush('form_submit', {plan_id: plan ? plan.id : null, plan_name: plan ? plan.label : null});
   // PREVIEW MODE — remove ao conectar webhook real
   await new Promise(r => setTimeout(r, 1200)); // simula delay
   document.getElementById('s2').style.display='none';
@@ -1041,6 +1050,7 @@ document.getElementById('form').addEventListener('submit',async function(e){
   document.getElementById('sbadge').textContent='ID: FA-2024-00001';
   dot('d2','done');dot('d3','active');
   document.getElementById('plbl').textContent='Concluído!';
+  gtmPush('registration_success', {plan_id: plan ? plan.id : null, plan_name: plan ? plan.label : null});
 });
 function v(id){return document.getElementById(id).value.trim()}
 function sh(id){document.getElementById(id).style.display='block'}
@@ -1052,20 +1062,45 @@ function selAndContinue(e, btn){
   const item = btn.closest('.plan-item');
   selPlan(item);
   const url = item.dataset.url;
-  if(url){ window.open(url, '_blank'); }
+  if(url){
+    gtmPush('payment_initiated', {plan_id: item.dataset.id, plan_name: item.dataset.lbl, payment_url: url});
+    window.open(url, '_blank');
+  }
 }
 
 function goPayment(){
   if(!plan) return;
   const item = document.querySelector(`.plan-item[data-id="${plan.id}"]`);
   const url = item && item.dataset.url;
-  if(url){ window.open(url, '_blank'); }
+  if(url){
+    gtmPush('payment_initiated', {plan_id: plan.id, plan_name: plan.label, payment_url: url});
+    window.open(url, '_blank');
+  }
 }
 
 // Auto-seleciona o plano Small (R$29,90 no 1º mês) ao carregar
 window.addEventListener('DOMContentLoaded', function(){
   const small = document.querySelector('.plan-item[data-id="small"]');
   if(small) selPlan(small);
+  gtmPush('page_view', {page: 'checkout', step: 'plan_selection'});
+
+  // Evento form_start no primeiro foco em qualquer campo
+  let formStarted = false;
+  document.querySelectorAll('#form input, #form select').forEach(function(el){
+    el.addEventListener('focus', function(){
+      if(!formStarted){
+        formStarted = true;
+        gtmPush('form_start', {plan_id: plan ? plan.id : null, plan_name: plan ? plan.label : null});
+      }
+    });
+  });
+
+  // Evento plan_viewed ao expandir plano
+  document.querySelectorAll('.plan-item').forEach(function(item){
+    item.addEventListener('click', function(){
+      gtmPush('plan_viewed', {plan_id: item.dataset.id, plan_name: item.dataset.lbl});
+    });
+  });
 });
 function um(id){document.getElementById(id).classList.remove('invalid')}
 
