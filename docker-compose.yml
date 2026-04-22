@@ -1,0 +1,12 @@
+services:
+  checkout:
+    build: .
+    image: fala-app-checkout:latest
+    container_name: fala-app-checkout
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production

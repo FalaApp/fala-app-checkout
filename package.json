@@ -1,0 +1,18 @@
+{
+  "name": "fala-app-checkout",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Checkout do FalaApp com integração Asaas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file=.env server.js",
+    "start:no-env": "node server.js",
+    "dev": "node --env-file=.env --watch server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

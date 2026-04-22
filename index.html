@@ -2,10 +2,75 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkout - Fala App</title>
-<link rel="icon" href="/favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+
+<!-- SEO (padronizado com fala.app.br) -->
+<title>FalaApp - Chatbot com inteligência artificial, integrado ao WhatsApp</title>
+<meta property="og:title" content="FalaApp - Chatbot com inteligência artificial, integrado ao WhatsApp" />
+
+<meta name="keywords" content="fala app, falaapp, chatbot, chatbot para WhatsApp, fala-app, chatbot, inteligência-artificial, chat-gpt, gpt, ia, serviço, empresa, assistente, produto, assistente-virtual, facilidade, campanhas, whatsapp, campanhas-whatsapp, atedimento-artifical, disparo-de-campanhas, campanhas no whatsapp sem banimento"/>
+
+<meta name="description" content="Usando o FalaApp, transforme o WhatsApp do seu negócio, ele responde todas as mensagens na hora e faz o pré-atendimento, faz campanhas sem banimento e engaja seus clientes. Tudo de forma amigável!"/>
+<meta property="og:description" content="Usando o FalaApp, transforme o WhatsApp do seu negócio, ele responde todas as mensagens na hora e faz o pré-atendimento, faz campanhas sem banimento e engaja seus clientes. Tudo de forma amigável!"/>
+
+<meta name="author" content="SoftMakers" />
+
+<meta property="og:url" content="https://fala.app.br/" />
+
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Notyf (toasts) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WLJGPN16ER"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-WLJGPN16ER');
+</script>
+
+<!-- Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-11367433498"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'AW-11367433498');
+</script>
+
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+  (function (c, l, a, r, i, t, y) {
+    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+    t = l.createElement(r); t.async = 1;
+    t.src = 'https://www.clarity.ms/tag/' + i;
+    y = l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t, y);
+  })(window, document, 'clarity', 'script', 'j7xmlkna3e');
+</script>
+
+<!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '305877612178798');
+  fbq('track', 'PageView');
+</script>
+<!-- End Meta Pixel Code -->
 <style>
 :root{
   --mid:#24243d;--mid2:#1d1d30;
@@ -154,7 +219,7 @@ body{
   transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;
   opacity:0;
 }
-.plan-item.sel .plan-expand{max-height:600px;opacity:1}
+.plan-item.sel .plan-expand{max-height:1600px;opacity:1}
 .expand-inner{border-top:1px solid var(--bord);padding:16px 16px 18px 16px}
 
 /* promo expand border */
@@ -273,41 +338,423 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
 .sbadge{display:inline-block;margin-top:20px;background:rgba(135,202,195,.1);border:1px solid rgba(135,202,195,.22);border-radius:8px;padding:6px 16px;font-size:12px;color:var(--merc);font-weight:700;letter-spacing:.5px}
 .footer{position:relative;z-index:1;margin-top:22px;text-align:center;font-size:12px;color:var(--muted);line-height:1.7;font-weight:300}
 .footer a{color:var(--merc);text-decoration:none;font-weight:600}
-@media(max-width:599px){
-  body{padding:32px 12px}
-  .logo-wrap svg{width:140px !important}
-  .card{padding:24px 16px;border-radius:20px}
-  .ch h1{font-size:22px;margin-bottom:8px}
-  .ch p{font-size:13px}
-
-  /* plan head — layout compacto */
-  .plan-head{padding:12px 14px;gap:10px;align-items:flex-start}
-  .ph-info{min-width:0}
-  .ph-name{font-size:14px}
-  .ph-sub{font-size:11px;white-space:normal}
-  .ph-right{align-items:flex-end;flex-shrink:0;gap:3px}
-  .ph-price{font-size:14px;white-space:nowrap}
-  .badge{font-size:10px;padding:2px 8px;white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis}
-
-  /* expand */
-  .expand-inner{padding:14px 14px 16px}
-  .exp-price-val{font-size:26px}
-  .feat{font-size:13px}
-  .exp-cta{font-size:15px;padding:13px 14px}
-
-  /* step 2 */
+@media(max-width:480px){
+  .card{padding:28px 14px;border-radius:20px}
   .row{grid-template-columns:1fr;gap:0}
-  input{font-size:16px}/* 16px evita zoom no iOS */
-  .btn{font-size:16px;padding:15px}
-  .btn-ghost{font-size:14px;padding:13px}
 
-  /* ribbon */
-  .plan-ribbon{font-size:9px;padding:3px 10px}
+  /* planos mais compactos — empilha ph-info/ph-right no mobile */
+  .plan-head{padding:12px 12px;gap:10px;align-items:flex-start;flex-wrap:wrap}
+  .ph-info{min-width:0;flex:1 1 calc(100% - 30px)}
+  .ph-name{font-size:14px;line-height:1.2}
+  .ph-sub{font-size:11px;line-height:1.35;overflow-wrap:break-word;white-space:normal}
+  .ph-right{
+    flex:1 1 100%;
+    flex-direction:row;align-items:center;justify-content:space-between;
+    gap:8px;margin-top:4px;margin-left:28px;max-width:none;
+  }
+  .ph-price{font-size:14px;white-space:nowrap;order:1}
+  .badge{font-size:9px;padding:2px 8px;line-height:1.3;white-space:normal;text-align:center;order:2;max-width:55%}
+  /* remove preço riscado no mobile (já há ribbon + badge informando) */
+  .plan-item.promo-plan .ph-price > span:first-child{display:none}
+  /* encurta sufixo "1º mês" para não estourar */
+  .plan-item.promo-plan .ph-price > span:last-child{font-size:10px}
+  .radio{width:18px;height:18px}
+  .rdot{width:7px;height:7px}
+
+  /* ribbon top-right mais discreto */
+  .plan-ribbon{font-size:8.5px;padding:3px 9px;letter-spacing:.4px;border-radius:0 20px 0 10px}
+  /* folga pro ribbon não colidir com o preço/badge */
+  .plan-item.promo-plan .ph-right{margin-top:16px}
+
+  /* preço promo menor no mobile */
+  .exp-price-promo{padding:12px 14px}
+  .exp-price-promo-main{flex-wrap:wrap}
+  .exp-price-promo-main .exp-price-val{font-size:30px}
+  .exp-price-promo-main .exp-price-unit{font-size:12px;white-space:nowrap}
+  .exp-price-promo-after{font-size:11px;line-height:1.45}
+  .exp-price-promo-save{font-size:9.5px}
+
+  /* expand interno */
+  .expand-inner{padding:14px 12px 16px}
+  .exp-price-val{font-size:28px}
+  .exp-tagline{font-size:13px}
+  .feat{font-size:13px}
+
+  /* franquia não quebra feio */
+  .franquia{flex-wrap:wrap;justify-content:flex-start;row-gap:2px;font-size:10.5px;padding:8px 10px}
+
+  /* hints e caixas menores */
+  .upgrade-hint{font-size:11px;padding:9px 11px}
+  .int-section{padding:9px 11px}
+  .chip{font-size:11px;padding:3px 10px}
 }
 
 #bgCanvas{
   position:fixed;inset:0;width:100%;height:100%;
   pointer-events:none;z-index:0;
+}
+
+/* ─── Notyf theme (casando com FalaApp) ─── */
+.notyf{padding:20px 18px;font-family:'Nunito',sans-serif;z-index:10001}
+.notyf__toast{
+  border-radius:14px !important;
+  font-size:14px;font-weight:600;
+  box-shadow:0 14px 36px rgba(0,0,0,.35) !important;
+  max-width:420px;
+  backdrop-filter:blur(10px);
+  border:1px solid transparent;
+}
+.notyf__toast--success{
+  background:linear-gradient(135deg,rgba(116,235,213,.95),rgba(135,202,195,.95)) !important;
+  color:var(--mid) !important;
+  border-color:rgba(116,235,213,.4);
+}
+.notyf__toast--error{
+  background:linear-gradient(135deg,rgba(244,127,164,.95),rgba(220,100,140,.95)) !important;
+  color:#fff !important;
+  border-color:rgba(244,127,164,.4);
+}
+.notyf__icon{background:rgba(255,255,255,.18) !important;border-radius:50%;padding:4px}
+.notyf__icon i{border-color:currentColor !important}
+.notyf__icon--success i{background-color:var(--mid) !important}
+.notyf__ripple{background:rgba(255,255,255,.12) !important}
+.notyf__message{line-height:1.45}
+.notyf__dismiss-btn{background:rgba(0,0,0,.12) !important}
+
+/* ─── Teste Grátis (CTA e Modal) ─── */
+.trial-cta{
+  display:flex;align-items:center;gap:14px;
+  width:100%;margin:4px 0 22px;padding:14px 16px;
+  background:linear-gradient(135deg,rgba(172,182,229,.08),rgba(116,235,213,.06));
+  border:1px solid rgba(172,182,229,.25);
+  border-radius:14px;cursor:pointer;
+  transition:border-color .2s,background .2s,transform .15s;
+  font-family:inherit;color:inherit;text-align:left;
+}
+.trial-cta:hover{
+  border-color:rgba(172,182,229,.5);
+  background:linear-gradient(135deg,rgba(172,182,229,.12),rgba(116,235,213,.09));
+  transform:translateY(-1px);
+}
+.trial-cta-icon{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--ga),var(--gb));
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mid);
+}
+.trial-cta-icon svg{width:20px;height:20px}
+.trial-cta-body{flex:1;min-width:0}
+.trial-cta-title{
+  font-size:13px;font-weight:800;color:var(--sapp);line-height:1.25;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.trial-cta-badge{
+  font-size:9px;font-weight:900;padding:2px 7px;border-radius:20px;
+  background:linear-gradient(135deg,var(--ga),var(--gb));color:var(--mid);
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.trial-cta-sub{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+.trial-cta-arrow{
+  width:16px;height:16px;color:var(--merc);flex-shrink:0;
+  transition:transform .2s;
+}
+.trial-cta:hover .trial-cta-arrow{transform:translateX(3px)}
+
+/* Modal */
+.trial-modal{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(12,12,24,.72);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+  opacity:0;transition:opacity .22s ease;
+}
+.trial-modal.open{display:flex;opacity:1}
+.trial-dialog{
+  background:var(--mid2);border:1px solid var(--bord);
+  border-radius:18px;padding:28px;
+  width:100%;max-width:440px;
+  position:relative;overflow:hidden;
+  box-shadow:0 32px 64px rgba(0,0,0,.5);
+  transform:scale(.95) translateY(8px);
+  transition:transform .22s ease;
+}
+.trial-modal.open .trial-dialog{transform:scale(1) translateY(0)}
+.trial-dialog::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--ga),var(--gb));
+}
+.trial-x{
+  position:absolute;top:12px;right:12px;
+  width:32px;height:32px;border-radius:50%;
+  background:transparent;border:none;cursor:pointer;
+  color:var(--muted);display:flex;align-items:center;justify-content:center;
+  transition:color .2s,background .2s;
+}
+.trial-x:hover{color:var(--sapp);background:rgba(255,255,255,.05)}
+.trial-x svg{width:18px;height:18px}
+.trial-head{text-align:center;margin-bottom:22px}
+.trial-head h2{
+  font-family:'Bree Serif',serif;font-size:22px;font-weight:400;
+  color:var(--sapp);line-height:1.3;margin-bottom:6px;
+}
+.trial-head h2 span{
+  background:linear-gradient(135deg,var(--ga),var(--gb));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.trial-head p{font-size:13px;color:var(--muted);line-height:1.5}
+.trial-form .field{margin-bottom:14px}
+.trial-form .btn{margin-top:6px}
+.trial-success{display:none;text-align:center;padding:10px 0}
+.trial-success-icon{
+  width:68px;height:68px;margin:0 auto 16px;
+  background:rgba(116,235,213,.08);
+  border:1px solid rgba(135,202,195,.22);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+}
+.trial-success-icon svg{width:30px;height:30px;color:var(--merc)}
+.trial-success h3{
+  font-family:'Bree Serif',serif;font-size:20px;color:var(--sapp);
+  font-weight:400;margin-bottom:8px;
+}
+.trial-success p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ─── Promo price (Small expand) ─── */
+.exp-price-promo{
+  display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  margin-bottom:10px;padding:14px 16px;
+  background:linear-gradient(135deg,rgba(247,201,72,.1),rgba(244,160,48,.06));
+  border:1px solid rgba(247,201,72,.28);
+  border-radius:14px;
+  position:relative;overflow:hidden;
+}
+.exp-price-promo::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 90% 10%,rgba(247,201,72,.12),transparent 60%);
+  pointer-events:none;
+}
+.exp-price-promo-label{
+  font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;
+  color:var(--promo-a);
+  display:flex;align-items:center;gap:6px;
+  position:relative;
+}
+.exp-price-promo-label::before{
+  content:'🔥';font-size:14px;
+}
+.exp-price-promo-main{
+  display:flex;align-items:baseline;gap:6px;position:relative;
+}
+.exp-price-promo-main .exp-price-val{
+  font-size:40px;line-height:1;
+  background:linear-gradient(135deg,var(--promo-a),var(--promo-b));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 2px 8px rgba(247,201,72,.25));
+}
+.exp-price-promo-main .exp-price-unit{
+  font-size:13px;color:var(--promo-a);font-weight:800;
+}
+.exp-price-promo-after{
+  font-size:12px;color:var(--muted);font-weight:600;
+  position:relative;margin-top:4px;
+}
+.exp-price-promo-after s{color:rgba(197,243,246,.45);margin-right:4px}
+.exp-price-promo-after strong{color:var(--sapp);font-weight:700}
+.exp-price-promo-save{
+  display:inline-flex;align-items:center;gap:4px;
+  margin-top:2px;padding:2px 8px;
+  background:rgba(247,201,72,.18);
+  border-radius:20px;
+  font-size:10px;font-weight:800;color:var(--promo-a);
+  text-transform:uppercase;letter-spacing:.5px;
+  position:relative;
+}
+
+/* ─── How-it-works (Step 1) ─── */
+.how-it-works{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  margin:0 0 22px;
+}
+.hiw-step{
+  position:relative;
+  background:rgba(255,255,255,.025);
+  border:1px solid var(--bord);border-radius:12px;
+  padding:14px 12px;
+  display:flex;flex-direction:column;gap:6px;align-items:flex-start;
+  transition:border-color .2s,background .2s;
+}
+.hiw-step:hover{border-color:rgba(135,202,195,.25);background:rgba(255,255,255,.04)}
+.hiw-num{
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,var(--ga),var(--gb));
+  color:var(--mid);font-size:11px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+}
+.hiw-title{font-size:12px;font-weight:800;color:var(--sapp);line-height:1.2}
+.hiw-sub{font-size:11px;color:var(--muted);line-height:1.45;font-weight:400}
+@media(max-width:560px){
+  .how-it-works{grid-template-columns:1fr;gap:8px}
+  .hiw-step{flex-direction:row;align-items:center;gap:10px;padding:10px 12px}
+  .hiw-num{flex-shrink:0}
+  .hiw-body{flex:1}
+}
+
+/* ─── Next-step hint (Step 2) ─── */
+.next-hint{
+  display:flex;align-items:flex-start;gap:10px;
+  background:rgba(116,235,213,.05);
+  border:1px solid rgba(116,235,213,.18);
+  border-radius:12px;padding:12px 14px;
+  margin:16px 0 4px;
+}
+.next-hint svg{
+  width:18px;height:18px;color:var(--merc);flex-shrink:0;margin-top:2px;
+}
+.next-hint-txt{font-size:12px;line-height:1.55;color:var(--sapp);font-weight:500}
+.next-hint-txt strong{color:var(--merc);font-weight:800}
+
+/* ─── Payment timings (Step 3) ─── */
+.pay-timings{
+  margin:22px 0 6px;
+  background:rgba(255,255,255,.02);
+  border:1px solid var(--bord);
+  border-radius:14px;padding:14px 16px;
+  text-align:left;
+  animation:rise .4s ease .48s both;
+}
+.pay-timings-title{
+  font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;
+  color:var(--merc);opacity:.85;margin-bottom:10px;
+}
+.pay-row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:8px 0;border-bottom:1px dashed var(--bord);
+  font-size:12px;
+}
+.pay-row:last-child{border-bottom:none}
+.pay-method{display:flex;align-items:center;gap:8px;color:var(--sapp);font-weight:700}
+.pay-method svg{width:14px;height:14px;color:var(--merc)}
+.pay-eta{color:var(--muted);font-weight:600}
+.pay-eta strong{color:var(--ga);font-weight:800}
+
+/* ─── Secondary button (reopen invoice) ─── */
+.btn-ghost-sm{
+  width:100%;margin-top:10px;
+  background:transparent;border:1px solid var(--bord);
+  color:var(--muted);border-radius:12px;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;
+  padding:11px;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  text-decoration:none;
+  animation:rise .4s ease .56s both;
+}
+.btn-ghost-sm:hover{border-color:var(--merc);color:var(--merc)}
+.btn-ghost-sm svg{width:14px;height:14px}
+
+/* ─── Security seal (footer) ─── */
+.sec-seal{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:8px;padding:4px 10px;
+  background:rgba(116,235,213,.06);
+  border:1px solid rgba(116,235,213,.18);
+  border-radius:20px;
+  font-size:11px;color:var(--merc);font-weight:700;
+}
+.sec-seal svg{width:12px;height:12px}
+
+/* ─── Floating WhatsApp (Lana) ─── */
+.wa-fab{
+  position:fixed;bottom:24px;right:24px;z-index:9999;
+  width:60px;height:60px;border-radius:50%;
+  background:#25D366;color:#fff;border:none;cursor:pointer;
+  box-shadow:0 6px 20px rgba(37,211,102,.45);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .2s,box-shadow .2s;
+  animation:waPulse 2s ease infinite;
+}
+.wa-fab:hover{transform:scale(1.08);box-shadow:0 10px 28px rgba(37,211,102,.6)}
+.wa-fab svg{width:32px;height:32px;fill:#fff}
+@keyframes waPulse{
+  0%,100%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,.5)}
+  50%{box-shadow:0 6px 20px rgba(37,211,102,.45),0 0 0 14px rgba(37,211,102,0)}
+}
+.wa-notif{
+  position:absolute;top:-4px;right:-4px;
+  width:20px;height:20px;border-radius:50%;
+  background:#f44336;color:#fff;font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid #fff;
+}
+
+.wa-box{
+  position:fixed;bottom:96px;right:24px;z-index:9999;
+  width:340px;max-width:calc(100vw - 48px);
+  background:#fff;border-radius:14px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);
+  font-family:'Nunito',sans-serif;color:#111;
+  transform-origin:bottom right;
+  transform:scale(.85) translateY(10px);opacity:0;pointer-events:none;
+  transition:transform .25s ease,opacity .2s ease;
+}
+.wa-box.open{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}
+
+.wa-head{
+  background:#075E54;color:#fff;padding:14px 16px;
+  display:flex;align-items:center;gap:12px;
+}
+.wa-head img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:#ccc}
+.wa-head-info{flex:1;min-width:0}
+.wa-head-name{font-size:15px;font-weight:700;line-height:1.2}
+.wa-head-status{font-size:12px;opacity:.85;margin-top:2px}
+.wa-close{
+  background:transparent;border:none;color:#fff;opacity:.8;cursor:pointer;
+  width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+  border-radius:4px;transition:opacity .2s,background .2s;
+}
+.wa-close:hover{opacity:1;background:rgba(255,255,255,.12)}
+.wa-close svg{width:18px;height:18px}
+
+.wa-body{
+  background:#e5ddd5;
+  background-image:
+    linear-gradient(rgba(229,221,213,.9),rgba(229,221,213,.9)),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='1' fill='%23c7bfb5' opacity='.4'/></svg>");
+  padding:18px 14px;min-height:130px;max-height:260px;overflow-y:auto;
+}
+.wa-bubble{
+  background:#fff;border-radius:0 8px 8px 8px;
+  padding:10px 12px;max-width:85%;
+  box-shadow:0 1px 1px rgba(0,0,0,.08);
+  position:relative;
+  animation:waSlide .3s ease;
+}
+@keyframes waSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wa-bubble-name{font-size:12px;font-weight:700;color:#075E54;margin-bottom:2px}
+.wa-bubble-text{font-size:14px;line-height:1.4;color:#303030}
+.wa-bubble-time{font-size:10px;color:#999;text-align:right;margin-top:4px}
+
+.wa-foot{
+  background:#f0f0f0;padding:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.wa-foot input{
+  flex:1;background:#fff;border:none;border-radius:20px;
+  padding:10px 14px;font-size:14px;outline:none;color:#111;
+  font-family:'Nunito',sans-serif;
+}
+.wa-foot input::placeholder{color:#999}
+.wa-foot button{
+  width:40px;height:40px;border-radius:50%;
+  background:#25D366;border:none;color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .15s,background .15s;
+}
+.wa-foot button:hover{background:#1ebe5c;transform:scale(1.05)}
+.wa-foot button:disabled{background:#ccc;cursor:not-allowed;transform:none}
+.wa-foot button svg{width:18px;height:18px;fill:#fff}
+
+@media(max-width:480px){
+  .wa-box{right:12px;bottom:84px;width:calc(100vw - 24px)}
+  .wa-fab{right:16px;bottom:16px}
 }
 
 /* ── stagger animation ── */
@@ -395,8 +842,7 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
   animation: gradFlow 4s ease infinite;
 }
 
-/* ── escala geral maior (desktop only) ── */
-@media(min-width:600px){
+/* ── escala geral maior ── */
 body { font-size: 16px; }
 .card { max-width: 660px; padding: 48px 52px; border-radius: 28px; }
 .logo-wrap svg { width: 200px !important; }
@@ -451,21 +897,20 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
 
 /* footer */
 .footer { font-size: 13px; }
-}
 
 /* ── ribbon diagonal ── */
 .plan-ribbon {
   position: absolute;
-  bottom: 0; left: 0;
+  top: 0; right: 0;
   background: linear-gradient(135deg, var(--promo-a), var(--promo-b));
   background-size: 300% 300%;
   animation: gradFlow 3s ease infinite;
   color: #1a1000;
   font-size: 10px; font-weight: 900;
   text-transform: uppercase; letter-spacing: .8px;
-  padding: 4px 14px;
-  border-radius: 0 10px 0 14px;
-  box-shadow: 0 -1px 12px rgba(247,201,72,.2);
+  padding: 4px 12px;
+  border-radius: 0 14px 0 10px;
+  box-shadow: 0 4px 12px rgba(247,201,72,.2);
   pointer-events: none;
   z-index: 2;
 }
@@ -558,19 +1003,8 @@ input { font-size: 15px; padding: 13px 15px 13px 44px; }
   animation:rise .4s ease .58s both;
 }
 </style>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-NJ6B6LGZ');</script>
-<!-- End Google Tag Manager -->
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJ6B6LGZ"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 <canvas id="bgCanvas"></canvas>
 <div class="bc bc1"></div><div class="bc bc2"></div>
 <div class="bg bga"></div><div class="bg bgb"></div>
@@ -596,6 +1030,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p>Clique em um plano para ver os detalhes.</p>
   </div>
 
+  <div class="how-it-works">
+    <div class="hiw-step">
+      <div class="hiw-num">1</div>
+      <div class="hiw-body">
+        <div class="hiw-title">Escolha o plano</div>
+        <div class="hiw-sub">O que combina com seu volume</div>
+      </div>
+    </div>
+    <div class="hiw-step">
+      <div class="hiw-num">2</div>
+      <div class="hiw-body">
+        <div class="hiw-title">Preencha os dados</div>
+        <div class="hiw-sub">Cadastro rápido para gerar a fatura</div>
+      </div>
+    </div>
+    <div class="hiw-step">
+      <div class="hiw-num">3</div>
+      <div class="hiw-body">
+        <div class="hiw-title">Pague e ative</div>
+        <div class="hiw-sub">Acesso liberado após confirmação</div>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="trial-cta" onclick="openTrial()">
+    <div class="trial-cta-icon">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+    </div>
+    <div class="trial-cta-body">
+      <div class="trial-cta-title">
+        Quer testar antes de pagar?
+        <span class="trial-cta-badge">7 dias grátis</span>
+      </div>
+      <div class="trial-cta-sub">Sem cartão de crédito · Ativação imediata no seu WhatsApp</div>
+    </div>
+    <svg class="trial-cta-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+  </button>
+
   <div class="plan-list">
 
     
@@ -616,25 +1088,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="plan-expand">
         <div class="expand-inner">
-          <div class="exp-price"><span class="exp-price-val">R$247,00</span><span class="exp-price-unit">/ mês</span></div>
-                    <div class="upgrade-hint">
+          <div class="exp-price-promo">
+            <div class="exp-price-promo-label">Oferta 1º mês</div>
+            <div class="exp-price-promo-main">
+              <span class="exp-price-val">R$29,90</span>
+              <span class="exp-price-unit">/ 1º mês</span>
+            </div>
+            <div class="exp-price-promo-after">
+              Depois: <s>R$247,00</s> <strong>R$247/mês</strong> · Cancele quando quiser
+            </div>
+            <div class="exp-price-promo-save">Economize R$217,10 no 1º mês</div>
+          </div>
+          <div class="upgrade-hint">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
             <span>Por <strong>+R$200/mês</strong>, o Smart adiciona follow-up automático e integração com Google Calendar.</span>
           </div>
-          <div class="promo-notice">
-            <svg class="promo-notice-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-            </svg>
-            <div class="promo-notice-text">
-              <strong>R$29,90 apenas no primeiro mês.</strong><br>
-              <span>A partir do 2º mês, R$247/mês. Cancele quando quiser.</span>
-            </div>
-          </div>
-          <div class="eco-box">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            Você economiza R$217,10 só no primeiro mês
-          </div>
-<div class="exp-tagline">Para iniciar a comunicação simplificada.</div>
+          <div class="exp-tagline">Para iniciar a comunicação simplificada.</div>
           <div class="features">
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span>Respostas automáticas via IA</span></div>
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Escuta áudios enviados pelos contatos</span></div>
@@ -650,7 +1119,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- SMART -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="smart" data-lbl="Atendimento Smart · R$447/mês" data-url="https://www.asaas.com/c/2wj1eus4bpbuu4zn">
+    <div class="plan-item" onclick="selPlan(this)" data-id="smart" data-lbl="Atendimento Smart · R$447/mês" data-url="https://www.asaas.com/c/0l1wp2ozq67qnxex">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -737,7 +1206,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- QUANTUM -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="quantum" data-lbl="Plano Quantum · Sob consulta" data-url="https://wa.me/5581937884110">
+    <div class="plan-item" onclick="selPlan(this)" data-id="quantum" data-lbl="Plano Quantum · Sob consulta" data-url="https://wa.me/558137884110">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -870,16 +1339,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
     </div>
-    <div class="field">
-      <label>Logradouro <span class="req">*</span></label>
-      <div class="iw">
-        <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-        <input type="text" id="addr" placeholder="Rua das Flores, 123" required>
+    <div class="row">
+      <div class="field">
+        <label>Logradouro <span class="req">*</span></label>
+        <div class="iw">
+          <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+          <input type="text" id="addr" placeholder="Rua das Flores" required>
+        </div>
+        <div class="err" id="eAddr">Logradouro obrigatório.</div>
       </div>
-      <div class="err" id="eAddr">Logradouro obrigatório.</div>
+      <div class="field">
+        <label>Número</label>
+        <div class="iw">
+          <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/></svg>
+          <input type="text" id="addrNum" placeholder="123">
+        </div>
+      </div>
+    </div>
+    <div class="next-hint">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <div class="next-hint-txt">
+        Ao concluir, sua assinatura é <strong>criada no Asaas</strong> e a 1ª fatura é gerada automaticamente.<br>
+        <strong>O FalaApp é ativado após a confirmação do pagamento.</strong>
+      </div>
     </div>
     <button type="submit" class="btn" id="btnSub">
-      <div class="bi"><div class="spinner"></div><span class="btxt">Concluir Cadastro</span></div>
+      <div class="bi"><div class="spinner"></div><span class="btxt">Concluir Cadastro e Ir Pagar</span></div>
     </button>
     <button type="button" class="btn-ghost" onclick="goS1()">← Voltar</button>
   </form>
@@ -893,44 +1378,75 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
   </div>
 
-  <h2>Bem-vindo ao FalaApp!</h2>
-  <p>Seu cadastro foi realizado com sucesso.<br>Em instantes você receberá uma confirmação no WhatsApp.</p>
+  <h2>Falta só o <span style="background:linear-gradient(135deg,var(--ga),var(--gb));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">pagamento</span></h2>
+  <p>Seu cadastro foi criado com sucesso.<br>Pague a 1ª fatura para ativar o FalaApp.</p>
 
   <!-- ID badge -->
-  <div class="sbadge" id="sbadge">Cadastro confirmado ✓</div>
+  <div class="sbadge" id="sbadge">Assinatura criada ✓</div>
 
   <!-- próximos passos -->
   <div class="suc-steps">
     <div class="suc-step">
       <div class="suc-step-num">1</div>
       <div class="suc-step-txt">
-        <strong>Acesse o painel</strong>
-        <span>Entre no admin e configure seu assistente virtual</span>
+        <strong>Pague a 1ª fatura</strong>
+        <span>Pix, boleto ou cartão — via Asaas, com segurança</span>
       </div>
     </div>
     <div class="suc-step">
       <div class="suc-step-num">2</div>
       <div class="suc-step-txt">
-        <strong>Aguarde o WhatsApp</strong>
-        <span>Enviaremos os dados de acesso em instantes</span>
+        <strong>Aguarde a confirmação</strong>
+        <span>Pix cai na hora; boleto/cartão pode levar alguns minutos</span>
       </div>
     </div>
     <div class="suc-step">
       <div class="suc-step-num">3</div>
       <div class="suc-step-txt">
-        <strong>Ative seu atendimento</strong>
-        <span>Conecte seu número e o assistente já começa a responder</span>
+        <strong>Receba seus acessos com a Lana</strong>
+        <span>Assim que o pagamento for confirmado, a <strong>Lana</strong> envia seu login e senha do painel pelo <strong>WhatsApp</strong></span>
       </div>
     </div>
   </div>
 
-  <!-- CTA login -->
-  <a href="https://admin.fala.app.br" target="_blank" class="btn-login">
-    Acessar o Painel
+  <!-- Tempos de ativação por método -->
+  <div class="pay-timings">
+    <div class="pay-timings-title">Tempo de ativação</div>
+    <div class="pay-row">
+      <div class="pay-method">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Pix
+      </div>
+      <div class="pay-eta"><strong>Minutos</strong> após o pagamento</div>
+    </div>
+    <div class="pay-row">
+      <div class="pay-method">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Cartão
+      </div>
+      <div class="pay-eta"><strong>Minutos</strong> após aprovação</div>
+    </div>
+    <div class="pay-row">
+      <div class="pay-method">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/></svg>
+        Boleto
+      </div>
+      <div class="pay-eta">Até <strong>3 dias úteis</strong> para compensar</div>
+    </div>
+  </div>
+
+  <!-- CTA pagamento -->
+  <a href="#" target="_blank" class="btn-login" id="btnPay">
+    <span class="btn-pay-txt">Pagar 1ª Fatura</span>
     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
   </a>
 
-  <p class="suc-hint">Qualquer dúvida, fale com a gente pelo WhatsApp 👋</p>
+  <a href="#" target="_blank" class="btn-ghost-sm" id="btnReopen" style="display:none">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+    Popup bloqueado? Reabrir link de pagamento
+  </a>
+
+  <p class="suc-hint">O acesso ao painel é liberado <strong>após a confirmação do pagamento</strong>. A <strong>Lana</strong> envia seu login e senha pelo <strong>WhatsApp</strong> assim que confirmar 💬</p>
 
 </div>
 
@@ -938,10 +1454,101 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="footer">
   Seus dados são usados exclusivamente para cadastro e ativação.<br>
   <a href="https://fala.app.br" target="_blank">fala.app.br</a>
+  <div>
+    <span class="sec-seal">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      Pagamento processado com segurança pelo Asaas
+    </span>
+  </div>
 </div>
 
+<!-- ── Modal: Teste Grátis 7 dias ── -->
+<div class="trial-modal" id="trialModal" role="dialog" aria-label="Teste grátis 7 dias" aria-modal="true">
+  <div class="trial-dialog">
+    <button type="button" class="trial-x" onclick="closeTrial()" aria-label="Fechar">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div id="trialStep">
+      <div class="trial-head">
+        <h2>Teste grátis por <span>7 dias</span></h2>
+        <p>Preencha seus dados e ative agora.<br>Sem cartão de crédito.</p>
+      </div>
+      <form class="trial-form" id="trialForm" novalidate>
+        <div class="field">
+          <label>Nome completo <span class="req">*</span></label>
+          <div class="iw">
+            <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            <input type="text" id="trialName" placeholder="João Silva" required>
+          </div>
+          <div class="err" id="eTrialName">Informe o nome completo.</div>
+        </div>
+        <div class="field">
+          <label>E-mail <span class="req">*</span></label>
+          <div class="iw">
+            <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <input type="email" id="trialEmail" placeholder="joao@empresa.com.br" required>
+          </div>
+          <div class="err" id="eTrialEmail">E-mail inválido.</div>
+        </div>
+        <div class="field">
+          <label>WhatsApp <span class="req">*</span></label>
+          <div class="iw">
+            <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z"/></svg>
+            <input type="tel" id="trialPhone" placeholder="(81) 99999-0000" required>
+          </div>
+          <div class="err" id="eTrialPhone">Número inválido.</div>
+        </div>
+        <button type="submit" class="btn" id="trialBtn">
+          <div class="bi"><div class="spinner"></div><span class="btxt">Iniciar teste de 7 dias</span></div>
+        </button>
+      </form>
+    </div>
+    <div id="trialSuccess" class="trial-success">
+      <div class="trial-success-icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h3>Teste ativado!</h3>
+      <p>Em instantes, a <strong>Lana</strong> vai te enviar as instruções pelo <strong>WhatsApp</strong>. Fique de olho! 👀<br>Aproveite seus <strong>7 dias grátis</strong> 🎉</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Floating WhatsApp (Lana do FalaApp) ── -->
+<div class="wa-box" id="waBox" role="dialog" aria-label="Chat WhatsApp">
+  <div class="wa-head">
+    <img src="https://storage.fala.app.br/main/files/4.png" alt="Lana do FalaApp" onerror="this.style.visibility='hidden'">
+    <div class="wa-head-info">
+      <div class="wa-head-name">Lana do FalaApp</div>
+      <div class="wa-head-status">Responde na hora!</div>
+    </div>
+    <button class="wa-close" id="waClose" aria-label="Fechar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="wa-body" id="waBody">
+    <div class="wa-bubble">
+      <div class="wa-bubble-name">Lana do FalaApp</div>
+      <div class="wa-bubble-text">Olá, estou pronta para falar com você!</div>
+      <div class="wa-bubble-time" id="waTime"></div>
+    </div>
+  </div>
+  <form class="wa-foot" id="waForm" autocomplete="off">
+    <input type="text" id="waInput" placeholder="Escreva uma mensagem..." maxlength="500">
+    <button type="submit" aria-label="Enviar">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </form>
+</div>
+
+<button class="wa-fab" id="waFab" aria-label="Abrir WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+  <span class="wa-notif">1</span>
+</button>
+
 <script>
-const WEBHOOK='https://SEU_N8N_URL/webhook/cadastro-asaas';
+const API_ENDPOINT='/api/create-subscription';
 let plan=null;
 
 // ── GTM dataLayer helper ─────────────────────────────────────
@@ -950,12 +1557,42 @@ function gtmPush(event, params){
   dataLayer.push(Object.assign({event: event}, params || {}));
 }
 
+// ── Notify (Notyf wrapper) ───────────────────────────────────
+const notify=(()=>{
+  let _n=null;
+  function inst(){
+    if(_n) return _n;
+    if(typeof Notyf==='undefined') return null;
+    _n=new Notyf({
+      duration:4500,
+      position:{x:'right',y:'top'},
+      dismissible:true,
+      ripple:true,
+      types:[
+        {type:'success',background:'transparent',icon:{className:'notyf__icon--success',tagName:'i'}},
+        {type:'error',background:'transparent',duration:7000,icon:{className:'notyf__icon--error',tagName:'i'}}
+      ]
+    });
+    return _n;
+  }
+  function show(type,msg,opts={}){
+    const n=inst();
+    if(!n){ console[type==='error'?'error':'log'](msg); return; }
+    return n.open({type,message:msg,...opts});
+  }
+  return {
+    success:(m,o)=>show('success',m,o),
+    error:(m,o)=>show('error',m,o),
+    dismiss:(t)=>inst()?.dismiss(t)
+  };
+})();
+
 function selPlan(el){
   const was=el.classList.contains('sel');
   document.querySelectorAll('.plan-item').forEach(c=>c.classList.remove('sel'));
   if(!was){
     el.classList.add('sel');
-    plan={id:el.dataset.id,label:el.dataset.lbl};
+    plan={id:el.dataset.id,label:el.dataset.lbl,url:el.dataset.url||null};
     document.getElementById('btnS1').disabled=false;
     setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
     gtmPush('plan_selected', {plan_id: plan.id, plan_name: plan.label});
@@ -1028,29 +1665,71 @@ document.getElementById('form').addEventListener('submit',async function(e){
   if(!v('city')){sh('eCity');mk('city');ok=false}else{hd('eCity');um('city')}
   if(!v('addr')){sh('eAddr');mk('addr');ok=false}else{hd('eAddr');um('addr')}
   if(!ok)return;
+  if(!plan||!plan.id){sh('eNome');return}
   const btn=document.getElementById('btnSub');
   btn.classList.add('loading');btn.disabled=true;
   const body={
-    name,cpfCnpj:cpf,mobilePhone:'55'+phone,
+    planId:plan.id,
+    name,
+    cpfCnpj:cpf,
+    mobilePhone:'55'+phone,
     email:v('email')||undefined,
-    postalCode:document.getElementById('cep').value.replace(/\D/g,'')||undefined,
+    postalCode:cep,
     address:v('addr')||undefined,
+    addressNumber:v('addrNum')||undefined,
     province:v('bairro')||undefined,
     city:v('city')||undefined,
-    state:document.getElementById('state').value.trim().toUpperCase()||undefined,
-    notificationDisabled:false,_plan:plan,
-    _meta:{origin:'falaapp-cadastro',ts:new Date().toISOString()}
+    state:document.getElementById('state').value.trim().toUpperCase()||undefined
   };
   Object.keys(body).forEach(k=>body[k]===undefined&&delete body[k]);
-  gtmPush('form_submit', {plan_id: plan ? plan.id : null, plan_name: plan ? plan.label : null});
-  // PREVIEW MODE — remove ao conectar webhook real
-  await new Promise(r => setTimeout(r, 1200)); // simula delay
-  document.getElementById('s2').style.display='none';
-  document.getElementById('s3').style.display='block';
-  document.getElementById('sbadge').textContent='ID: FA-2024-00001';
-  dot('d2','done');dot('d3','active');
-  document.getElementById('plbl').textContent='Concluído!';
-  gtmPush('registration_success', {plan_id: plan ? plan.id : null, plan_name: plan ? plan.label : null});
+  gtmPush('form_submit', {plan_id: plan.id, plan_name: plan.label});
+  try{
+    const r=await fetch(API_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    const data=await r.json().catch(()=>({error:'Resposta inválida do servidor'}));
+    if(!r.ok||!data.ok){
+      throw new Error(data.error||'Falha ao criar assinatura');
+    }
+    gtmPush('registration_success', {
+      plan_id: plan.id, plan_name: plan.label,
+      subscription_id: data.subscriptionId||null
+    });
+    notify.success('Assinatura criada! Após o pagamento, a Lana te envia login e senha no WhatsApp 💬');
+    document.getElementById('s2').style.display='none';
+    document.getElementById('s3').style.display='block';
+    document.getElementById('sbadge').textContent='Assinatura: '+(data.subscriptionId||'criada');
+    dot('d2','done');dot('d3','active');
+    document.getElementById('plbl').textContent='Pagamento pendente';
+    const btnPay=document.getElementById('btnPay');
+    const btnReopen=document.getElementById('btnReopen');
+    if(btnPay){
+      if(data.invoiceUrl){
+        btnPay.href=data.invoiceUrl;
+        btnPay.target='_blank';
+        btnPay.rel='noopener';
+        if(btnReopen){
+          btnReopen.href=data.invoiceUrl;
+          btnReopen.style.display='flex';
+        }
+        gtmPush('payment_initiated', {
+          plan_id: plan.id, plan_name: plan.label,
+          payment_url: data.invoiceUrl,
+          subscription_id: data.subscriptionId||null
+        });
+        try{ window.open(data.invoiceUrl,'_blank','noopener'); }catch(_){}
+      } else {
+        btnPay.href='#';
+        const span=btnPay.querySelector('.btn-pay-txt');
+        if(span) span.textContent='Aguarde as instruções por e-mail';
+      }
+    }
+  }catch(err){
+    notify.error(err.message||'Erro ao criar a assinatura');
+    btn.classList.remove('loading');btn.disabled=false;
+  }
 });
 function v(id){return document.getElementById(id).value.trim()}
 function sh(id){document.getElementById(id).style.display='block'}
@@ -1060,31 +1739,38 @@ function mk(id){document.getElementById(id).classList.add('invalid')}
 function selAndContinue(e, btn){
   e.stopPropagation();
   const item = btn.closest('.plan-item');
-  selPlan(item);
-  const url = item.dataset.url;
-  if(url){
-    gtmPush('payment_initiated', {plan_id: item.dataset.id, plan_name: item.dataset.lbl, payment_url: url});
-    window.open(url, '_blank');
+  if(!item.classList.contains('sel')) selPlan(item);
+  // Quantum vai para WhatsApp; demais vão para o Step 2 (formulário)
+  if(item.dataset.id === 'quantum'){
+    const url = item.dataset.url;
+    if(url){
+      gtmPush('enterprise_contact', {plan_id: item.dataset.id, plan_name: item.dataset.lbl, channel: 'whatsapp'});
+      window.open(url, '_blank');
+    }
+    return;
   }
+  goS2();
 }
 
 function goPayment(){
   if(!plan) return;
-  const item = document.querySelector(`.plan-item[data-id="${plan.id}"]`);
-  const url = item && item.dataset.url;
-  if(url){
-    gtmPush('payment_initiated', {plan_id: plan.id, plan_name: plan.label, payment_url: url});
-    window.open(url, '_blank');
+  if(plan.id === 'quantum'){
+    if(plan.url){
+      gtmPush('enterprise_contact', {plan_id: plan.id, plan_name: plan.label, channel: 'whatsapp'});
+      window.open(plan.url, '_blank');
+    }
+    return;
   }
+  goS2();
 }
 
-// Auto-seleciona o plano Small (R$29,90 no 1º mês) ao carregar
+// Auto-seleciona o plano Smart ao carregar
 window.addEventListener('DOMContentLoaded', function(){
-  const small = document.querySelector('.plan-item[data-id="small"]');
-  if(small) selPlan(small);
+  const smart = document.querySelector('.plan-item[data-id="smart"]');
+  if(smart) selPlan(smart);
   gtmPush('page_view', {page: 'checkout', step: 'plan_selection'});
 
-  // Evento form_start no primeiro foco em qualquer campo
+  // Evento form_start no primeiro foco em qualquer campo do form principal
   let formStarted = false;
   document.querySelectorAll('#form input, #form select').forEach(function(el){
     el.addEventListener('focus', function(){
@@ -1095,7 +1781,7 @@ window.addEventListener('DOMContentLoaded', function(){
     });
   });
 
-  // Evento plan_viewed ao expandir plano
+  // Evento plan_viewed ao clicar/expandir plano
   document.querySelectorAll('.plan-item').forEach(function(item){
     item.addEventListener('click', function(){
       gtmPush('plan_viewed', {plan_id: item.dataset.id, plan_name: item.dataset.lbl});
@@ -1103,6 +1789,100 @@ window.addEventListener('DOMContentLoaded', function(){
   });
 });
 function um(id){document.getElementById(id).classList.remove('invalid')}
+
+// ── Teste Grátis 7 dias (Modal) ──────────────────────────────
+function openTrial(){
+  const m=document.getElementById('trialModal');
+  m.classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('trialName').focus(),240);
+  gtmPush('trial_modal_opened', {source: 'checkout_cta'});
+}
+function closeTrial(){
+  const m=document.getElementById('trialModal');
+  m.classList.remove('open');
+  document.body.style.overflow='';
+}
+(function(){
+  const modal=document.getElementById('trialModal');
+  modal.addEventListener('click',e=>{ if(e.target===modal) closeTrial(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&modal.classList.contains('open')) closeTrial(); });
+
+  // Máscara de telefone (mesma lógica do form principal)
+  const phone=document.getElementById('trialPhone');
+  phone.addEventListener('input',function(e){
+    let v=e.target.value.replace(/\D/g,'');
+    if(v.length<=10) v=v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{4})(\d)/,'$1-$2');
+    else v=v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');
+    e.target.value=v;
+  });
+
+  const form=document.getElementById('trialForm');
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();let ok=true;
+    const name=document.getElementById('trialName').value.trim();
+    const email=document.getElementById('trialEmail').value.trim();
+    const phoneDigits=phone.value.replace(/\D/g,'');
+    if(!name||name.length<2){sh('eTrialName');mk('trialName');ok=false}else{hd('eTrialName');um('trialName')}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sh('eTrialEmail');mk('trialEmail');ok=false}else{hd('eTrialEmail');um('trialEmail')}
+    if(phoneDigits.length<10){sh('eTrialPhone');mk('trialPhone');ok=false}else{hd('eTrialPhone');um('trialPhone')}
+    if(!ok)return;
+    const btn=document.getElementById('trialBtn');
+    btn.classList.add('loading');btn.disabled=true;
+    try{
+      const r=await fetch('/api/free-trial',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name,email,phone:phoneDigits})
+      });
+      const data=await r.json().catch(()=>({error:'Resposta inválida'}));
+      if(!r.ok||!data.ok) throw new Error(data.error||'Falha ao iniciar o teste');
+      gtmPush('trial_started', {trial_days: 7});
+      notify.success('Teste de 7 dias ativado! A Lana vai te mandar as instruções no WhatsApp 💬');
+      document.getElementById('trialStep').style.display='none';
+      document.getElementById('trialSuccess').style.display='block';
+    }catch(err){
+      notify.error(err.message||'Erro ao iniciar o teste. Tente novamente.');
+      btn.classList.remove('loading');btn.disabled=false;
+    }
+  });
+})();
+
+// ── Floating WhatsApp (Lana) ─────────────────────────────────
+(function(){
+  const WA_PHONE='558137884110';
+  const fab=document.getElementById('waFab');
+  const box=document.getElementById('waBox');
+  const closeBtn=document.getElementById('waClose');
+  const form=document.getElementById('waForm');
+  const input=document.getElementById('waInput');
+  const timeEl=document.getElementById('waTime');
+  const notif=fab.querySelector('.wa-notif');
+
+  const now=new Date();
+  timeEl.textContent=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+  function openChat(){
+    box.classList.add('open');
+    if(notif) notif.style.display='none';
+    setTimeout(()=>input.focus(),280);
+  }
+  function closeChat(){box.classList.remove('open')}
+
+  fab.addEventListener('click',()=>{
+    box.classList.contains('open')?closeChat():openChat();
+  });
+  closeBtn.addEventListener('click',closeChat);
+
+  form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const msg=input.value.trim();
+    const text=msg||'Olá! Gostaria de falar com a equipe do FalaApp.';
+    const url='https://wa.me/'+WA_PHONE+'?text='+encodeURIComponent(text);
+    window.open(url,'_blank');
+    input.value='';
+  });
+})();
 
 // ── Animated background canvas ──────────────────────────────
 (function(){

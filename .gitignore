@@ -1,7 +1,5 @@
-# Ignorar tudo
-*
-
-# Exceto os arquivos estáticos do site
-!.gitignore
-!index.html
-!favicon.ico
+node_modules
+.env
+.env.local
+npm-debug.log
+.DS_Store
