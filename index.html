@@ -1085,7 +1085,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
 
     <!-- SMALL -->
-    <div class="plan-item promo-plan" onclick="selPlan(this)" data-id="small" data-lbl="Plano Small · R$29,90 no 1º mês, depois R$247/mês" data-url="https://www.asaas.com/c/zsh36088j3mwsfzv">
+    <div class="plan-item promo-plan" onclick="selPlan(this)" data-id="small" data-lbl="Plano Small · R$29,90 no 1º mês, depois R$247/mês" data-url="https://www.asaas.com/c/zsh36088j3mwsfzv" data-currency="BRL" data-recurring-value="247" data-first-payment-value="29.9">
       <div class="plan-ribbon">Oferta Limitada</div>
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
@@ -1131,7 +1131,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- SMART -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="smart" data-lbl="Atendimento Smart · R$447/mês" data-url="https://www.asaas.com/c/0l1wp2ozq67qnxex">
+    <div class="plan-item" onclick="selPlan(this)" data-id="smart" data-lbl="Atendimento Smart · R$447/mês" data-url="https://www.asaas.com/c/0l1wp2ozq67qnxex" data-currency="BRL" data-recurring-value="447" data-first-payment-value="447">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -1175,7 +1175,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- SCALE -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="scale" data-lbl="Atendimento Scale · R$747/mês" data-url="https://www.asaas.com/c/okrruokkx76cig83">
+    <div class="plan-item" onclick="selPlan(this)" data-id="scale" data-lbl="Atendimento Scale · R$747/mês" data-url="https://www.asaas.com/c/okrruokkx76cig83" data-currency="BRL" data-recurring-value="747" data-first-payment-value="747">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -1218,7 +1218,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- QUANTUM -->
-    <div class="plan-item" onclick="selPlan(this)" data-id="quantum" data-lbl="Plano Quantum · Sob consulta" data-url="https://wa.me/558137884110">
+    <div class="plan-item" onclick="selPlan(this)" data-id="quantum" data-lbl="Plano Quantum · Sob consulta" data-url="https://wa.me/558137884110" data-currency="BRL">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -1565,8 +1565,93 @@ let plan=null;
 
 // ── GTM dataLayer helper ─────────────────────────────────────
 window.dataLayer = window.dataLayer || [];
+function compactObject(obj){
+  return Object.fromEntries(Object.entries(obj || {}).filter(([, value]) => value !== undefined && value !== null && value !== ''));
+}
+function toNumber(value){
+  if(value === undefined || value === null || value === '') return null;
+  const n = Number(String(value).replace(',', '.'));
+  return Number.isFinite(n) ? n : null;
+}
+function planFromElement(el){
+  if(!el) return null;
+  return {
+    id: el.dataset.id || null,
+    label: el.dataset.lbl || null,
+    url: el.dataset.url || null,
+    currency: el.dataset.currency || 'BRL',
+    recurringValue: toNumber(el.dataset.recurringValue),
+    firstPaymentValue: toNumber(el.dataset.firstPaymentValue)
+  };
+}
+function planTrackingParams(planLike){
+  if(!planLike) return {};
+  const recurringValue = toNumber(planLike.recurringValue);
+  const firstPaymentValue = toNumber(planLike.firstPaymentValue);
+  return compactObject({
+    plan_id: planLike.id || null,
+    plan_name: planLike.label || null,
+    currency: planLike.currency || 'BRL',
+    value: firstPaymentValue ?? recurringValue,
+    first_payment_value: firstPaymentValue,
+    recurring_value: recurringValue
+  });
+}
+function planItemPayload(planLike, overrideValue){
+  if(!planLike) return [];
+  const itemValue = toNumber(overrideValue) ?? toNumber(planLike.firstPaymentValue) ?? toNumber(planLike.recurringValue);
+  return [compactObject({
+    item_id: planLike.id || null,
+    item_name: planLike.label || null,
+    price: itemValue,
+    quantity: 1
+  })];
+}
+function pushEcommerceEvent(eventName, ecommerce, params){
+  dataLayer.push({ ecommerce: null });
+  gtmPush(eventName, Object.assign({
+    ecommerce: compactObject(ecommerce || {})
+  }, params || {}));
+}
+function currentStep(){
+  if(document.getElementById('s3').style.display === 'block') return 'payment_pending';
+  if(document.getElementById('s2').style.display === 'block') return 'customer_data';
+  return 'plan_selection';
+}
+function slugifyTrackValue(value){
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '') || null;
+}
+function getClickLabel(el){
+  return (el.dataset.trackLabel || el.getAttribute('aria-label') || el.textContent || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function trackButtonClick(el, extraParams){
+  if(!el || el.disabled) return;
+  const label = getClickLabel(el);
+  const planEl = el.closest('.plan-item');
+  const planData = planEl ? planFromElement(planEl) : plan;
+  gtmPush('button_click', Object.assign({
+    click_name: el.dataset.trackName || slugifyTrackValue(label) || el.id || el.tagName.toLowerCase(),
+    click_label: label || null,
+    click_id: el.id || null,
+    click_tag: el.tagName.toLowerCase(),
+    click_href: el.getAttribute('href') && el.getAttribute('href') !== '#' ? el.getAttribute('href') : null,
+    step: currentStep()
+  }, planTrackingParams(planData), extraParams || {}));
+}
 function gtmPush(event, params){
-  dataLayer.push(Object.assign({event: event}, params || {}));
+  dataLayer.push(Object.assign({
+    event: event,
+    page_path: window.location.pathname,
+    page_location: window.location.href,
+    step: currentStep()
+  }, compactObject(params || {})));
 }
 
 // ── Notify (Notyf wrapper) ───────────────────────────────────
@@ -1604,10 +1689,15 @@ function selPlan(el){
   document.querySelectorAll('.plan-item').forEach(c=>c.classList.remove('sel'));
   if(!was){
     el.classList.add('sel');
-    plan={id:el.dataset.id,label:el.dataset.lbl,url:el.dataset.url||null};
+    plan=planFromElement(el);
     document.getElementById('btnS1').disabled=false;
     setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
-    gtmPush('plan_selected', {plan_id: plan.id, plan_name: plan.label});
+    gtmPush('plan_selected', planTrackingParams(plan));
+    pushEcommerceEvent('select_item', {
+      currency: plan.currency || 'BRL',
+      value: toNumber(plan.firstPaymentValue) ?? toNumber(plan.recurringValue),
+      items: planItemPayload(plan)
+    }, planTrackingParams(plan));
   } else {
     plan=null;
     document.getElementById('btnS1').disabled=true;
@@ -1623,7 +1713,12 @@ function goS2(){
   dot('d1','done');dot('d2','active');
   document.getElementById('plbl').textContent='Seus dados';
   window.scrollTo({top:0,behavior:'smooth'});
-  gtmPush('checkout_step_2', {plan_id: plan.id, plan_name: plan.label});
+  gtmPush('checkout_step_2', planTrackingParams(plan));
+  pushEcommerceEvent('begin_checkout', {
+    currency: plan.currency || 'BRL',
+    value: toNumber(plan.firstPaymentValue) ?? toNumber(plan.recurringValue),
+    items: planItemPayload(plan)
+  }, planTrackingParams(plan));
 }
 function goS1(){
   document.getElementById('s2').style.display='none';
@@ -1631,6 +1726,7 @@ function goS1(){
   dot('d2','');dot('d1','active');
   document.getElementById('plbl').textContent='Escolha seu plano';
   window.scrollTo({top:0,behavior:'smooth'});
+  gtmPush('checkout_step_1', planTrackingParams(plan));
 }
 
 document.getElementById('cpf').addEventListener('input',function(e){
@@ -1665,18 +1761,26 @@ async function viaCep(c){
 }
 document.getElementById('form').addEventListener('submit',async function(e){
   e.preventDefault();let ok=true;
+  const invalidFields=[];
   const name=v('name');
-  if(!name){sh('eNome');mk('name');ok=false}else{hd('eNome');um('name')}
+  if(!name){sh('eNome');mk('name');ok=false;invalidFields.push('name')}else{hd('eNome');um('name')}
   const cpf=document.getElementById('cpf').value.replace(/\D/g,'');
-  if(cpf.length!==11&&cpf.length!==14){sh('eCpf');mk('cpf');ok=false}else{hd('eCpf');um('cpf')}
+  if(cpf.length!==11&&cpf.length!==14){sh('eCpf');mk('cpf');ok=false;invalidFields.push('cpf_cnpj')}else{hd('eCpf');um('cpf')}
   const phone=document.getElementById('phone').value.replace(/\D/g,'');
-  if(phone.length<10){sh('eTel');mk('phone');ok=false}else{hd('eTel');um('phone')}
+  if(phone.length<10){sh('eTel');mk('phone');ok=false;invalidFields.push('mobile_phone')}else{hd('eTel');um('phone')}
   const cep=document.getElementById('cep').value.replace(/\D/g,'');
-  if(cep.length<8){sh('eCep');mk('cep');ok=false}else{hd('eCep');um('cep')}
-  if(!v('state')){sh('eState');mk('state');ok=false}else{hd('eState');um('state')}
-  if(!v('city')){sh('eCity');mk('city');ok=false}else{hd('eCity');um('city')}
-  if(!v('addr')){sh('eAddr');mk('addr');ok=false}else{hd('eAddr');um('addr')}
-  if(!ok)return;
+  if(cep.length<8){sh('eCep');mk('cep');ok=false;invalidFields.push('postal_code')}else{hd('eCep');um('cep')}
+  if(!v('state')){sh('eState');mk('state');ok=false;invalidFields.push('state')}else{hd('eState');um('state')}
+  if(!v('city')){sh('eCity');mk('city');ok=false;invalidFields.push('city')}else{hd('eCity');um('city')}
+  if(!v('addr')){sh('eAddr');mk('addr');ok=false;invalidFields.push('address')}else{hd('eAddr');um('addr')}
+  if(!ok){
+    gtmPush('form_validation_error', Object.assign({
+      form_id: 'checkout_form',
+      invalid_fields: invalidFields.join(','),
+      invalid_field_count: invalidFields.length
+    }, planTrackingParams(plan)));
+    return;
+  }
   if(!plan||!plan.id){sh('eNome');return}
   const btn=document.getElementById('btnSub');
   btn.classList.add('loading');btn.disabled=true;
@@ -1694,7 +1798,17 @@ document.getElementById('form').addEventListener('submit',async function(e){
     state:document.getElementById('state').value.trim().toUpperCase()||undefined
   };
   Object.keys(body).forEach(k=>body[k]===undefined&&delete body[k]);
-  gtmPush('form_submit', {plan_id: plan.id, plan_name: plan.label});
+  gtmPush('form_submit', Object.assign({
+    form_id: 'checkout_form'
+  }, planTrackingParams(plan)));
+  pushEcommerceEvent('add_payment_info', {
+    currency: plan.currency || 'BRL',
+    value: toNumber(plan.firstPaymentValue) ?? toNumber(plan.recurringValue),
+    items: planItemPayload(plan)
+  }, Object.assign({
+    form_id: 'checkout_form',
+    payment_type: 'boleto_pix_cartao'
+  }, planTrackingParams(plan)));
   try{
     const r=await fetch(API_ENDPOINT,{
       method:'POST',
@@ -1705,10 +1819,27 @@ document.getElementById('form').addEventListener('submit',async function(e){
     if(!r.ok||!data.ok){
       throw new Error(data.error||'Falha ao criar assinatura');
     }
-    gtmPush('registration_success', {
-      plan_id: plan.id, plan_name: plan.label,
-      subscription_id: data.subscriptionId||null
-    });
+    const purchaseValue = toNumber(data.paymentValue) ?? toNumber(data.firstMonthValue) ?? planTrackingParams(plan).value;
+    const purchaseCurrency = data.currency || planTrackingParams(plan).currency || 'BRL';
+    gtmPush('registration_success', Object.assign({
+      subscription_id: data.subscriptionId||null,
+      customer_id: data.customerId||null,
+      value: purchaseValue,
+      first_payment_value: toNumber(data.paymentValue) ?? toNumber(data.firstMonthValue) ?? planTrackingParams(plan).first_payment_value,
+      recurring_value: toNumber(data.recurringValue) ?? planTrackingParams(plan).recurring_value,
+      currency: purchaseCurrency
+    }, planTrackingParams(plan)));
+    pushEcommerceEvent('purchase', {
+      transaction_id: data.subscriptionId || null,
+      currency: purchaseCurrency,
+      value: purchaseValue,
+      items: planItemPayload(plan, purchaseValue)
+    }, Object.assign({
+      transaction_id: data.subscriptionId || null,
+      subscription_id: data.subscriptionId || null,
+      customer_id: data.customerId || null,
+      payment_url: data.invoiceUrl || null
+    }, planTrackingParams(plan)));
     notify.success('Assinatura criada! Após o pagamento, a Lana te envia login e senha no WhatsApp 💬');
     document.getElementById('s2').style.display='none';
     document.getElementById('s3').style.display='block';
@@ -1726,11 +1857,15 @@ document.getElementById('form').addEventListener('submit',async function(e){
           btnReopen.href=data.invoiceUrl;
           btnReopen.style.display='flex';
         }
-        gtmPush('payment_initiated', {
-          plan_id: plan.id, plan_name: plan.label,
+        gtmPush('payment_initiated', Object.assign({
           payment_url: data.invoiceUrl,
-          subscription_id: data.subscriptionId||null
-        });
+          subscription_id: data.subscriptionId||null,
+          customer_id: data.customerId||null,
+          value: toNumber(data.paymentValue) ?? toNumber(data.firstMonthValue) ?? planTrackingParams(plan).value,
+          first_payment_value: toNumber(data.paymentValue) ?? toNumber(data.firstMonthValue) ?? planTrackingParams(plan).first_payment_value,
+          recurring_value: toNumber(data.recurringValue) ?? planTrackingParams(plan).recurring_value,
+          currency: data.currency || planTrackingParams(plan).currency || 'BRL'
+        }, planTrackingParams(plan)));
         try{ window.open(data.invoiceUrl,'_blank','noopener'); }catch(_){}
       } else {
         btnPay.href='#';
@@ -1756,7 +1891,9 @@ function selAndContinue(e, btn){
   if(item.dataset.id === 'quantum'){
     const url = item.dataset.url;
     if(url){
-      gtmPush('enterprise_contact', {plan_id: item.dataset.id, plan_name: item.dataset.lbl, channel: 'whatsapp'});
+      gtmPush('enterprise_contact', Object.assign({
+        channel: 'whatsapp'
+      }, planTrackingParams(planFromElement(item))));
       window.open(url, '_blank');
     }
     return;
@@ -1768,7 +1905,9 @@ function goPayment(){
   if(!plan) return;
   if(plan.id === 'quantum'){
     if(plan.url){
-      gtmPush('enterprise_contact', {plan_id: plan.id, plan_name: plan.label, channel: 'whatsapp'});
+      gtmPush('enterprise_contact', Object.assign({
+        channel: 'whatsapp'
+      }, planTrackingParams(plan)));
       window.open(plan.url, '_blank');
     }
     return;
@@ -1782,13 +1921,21 @@ window.addEventListener('DOMContentLoaded', function(){
   if(smart) selPlan(smart);
   gtmPush('page_view', {page: 'checkout', step: 'plan_selection'});
 
+  document.addEventListener('click', function(event){
+    const clickable = event.target.closest('button, a, .change');
+    if(!clickable || clickable.disabled) return;
+    trackButtonClick(clickable);
+  });
+
   // Evento form_start no primeiro foco em qualquer campo do form principal
   let formStarted = false;
   document.querySelectorAll('#form input, #form select').forEach(function(el){
     el.addEventListener('focus', function(){
       if(!formStarted){
         formStarted = true;
-        gtmPush('form_start', {plan_id: plan ? plan.id : null, plan_name: plan ? plan.label : null});
+        gtmPush('form_start', Object.assign({
+          form_id: 'checkout_form'
+        }, planTrackingParams(plan)));
       }
     });
   });
@@ -1796,9 +1943,27 @@ window.addEventListener('DOMContentLoaded', function(){
   // Evento plan_viewed ao clicar/expandir plano
   document.querySelectorAll('.plan-item').forEach(function(item){
     item.addEventListener('click', function(){
-      gtmPush('plan_viewed', {plan_id: item.dataset.id, plan_name: item.dataset.lbl});
+      gtmPush('plan_viewed', planTrackingParams(planFromElement(item)));
     });
   });
+
+  const btnPay = document.getElementById('btnPay');
+  if(btnPay){
+    btnPay.addEventListener('click', function(){
+      gtmPush('payment_link_clicked', Object.assign({
+        payment_url: btnPay.getAttribute('href') || null
+      }, planTrackingParams(plan)));
+    });
+  }
+
+  const btnReopen = document.getElementById('btnReopen');
+  if(btnReopen){
+    btnReopen.addEventListener('click', function(){
+      gtmPush('payment_link_reopened', Object.assign({
+        payment_url: btnReopen.getAttribute('href') || null
+      }, planTrackingParams(plan)));
+    });
+  }
 });
 function um(id){document.getElementById(id).classList.remove('invalid')}
 
@@ -1808,12 +1973,13 @@ function openTrial(){
   m.classList.add('open');
   document.body.style.overflow='hidden';
   setTimeout(()=>document.getElementById('trialName').focus(),240);
-  gtmPush('trial_modal_opened', {source: 'checkout_cta'});
+  gtmPush('trial_modal_opened', {source: 'checkout_cta', value: 0, currency: 'BRL'});
 }
 function closeTrial(){
   const m=document.getElementById('trialModal');
   m.classList.remove('open');
   document.body.style.overflow='';
+  gtmPush('trial_modal_closed', {source: 'checkout_cta', value: 0, currency: 'BRL'});
 }
 (function(){
   const modal=document.getElementById('trialModal');
@@ -1832,13 +1998,23 @@ function closeTrial(){
   const form=document.getElementById('trialForm');
   form.addEventListener('submit',async function(e){
     e.preventDefault();let ok=true;
+    const invalidFields=[];
     const name=document.getElementById('trialName').value.trim();
     const email=document.getElementById('trialEmail').value.trim();
     const phoneDigits=phone.value.replace(/\D/g,'');
-    if(!name||name.length<2){sh('eTrialName');mk('trialName');ok=false}else{hd('eTrialName');um('trialName')}
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sh('eTrialEmail');mk('trialEmail');ok=false}else{hd('eTrialEmail');um('trialEmail')}
-    if(phoneDigits.length<10){sh('eTrialPhone');mk('trialPhone');ok=false}else{hd('eTrialPhone');um('trialPhone')}
-    if(!ok)return;
+    if(!name||name.length<2){sh('eTrialName');mk('trialName');ok=false;invalidFields.push('name')}else{hd('eTrialName');um('trialName')}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sh('eTrialEmail');mk('trialEmail');ok=false;invalidFields.push('email')}else{hd('eTrialEmail');um('trialEmail')}
+    if(phoneDigits.length<10){sh('eTrialPhone');mk('trialPhone');ok=false;invalidFields.push('phone')}else{hd('eTrialPhone');um('trialPhone')}
+    if(!ok){
+      gtmPush('form_validation_error', {
+        form_id: 'free_trial_form',
+        invalid_fields: invalidFields.join(','),
+        invalid_field_count: invalidFields.length,
+        value: 0,
+        currency: 'BRL'
+      });
+      return;
+    }
     const btn=document.getElementById('trialBtn');
     btn.classList.add('loading');btn.disabled=true;
     try{
@@ -1849,7 +2025,7 @@ function closeTrial(){
       });
       const data=await r.json().catch(()=>({error:'Resposta inválida'}));
       if(!r.ok||!data.ok) throw new Error(data.error||'Falha ao iniciar o teste');
-      gtmPush('trial_started', {trial_days: 7});
+      gtmPush('trial_started', {trial_days: 7, value: 0, currency: 'BRL'});
       notify.success('Teste de 7 dias ativado! A Lana vai te mandar as instruções no WhatsApp 💬');
       document.getElementById('trialStep').style.display='none';
       document.getElementById('trialSuccess').style.display='block';
@@ -1878,8 +2054,12 @@ function closeTrial(){
     box.classList.add('open');
     if(notif) notif.style.display='none';
     setTimeout(()=>input.focus(),280);
+    gtmPush('whatsapp_chat_opened', {channel: 'whatsapp', source: 'floating_widget'});
   }
-  function closeChat(){box.classList.remove('open')}
+  function closeChat(){
+    box.classList.remove('open');
+    gtmPush('whatsapp_chat_closed', {channel: 'whatsapp', source: 'floating_widget'});
+  }
 
   fab.addEventListener('click',()=>{
     box.classList.contains('open')?closeChat():openChat();
@@ -1891,6 +2071,11 @@ function closeTrial(){
     const msg=input.value.trim();
     const text=msg||'Olá! Gostaria de falar com a equipe do FalaApp.';
     const url='https://wa.me/'+WA_PHONE+'?text='+encodeURIComponent(text);
+    gtmPush('whatsapp_message_sent', {
+      channel: 'whatsapp',
+      source: 'floating_widget',
+      has_custom_message: Boolean(msg)
+    });
     window.open(url,'_blank');
     input.value='';
   });
