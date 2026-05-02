@@ -259,6 +259,31 @@ body{
 }
 .franquia-box-sub{font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
 
+/* Recursos da plataforma (seção dentro do card) */
+.platform-section{
+  background:rgba(172,182,229,.05);
+  border:1px solid rgba(172,182,229,.14);
+  border-radius:10px;padding:11px 13px;margin:6px 0 10px;
+}
+.platform-section-title{
+  font-size:10.5px;font-weight:800;color:var(--wisp);
+  text-transform:uppercase;letter-spacing:.4px;
+  margin-bottom:9px;display:flex;align-items:center;gap:6px;
+}
+.platform-section-title svg{width:12px;height:12px;color:var(--wisp)}
+.platform-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:7px 12px;
+}
+.platform-feat{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;color:var(--sapp);opacity:.88;line-height:1.3;
+}
+.platform-feat svg{width:13px;height:13px;color:var(--wisp);flex-shrink:0}
+@media (max-width:560px){
+  .platform-grid{grid-template-columns:1fr;gap:6px}
+  .platform-feat{font-size:11.5px}
+}
+
 /* "Útil pra:" linha discreta */
 .useful-for{
   font-size:11px;color:var(--muted);font-weight:500;
@@ -1150,7 +1175,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="s1">
   <div class="ch">
     <h1>Escolha seu <span>plano</span></h1>
-    <p>Clique em um plano para ver os detalhes.</p>
+    <p>Comece em poucos minutos. Escolha o que combina com a sua operação.</p>
   </div>
 
   <div class="how-it-works">
@@ -1158,21 +1183,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="hiw-num">1</div>
       <div class="hiw-body">
         <div class="hiw-title">Escolha o plano</div>
-        <div class="hiw-sub">O que combina com seu volume</div>
+        <div class="hiw-sub">O que combina com sua operação</div>
       </div>
     </div>
     <div class="hiw-step">
       <div class="hiw-num">2</div>
       <div class="hiw-body">
-        <div class="hiw-title">Preencha os dados</div>
-        <div class="hiw-sub">Cadastro rápido para gerar a fatura</div>
+        <div class="hiw-title">Conta a seu respeito</div>
+        <div class="hiw-sub">Cadastro rápido pra gerar a fatura</div>
       </div>
     </div>
     <div class="hiw-step">
       <div class="hiw-num">3</div>
       <div class="hiw-body">
-        <div class="hiw-title">Pague e ative</div>
-        <div class="hiw-sub">Acesso liberado após confirmação</div>
+        <div class="hiw-title">Ativação em minutos</div>
+        <div class="hiw-sub">A Lana te entrega os acessos no WhatsApp</div>
       </div>
     </div>
   </div>
@@ -1229,13 +1254,49 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="exp-tagline">Sua assistente no WhatsApp, atendendo 24/7 enquanto você foca no que importa.</div>
           <div class="features">
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Escuta e entende áudios dos clientes</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Encaminha conversas pra você quando preciso</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Encaminha conversas pra você quando necessário</span></div>
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg><span><strong>1 usuário</strong></span></div>
+          </div>
+          <div class="platform-section">
+            <div class="platform-section-title">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Recursos da plataforma
+            </div>
+            <div class="platform-grid">
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>Dashboard de métricas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                <span>Importação de contatos (CSV)</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+                <span>Campanhas segmentadas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                <span>Múltiplos números WhatsApp</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                <span>Notas em conversas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                <span>Kanban de conversas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <span>Scanner de qualidade</span>
+              </div>
+            </div>
           </div>
           <div class="franquia-box">
             <svg class="franquia-box-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             <div class="franquia-box-body">
-              <div class="franquia-box-title">Franquia mensal: 120.000 palavras · 7.500 disparos</div>
+              <div class="franquia-box-title">Limite mensal: 120.000 palavras · 7.500 disparos</div>
               <div class="franquia-box-sub">~120 atendimentos completos · ~1.000 palavras por contato</div>
             </div>
           </div>
@@ -1279,15 +1340,51 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="exp-tagline">A IA que entende imagens e vai atrás dos clientes que sumiram.</div>
           <div class="features">
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Escuta e entende áudios dos clientes</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Encaminha conversas pra você quando preciso</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Encaminha conversas pra você quando necessário</span></div>
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Lê imagens (recibos, documentos, fotos de produtos)</span></div>
             <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>Follow-up automático com quem parou de responder</span></div>
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg><span><strong>1 usuário</strong></span></div>
           </div>
+          <div class="platform-section">
+            <div class="platform-section-title">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Recursos da plataforma
+            </div>
+            <div class="platform-grid">
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>Dashboard de métricas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                <span>Importação de contatos (CSV)</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+                <span>Campanhas segmentadas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                <span>Múltiplos números WhatsApp</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                <span>Notas em conversas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                <span>Kanban de conversas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <span>Scanner de qualidade</span>
+              </div>
+            </div>
+          </div>
           <div class="franquia-box">
             <svg class="franquia-box-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             <div class="franquia-box-body">
-              <div class="franquia-box-title">Franquia mensal: 240.000 palavras · 15.000 disparos</div>
+              <div class="franquia-box-title">Limite mensal: 240.000 palavras · 15.000 disparos</div>
               <div class="franquia-box-sub">~240 atendimentos completos · ~1.000 palavras por contato</div>
             </div>
           </div>
@@ -1318,7 +1415,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <div class="ph-right">
           <span class="ph-price">R$747<span style="font-size:10px;font-family:Nunito,sans-serif;opacity:.7">/mês</span></span>
-          <span class="badge b-def">Crescimento</span>
+          <span class="badge b-def">Time</span>
         </div>
       </div>
       <div class="plan-expand">
@@ -1327,17 +1424,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="exp-tagline">A IA que responde em áudio com a sua voz e dá conta do alto fluxo de um time de atendimento.</div>
           <div class="features">
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Escuta e entende áudios dos clientes</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Encaminha conversas pra você quando preciso</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Encaminha conversas pra você quando necessário</span></div>
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Lê imagens (recibos, documentos, fotos de produtos)</span></div>
             <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>Follow-up automático com quem parou de responder</span></div>
             <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-3-3m3 3l3-3M9.172 16.172a4 4 0 010-5.656"/></svg><span>Responde em áudio (atendimento mais humano)</span></div>
             <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Clonagem de voz (respostas com a sua própria voz)</span></div>
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg><span><strong>2-5 usuários</strong></span></div>
           </div>
+          <div class="platform-section">
+            <div class="platform-section-title">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Recursos da plataforma
+            </div>
+            <div class="platform-grid">
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>Dashboard de métricas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                <span>Importação de contatos (CSV)</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+                <span>Campanhas segmentadas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                <span>Múltiplos números WhatsApp</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                <span>Notas em conversas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                <span>Kanban de conversas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <span>Scanner de qualidade</span>
+              </div>
+            </div>
+          </div>
           <div class="franquia-box">
             <svg class="franquia-box-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             <div class="franquia-box-body">
-              <div class="franquia-box-title">Franquia mensal: 500.000 palavras · 30.000 disparos</div>
+              <div class="franquia-box-title">Limite mensal: 500.000 palavras · 30.000 disparos</div>
               <div class="franquia-box-sub">~500 atendimentos completos · ~1.000 palavras por contato</div>
             </div>
           </div>
@@ -1377,17 +1510,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="exp-tagline">Atendente IA sob medida pra sua operação, com volume e SLA dedicados.</div>
           <div class="features">
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Escuta e entende áudios dos clientes</span></div>
-            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Encaminha conversas pra você quando preciso</span></div>
+            <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg><span>Encaminha conversas pra você quando necessário</span></div>
             <div class="feat"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Lê imagens (recibos, documentos, fotos de produtos)</span></div>
             <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>Follow-up automático com quem parou de responder</span></div>
             <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-3-3m3 3l3-3M9.172 16.172a4 4 0 010-5.656"/></svg><span>Responde em áudio (atendimento mais humano)</span></div>
             <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a4 4 0 014 4v4a4 4 0 01-8 0V7a4 4 0 014-4z"/></svg><span>Clonagem de voz (respostas com a sua própria voz)</span></div>
             <div class="feat hl"><svg class="fi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg><span><strong>6+ usuários</strong></span></div>
           </div>
+          <div class="platform-section">
+            <div class="platform-section-title">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Recursos da plataforma
+            </div>
+            <div class="platform-grid">
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>Dashboard de métricas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                <span>Importação de contatos (CSV)</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+                <span>Campanhas segmentadas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                <span>Múltiplos números WhatsApp</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                <span>Notas em conversas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                <span>Kanban de conversas</span>
+              </div>
+              <div class="platform-feat">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <span>Scanner de qualidade</span>
+              </div>
+            </div>
+          </div>
           <div class="franquia-box">
             <svg class="franquia-box-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             <div class="franquia-box-body">
-              <div class="franquia-box-title">Franquia mensal: sob consulta</div>
+              <div class="franquia-box-title">Limite mensal: sob consulta</div>
               <div class="franquia-box-sub">Volume dimensionado conforme o seu cenário</div>
             </div>
           </div>
@@ -1538,7 +1707,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <button type="submit" class="btn" id="btnSub">
-      <div class="bi"><div class="spinner"></div><span class="btxt">Concluir Cadastro e Ir Pagar</span></div>
+      <div class="bi"><div class="spinner"></div><span class="btxt">Continuar para pagamento</span></div>
     </button>
     <button type="button" class="btn-ghost" onclick="goS1()">← Voltar</button>
   </form>
@@ -1552,8 +1721,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
   </div>
 
-  <h2>Falta só o <span style="background:linear-gradient(135deg,var(--ga),var(--gb));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">pagamento</span></h2>
-  <p>Seu cadastro foi criado com sucesso.<br>Pague a 1ª fatura para ativar o FalaApp.</p>
+  <h2>Última etapa: <span style="background:linear-gradient(135deg,var(--ga),var(--gb));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">o pagamento</span></h2>
+  <p>Cadastro pronto. Faltam minutos pra <strong>Lana</strong> te entregar os acessos no WhatsApp.</p>
 
   <!-- ID badge -->
   <div class="sbadge" id="sbadge">Assinatura criada ✓</div>
@@ -1619,8 +1788,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
     Popup bloqueado? Reabrir link de pagamento
   </a>
-
-  <p class="suc-hint">O acesso ao painel é liberado <strong>após a confirmação do pagamento</strong>. A <strong>Lana</strong> envia seu login e senha pelo <strong>WhatsApp</strong> assim que confirmar 💬</p>
 
 </div>
 
