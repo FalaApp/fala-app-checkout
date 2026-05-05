@@ -69,32 +69,19 @@ function parseHumanDuration(str) {
 
 async function requireAdmin(req, res, next) {
   const token = req.cookies?.admin_token;
-  console.log("[requireAdmin] cookies:", JSON.stringify(req.cookies));
-  console.log("[requireAdmin] token present:", !!token);
   if (!token) return res.status(401).json({ error: "Não autenticado" });
   try {
-    const profileUrl = `${FALA_APP_API_URL}/own/profile`;
-    console.log("[requireAdmin] fetching profile:", profileUrl);
-    const r = await fetch(profileUrl, {
+    const r = await fetch(`${FALA_APP_API_URL}/own/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log("[requireAdmin] profile status:", r.status);
-    if (!r.ok) {
-      const errText = await r.text();
-      console.log("[requireAdmin] profile error body:", errText.slice(0, 300));
-      throw new Error("profile_error");
-    }
+    if (!r.ok) throw new Error("profile_error");
     const body = await r.json();
-    console.log("[requireAdmin] profile body keys:", Object.keys(body));
     const user = body?.data ?? body;
-    console.log("[requireAdmin] user.roles:", JSON.stringify(user?.roles));
     const isAdmin = user?.roles?.some((rl) => rl?.role?.name === "admin");
-    console.log("[requireAdmin] isAdmin:", isAdmin);
     if (!isAdmin) throw new Error("not_admin");
     req.adminUser = user;
     next();
   } catch (e) {
-    console.log("[requireAdmin] caught error:", e.message);
     res.clearCookie("admin_token");
     return res.status(403).json({ error: "Acesso negado" });
   }
@@ -145,18 +132,14 @@ app.post("/api/admin/login", async (req, res) => {
     const expiresMs = typeof expiresIn === "number"
       ? expiresIn * 1000
       : parseHumanDuration(expiresIn);
-    console.log("[login] token length:", data.token?.length);
-    console.log("[login] expiresIn:", expiresIn, "→ expiresMs:", expiresMs);
     res.cookie("admin_token", data.token, {
       httpOnly: true,
       path: "/",
       maxAge: expiresMs || 12 * 60 * 60 * 1000,
       sameSite: "lax",
     });
-    console.log("[login] Set-Cookie header:", res.getHeader("set-cookie"));
     return res.json({ ok: true });
   } catch (e) {
-    console.error("[admin/login]", e.message);
     return res.status(502).json({ error: "Erro ao autenticar" });
   }
 });
