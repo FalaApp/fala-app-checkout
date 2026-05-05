@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+<title>FalaApp · Admin — Orçamentos</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<style>
+:root{
+  --mid:#24243d;--mid2:#1d1d30;
+  --merc:#87cac3;--wisp:#acb4dc;--sapp:#c5f3f6;
+  --ga:#74ebd5;--gb:#acb6e5;
+  --bord:rgba(172,180,220,.15);--surf:rgba(255,255,255,.035);
+  --muted:rgba(197,243,246,.45);--err:#f47fa4;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--mid);color:var(--sapp);font-family:'Nunito',sans-serif;min-height:100vh;padding:32px 20px;overflow-x:hidden;position:relative}
+.bc{position:fixed;pointer-events:none;border-radius:50%;border:1px solid}
+.bc1{width:600px;height:600px;top:-220px;right:-220px;border-color:rgba(116,235,213,.06)}
+.bc2{width:480px;height:480px;bottom:-180px;left:-180px;border-color:rgba(172,182,229,.05)}
+
+/* ── LAYOUT ── */
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto}
+
+/* ── LOGIN ── */
+#screen-login{display:flex;align-items:center;justify-content:center;min-height:90vh}
+.login-card{
+  background:var(--surf);border:1px solid var(--bord);border-radius:24px;
+  padding:44px 48px;width:100%;max-width:420px;
+  backdrop-filter:blur(16px);
+  box-shadow:0 0 0 1px rgba(135,202,195,.04),0 32px 64px rgba(0,0,0,.35);
+  animation:su .4s ease forwards;
+}
+.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--ga),var(--gb));border-radius:24px 24px 0 0}
+.login-card{position:relative;overflow:hidden}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
+.logo svg{width:36px;height:36px}
+.logo-text{font-family:'Bree Serif',serif;font-size:22px;color:var(--sapp)}
+.logo-badge{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);background:rgba(172,180,220,.1);border:1px solid var(--bord);border-radius:6px;padding:2px 7px;margin-left:2px}
+.card-title{font-family:'Bree Serif',serif;font-size:19px;color:var(--sapp);text-align:center;margin-bottom:6px}
+.card-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+
+/* ── FORM FIELDS ── */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.4px;margin-bottom:6px;text-transform:uppercase}
+.field input,.field select,.field textarea{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bord);
+  border-radius:10px;padding:11px 14px;font-family:'Nunito',sans-serif;
+  font-size:14px;color:var(--sapp);outline:none;transition:border-color .2s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(135,202,195,.45)}
+.field select option{background:#2a2a45;color:var(--sapp)}
+.field textarea{resize:vertical;min-height:72px}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 20px;border-radius:10px;font-family:'Nunito',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;border:none;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--ga),var(--gb));color:#1d1d30;
+}
+.btn-primary.full{width:100%;}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+.btn-primary:active{transform:none}
+.btn-ghost{background:rgba(255,255,255,.04);border:1px solid var(--bord);color:var(--sapp)}
+.btn-ghost:hover{background:rgba(255,255,255,.07)}
+.btn-danger{background:rgba(244,127,164,.1);border:1px solid rgba(244,127,164,.25);color:var(--err)}
+.btn-danger:hover{background:rgba(244,127,164,.18)}
+.btn-sm{padding:7px 14px;font-size:12px;border-radius:8px}
+.btn-icon{width:34px;height:34px;padding:0;border-radius:8px}
+
+/* ── SCREEN MAIN ── */
+#screen-main,#screen-form{display:none}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.topbar-logo svg{width:28px;height:28px}
+.topbar-title{font-family:'Bree Serif',serif;font-size:18px}
+.topbar-actions{display:flex;gap:10px;align-items:center}
+
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.page-title{font-family:'Bree Serif',serif;font-size:22px}
+
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--bord);text-align:left;white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid rgba(172,180,220,.07);vertical-align:middle}
+tr:hover td{background:rgba(255,255,255,.015)}
+.empty-row td{text-align:center;color:var(--muted);padding:40px}
+
+/* ── STATUS BADGE ── */
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.4px;padding:3px 10px;border-radius:6px;text-transform:uppercase}
+.badge-draft{background:rgba(172,180,220,.1);color:var(--wisp);border:1px solid rgba(172,180,220,.2)}
+.badge-sent{background:rgba(116,235,213,.1);color:var(--merc);border:1px solid rgba(116,235,213,.2)}
+.badge-accepted{background:rgba(116,235,213,.15);color:#74ebd5;border:1px solid rgba(116,235,213,.3)}
+.badge-expired{background:rgba(244,127,164,.1);color:var(--err);border:1px solid rgba(244,127,164,.2)}
+.badge-paid{background:rgba(116,235,213,.2);color:#74ebd5;border:1px solid rgba(116,235,213,.4)}
+
+/* ── FORM SCREEN ── */
+.form-card{
+  background:var(--surf);border:1px solid var(--bord);border-radius:20px;
+  padding:32px 36px;backdrop-filter:blur(16px);
+  box-shadow:0 0 0 1px rgba(135,202,195,.04),0 24px 48px rgba(0,0,0,.3);
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-row.three{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:600px){.form-row,.form-row.three{grid-template-columns:1fr}}
+
+.section-title{font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--bord)}
+
+/* ── ITEMS TABLE ── */
+.items-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:10px}
+.items-table th{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--bord);text-align:left}
+.items-table td{padding:5px 4px;vertical-align:middle}
+.items-table input,.items-table select{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bord);
+  border-radius:8px;padding:7px 10px;font-family:'Nunito',sans-serif;
+  font-size:13px;color:var(--sapp);outline:none;
+}
+.items-table input:focus,.items-table select:focus{border-color:rgba(135,202,195,.4)}
+.items-table select option{background:#2a2a45}
+.items-table .col-type{width:130px}
+.items-table .col-desc{min-width:200px}
+.items-table .col-qty{width:70px}
+.items-table .col-price{width:100px}
+.items-table .col-billing{width:120px}
+.items-table .col-sub{width:90px;text-align:right}
+.items-table .col-del{width:36px;text-align:center}
+.subtotal-cell{font-weight:700;color:var(--merc);text-align:right;padding-right:8px}
+
+/* ── TOTALS BOX ── */
+.totals-box{
+  background:rgba(255,255,255,.03);border:1px solid var(--bord);
+  border-radius:12px;padding:16px 20px;margin-top:16px;
+  display:flex;gap:32px;flex-wrap:wrap;
+}
+.totals-item{display:flex;flex-direction:column;gap:3px}
+.totals-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.totals-value{font-size:20px;font-weight:800;color:var(--merc)}
+.totals-value.once{color:var(--wisp)}
+.totals-sub{font-size:11px;color:var(--muted);margin-top:1px}
+
+/* ── DISCOUNT TOGGLE ── */
+.discount-row{display:flex;align-items:flex-end;gap:12px}
+.discount-type-toggle{display:flex;border:1px solid var(--bord);border-radius:8px;overflow:hidden}
+.discount-type-toggle button{
+  padding:10px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;
+  border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s;
+}
+.discount-type-toggle button.active{background:rgba(135,202,195,.15);color:var(--merc)}
+
+/* ── LINK BOX ── */
+.link-box{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(116,235,213,.05);border:1px solid rgba(116,235,213,.15);
+  border-radius:10px;padding:12px 16px;margin-top:20px;
+}
+.link-url{flex:1;font-size:12px;color:var(--merc);word-break:break-all;font-weight:600}
+
+/* ── ANIMATIONS ── */
+@keyframes fd{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes su{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin .8s linear infinite;display:inline-block}
+
+.spinner{
+  width:18px;height:18px;border:2px solid rgba(135,202,195,.3);
+  border-top-color:var(--merc);border-radius:50%;animation:spin .7s linear infinite;
+}
+
+/* ── PLAN PRICES ── */
+.plan-price-hint{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* ── SUCCESS SCREEN ── */
+.success-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:62vh;text-align:center;padding:48px 16px;animation:fd .35s ease}
+.success-icon{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,#74ebd5,#acb6e5);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 24px;color:#fff;font-weight:700}
+.success-title{font-size:28px;font-weight:700;color:var(--text);margin-bottom:8px}
+.success-sub{color:var(--muted);font-size:15px;margin-bottom:32px;max-width:460px}
+.success-link-block{background:var(--card);border:1.5px solid var(--merc);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;width:100%;max-width:600px;margin:0 auto 32px}
+.success-link-block .link-url{flex:1;font-size:13px;color:var(--merc);word-break:break-all;text-align:left}
+.success-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+</style>
+</head>
+<body>
+
+<div class="bc bc1"></div>
+<div class="bc bc2"></div>
+
+<!-- ═══════════════ LOGIN ═══════════════ -->
+<div id="screen-login">
+  <div class="login-card">
+    <div class="logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" rx="10" fill="url(#lg)"/>
+        <path d="M11 14h18M11 20h12M11 26h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#74ebd5"/><stop offset="1" stop-color="#acb6e5"/></linearGradient></defs>
+      </svg>
+      <span class="logo-text">FalaApp</span>
+      <span class="logo-badge">Admin</span>
+    </div>
+    <div class="card-title">Acesso administrativo</div>
+    <div class="card-sub">Use suas credenciais FalaApp</div>
+    <form id="form-login">
+      <div class="field"><label>E-mail</label><input type="email" id="login-email" autocomplete="email" required placeholder="admin@empresa.com"></div>
+      <div class="field"><label>Senha</label><input type="password" id="login-pass" autocomplete="current-password" required placeholder="••••••••"></div>
+      <button type="submit" class="btn btn-primary full" id="btn-login">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════ LISTAGEM ═══════════════ -->
+<div id="screen-main" class="wrap">
+  <div class="topbar">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+        <rect width="40" height="40" rx="10" fill="url(#lg2)"/>
+        <path d="M11 14h18M11 20h12M11 26h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="lg2" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#74ebd5"/><stop offset="1" stop-color="#acb6e5"/></linearGradient></defs>
+      </svg>
+      <span class="topbar-title">FalaApp</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="page-header">
+    <div class="page-title">Orçamentos</div>
+    <button class="btn btn-primary btn-sm" onclick="openForm()">+ Novo orçamento</button>
+  </div>
+
+  <div class="table-wrap">
+    <table id="quotes-table">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Cliente</th>
+          <th>Recorrente / mês</th>
+          <th>1ª Fatura</th>
+          <th>Status</th>
+          <th>Validade</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="quotes-tbody">
+        <tr class="empty-row"><td colspan="7"><div class="spinner" style="margin:0 auto"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════ FORMULÁRIO ═══════════════ -->
+<div id="screen-form" class="wrap">
+  <div class="topbar">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+        <rect width="40" height="40" rx="10" fill="url(#lg3)"/>
+        <path d="M11 14h18M11 20h12M11 26h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="lg3" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#74ebd5"/><stop offset="1" stop-color="#acb6e5"/></linearGradient></defs>
+      </svg>
+      <span class="topbar-title">FalaApp</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="showMain()">← Voltar</button>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="page-header">
+    <div class="page-title" id="form-page-title">Novo orçamento</div>
+  </div>
+
+  <div class="form-card">
+    <form id="quote-form">
+      <input type="hidden" id="edit-id">
+
+      <div class="section-title">Identificação</div>
+      <div class="form-row">
+        <div class="field" style="grid-column:1/-1"><label>Título do orçamento</label><input type="text" id="f-title" required placeholder="Ex: Proposta Comercial – Empresa XYZ"></div>
+      </div>
+
+      <div class="section-title">Cliente</div>
+      <div class="form-row three">
+        <div class="field"><label>Nome completo</label><input type="text" id="f-client-name" required placeholder="João Silva"></div>
+        <div class="field"><label>E-mail</label><input type="email" id="f-client-email" placeholder="joao@empresa.com"></div>
+        <div class="field"><label>Telefone / WhatsApp</label><input type="text" id="f-client-phone" placeholder="(11) 99999-9999"></div>
+      </div>
+
+      <div class="section-title">Itens do orçamento</div>
+      <div style="overflow-x:auto">
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th class="col-type">Tipo</th>
+              <th class="col-desc">Descrição</th>
+              <th class="col-qty">Qtd</th>
+              <th class="col-price">Valor unit.</th>
+              <th class="col-billing">Cobrança</th>
+              <th class="col-sub">Subtotal</th>
+              <th class="col-del"></th>
+            </tr>
+          </thead>
+          <tbody id="items-tbody"></tbody>
+        </table>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="addItem()" style="margin-top:4px">+ Adicionar item</button>
+
+      <div class="section-title">Desconto</div>
+      <div class="discount-row">
+        <div>
+          <div class="discount-type-toggle">
+            <button type="button" id="disc-fixed-btn" class="active" onclick="setDiscountType('fixed')">R$</button>
+            <button type="button" id="disc-pct-btn" onclick="setDiscountType('percent')">%</button>
+          </div>
+        </div>
+        <div class="field" style="margin:0;flex:0 0 160px">
+          <label>Valor do desconto</label>
+          <input type="number" id="f-discount-value" min="0" step="0.01" placeholder="0" oninput="recalcTotals()">
+        </div>
+        <div class="field" style="margin:0;flex:1">
+          <label>Aplicar desconto</label>
+          <div class="discount-type-toggle">
+            <button type="button" id="disc-first-btn" class="active" onclick="setDiscountScope('first_only')" title="Desconto só na 1ª fatura; mensalidade segue o valor cheio">Somente 1ª fatura</button>
+            <button type="button" id="disc-perm-btn" onclick="setDiscountScope('permanent')" title="Desconto reduz a mensalidade permanentemente">Permanente</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="totals-box">
+        <div class="totals-item">
+          <span class="totals-label">1ª Fatura</span>
+          <span class="totals-value once" id="total-first">R$ 0,00</span>
+          <span class="totals-sub" id="total-first-sub"></span>
+        </div>
+        <div class="totals-item">
+          <span class="totals-label">A partir do 2º mês</span>
+          <span class="totals-value" id="total-recurring">R$ 0,00/mês</span>
+        </div>
+      </div>
+
+      <div class="section-title">Detalhes adicionais</div>
+      <div class="form-row">
+        <div class="field"><label>Validade da proposta</label><input type="date" id="f-valid-until"></div>
+        <div class="field"><label>Observações</label><textarea id="f-notes" placeholder="Condições especiais, detalhes técnicos..."></textarea></div>
+      </div>
+
+      <div id="link-box" class="link-box" style="display:none">
+        <span class="link-url" id="link-url"></span>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="copyLink()">Copiar link</button>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-top:24px;justify-content:flex-end">
+        <button type="button" class="btn btn-ghost" onclick="showMain()">← Orçamentos</button>
+        <button type="submit" class="btn btn-primary" id="btn-save" style="width:auto;padding:12px 32px">Salvar orçamento</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════ SUCESSO ═══════════════ -->
+<div id="screen-success" class="wrap" style="display:none">
+  <div class="topbar">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+        <rect width="40" height="40" rx="10" fill="url(#lg4)"/>
+        <path d="M11 14h18M11 20h12M11 26h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="lg4" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#74ebd5"/><stop offset="1" stop-color="#acb6e5"/></linearGradient></defs>
+      </svg>
+      <span class="topbar-title">FalaApp</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="showMain()">← Orçamentos</button>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sair</button>
+    </div>
+  </div>
+  <div class="success-screen">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Proposta criada!</div>
+    <div class="success-sub">Envie o link abaixo para o cliente abrir a proposta e finalizar a contratação.</div>
+    <div class="success-link-block">
+      <span class="link-url" id="success-url"></span>
+      <button class="btn btn-ghost btn-sm" onclick="copySuccessLink()">Copiar</button>
+    </div>
+    <div class="success-btns">
+      <a id="success-whatsapp" href="#" target="_blank" class="btn btn-primary">Enviar no WhatsApp</a>
+      <button class="btn btn-ghost" onclick="editSuccessQuote()">Editar proposta</button>
+      <button class="btn btn-ghost" onclick="showMain()">← Ver todos os orçamentos</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Masks ──────────────────────────────────────────────────────────────────
+function maskPhone(e) {
+  let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+  if (v.length <= 10) v = v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{4})(\d)/, '$1-$2');
+  else               v = v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2');
+  e.target.value = v;
+}
+
+function maskCurrency(e) {
+  let v = e.target.value.replace(/[^\d,\.]/g, '');
+  e.target.value = v;
+}
+
+function addFieldError(id, msg) {
+  removeFieldError(id);
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.borderColor = 'rgba(244,127,164,.6)';
+  const err = document.createElement('div');
+  err.id = `err-${id}`;
+  err.style.cssText = 'font-size:11px;color:#f47fa4;margin-top:4px;font-weight:600';
+  err.textContent = msg;
+  el.parentNode.appendChild(err);
+}
+
+function removeFieldError(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.borderColor = '';
+  document.getElementById(`err-${id}`)?.remove();
+}
+
+function clearAllErrors() {
+  document.querySelectorAll('[id^="err-"]').forEach(e => e.remove());
+  document.querySelectorAll('.field input, .field select, .field textarea').forEach(e => e.style.borderColor = '');
+}
+
+// ── Constants ──────────────────────────────────────────────────────────────
+const PLAN_PRICES = { small: 247, smart: 447, scale: 747 };
+const PLAN_LABELS = { small: 'Small', smart: 'Smart', scale: 'Scale' };
+let discountType = 'fixed';
+let discountScope = 'first_only';
+let currentQuoteToken = null;
+let notyf;
+
+window.addEventListener('DOMContentLoaded', () => {
+  notyf = new Notyf({ duration: 3500, position: { x: 'right', y: 'top' } });
+  document.getElementById('f-client-phone').addEventListener('input', maskPhone);
+  checkAuth();
+});
+
+// ── Auth ───────────────────────────────────────────────────────────────────
+async function checkAuth() {
+  try {
+    const r = await fetch('/api/admin/quotes');
+    if (r.status === 401 || r.status === 403) { showScreen('login'); return; }
+    showScreen('main');
+    loadQuotes();
+  } catch { showScreen('login'); }
+}
+
+document.getElementById('form-login').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('btn-login');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin">↻</span> Entrando...';
+  try {
+    const r = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: document.getElementById('login-email').value,
+        password: document.getElementById('login-pass').value,
+      }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Credenciais inválidas');
+    showScreen('main');
+    loadQuotes();
+  } catch (err) {
+    notyf.error(err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Entrar';
+  }
+});
+
+async function logout() {
+  await fetch('/api/admin/logout', { method: 'POST' });
+  showScreen('login');
+}
+
+// ── Navigation ─────────────────────────────────────────────────────────────
+function showScreen(name) {
+  document.getElementById('screen-login').style.display = name === 'login' ? 'flex' : 'none';
+  document.getElementById('screen-main').style.display = name === 'main' ? 'block' : 'none';
+  document.getElementById('screen-form').style.display = name === 'form' ? 'block' : 'none';
+  document.getElementById('screen-success').style.display = name === 'success' ? 'block' : 'none';
+}
+
+function showMain() { showScreen('main'); loadQuotes(); }
+
+let successQuoteId = null;
+
+function showSuccess(quote) {
+  successQuoteId = quote.id;
+  const url = `${location.origin}/orcamento/${quote.token}`;
+  document.getElementById('success-url').textContent = url;
+  const phone = (quote.clientPhone || '').replace(/\D/g, '');
+  const waText = encodeURIComponent(`Olá${quote.clientName ? ', ' + quote.clientName : ''}! Segue sua proposta FalaApp:\n${url}`);
+  const waHref = phone ? `https://wa.me/55${phone}?text=${waText}` : `https://wa.me/?text=${waText}`;
+  document.getElementById('success-whatsapp').href = waHref;
+  showScreen('success');
+}
+
+function copySuccessLink() {
+  const url = document.getElementById('success-url').textContent;
+  navigator.clipboard.writeText(url).then(() => notyf.success('Link copiado!')).catch(() => notyf.error('Erro ao copiar'));
+}
+
+function editSuccessQuote() {
+  if (successQuoteId) editQuote(successQuoteId);
+}
+
+// ── Quotes list ────────────────────────────────────────────────────────────
+async function loadQuotes() {
+  const tbody = document.getElementById('quotes-tbody');
+  tbody.innerHTML = '<tr class="empty-row"><td colspan="7"><div class="spinner" style="margin:0 auto"></div></td></tr>';
+  try {
+    const r = await fetch('/api/admin/quotes');
+    const d = await r.json();
+    const quotes = d.data || [];
+    if (!quotes.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Nenhum orçamento criado ainda.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = quotes.map(q => {
+      const gross = (q.recurringTotal || 0) + (q.onceTotal || 0);
+      const scope = q.discount?.scope ?? 'first_only';
+      const discAmt = (scope === 'first_only' && q.discount?.value > 0)
+        ? Math.min(gross, q.discount.type === 'percent' ? gross * q.discount.value / 100 : q.discount.value)
+        : 0;
+      const firstTotal = Math.max(0, gross - discAmt);
+      return `
+      <tr>
+        <td><strong>${esc(q.title)}</strong></td>
+        <td>${esc(q.clientName)}</td>
+        <td style="font-weight:700;color:#74ebd5">R$ ${fmt(q.recurringTotal)}</td>
+        <td style="color:#acb4dc">R$ ${fmt(firstTotal)}</td>
+        <td><span class="badge badge-${q.status.toLowerCase()}">${statusLabel(q.status)}</span></td>
+        <td style="font-size:12px;color:var(--muted)">${q.validUntil ? new Date(q.validUntil).toLocaleDateString('pt-BR') : '—'}</td>
+        <td>
+          <div style="display:flex;gap:6px;justify-content:flex-end">
+            <button class="btn btn-ghost btn-sm btn-icon" title="Copiar link" onclick="copyQuoteLink('${q.token}')">🔗</button>
+            <button class="btn btn-ghost btn-sm" onclick="editQuote('${q.id}')">Editar</button>
+            <button class="btn btn-danger btn-sm btn-icon" onclick="deleteQuote('${q.id}',this)">✕</button>
+          </div>
+        </td>
+      </tr>
+    `; }).join('');
+  } catch { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Erro ao carregar orçamentos.</td></tr>'; }
+}
+
+function statusLabel(s) {
+  return { DRAFT:'Rascunho', SENT:'Enviado', ACCEPTED:'Aceito', EXPIRED:'Expirado', PAID:'Pago' }[s] || s;
+}
+
+function copyQuoteLink(token) {
+  const url = `${location.origin}/orcamento/${token}`;
+  navigator.clipboard.writeText(url).then(() => notyf.success('Link copiado!')).catch(() => notyf.error('Erro ao copiar'));
+}
+
+async function deleteQuote(id, btn) {
+  if (btn.dataset.confirm !== '1') {
+    btn.dataset.confirm = '1';
+    btn.textContent = 'Confirmar?';
+    btn.style.cssText += ';background:#c0392b;color:#fff;min-width:90px';
+    setTimeout(() => {
+      if (btn.dataset.confirm === '1') {
+        btn.dataset.confirm = '';
+        btn.textContent = '✕';
+        btn.style.cssText = '';
+      }
+    }, 3000);
+    return;
+  }
+  btn.disabled = true;
+  const r = await fetch(`/api/admin/quotes/${id}`, { method: 'DELETE' });
+  if (r.ok) { notyf.success('Orçamento removido'); loadQuotes(); }
+  else { notyf.error('Erro ao remover'); btn.disabled = false; }
+}
+
+async function editQuote(id) {
+  const r = await fetch(`/api/admin/quotes/${id}`);
+  if (!r.ok) { notyf.error('Não encontrado'); return; }
+  const body = await r.json();
+  const q = body.data ?? body;
+  if (!q) { notyf.error('Não encontrado'); return; }
+  openForm(q);
+}
+
+// ── Form ───────────────────────────────────────────────────────────────────
+function openForm(q = null) {
+  resetForm();
+  document.getElementById('form-page-title').textContent = q ? 'Editar orçamento' : 'Novo orçamento';
+  document.getElementById('link-box').style.display = 'none';
+  currentQuoteToken = null;
+
+  if (q) {
+    document.getElementById('edit-id').value = q.id || '';
+    document.getElementById('f-title').value = q.title || '';
+    document.getElementById('f-client-name').value = q.clientName || '';
+    document.getElementById('f-client-email').value = q.clientEmail || '';
+    document.getElementById('f-client-phone').value = q.clientPhone || '';
+    document.getElementById('f-notes').value = q.notes || '';
+    if (q.validUntil) document.getElementById('f-valid-until').value = q.validUntil.slice(0, 10);
+    if (q.discount) {
+      discountType = q.discount.type || 'fixed';
+      discountScope = q.discount.scope || 'first_only';
+      document.getElementById('f-discount-value').value = q.discount.value || 0;
+      updateDiscountToggle();
+    }
+    if (q.token) {
+      currentQuoteToken = q.token;
+      showLinkBox(q.token);
+    }
+    const items = Array.isArray(q.items) ? q.items : [];
+    items.forEach(item => addItem(item));
+  } else {
+    addItem();
+  }
+
+  recalcTotals();
+  showScreen('form');
+}
+
+function resetForm() {
+  clearAllErrors();
+  document.getElementById('edit-id').value = '';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-client-name').value = '';
+  document.getElementById('f-client-email').value = '';
+  document.getElementById('f-client-phone').value = '';
+  document.getElementById('f-notes').value = '';
+  document.getElementById('f-valid-until').value = '';
+  document.getElementById('f-discount-value').value = '';
+  document.getElementById('items-tbody').innerHTML = '';
+  discountType = 'fixed';
+  discountScope = 'first_only';
+  updateDiscountToggle();
+}
+
+// ── Items ──────────────────────────────────────────────────────────────────
+let itemCount = 0;
+
+function addItem(data = null) {
+  const id = ++itemCount;
+  const tbody = document.getElementById('items-tbody');
+  const tr = document.createElement('tr');
+  tr.id = `item-${id}`;
+
+  const type = data?.type || 'plan';
+  const planId = data?.planId || 'smart';
+  const desc = data?.description || (type === 'plan' ? `Plano ${PLAN_LABELS[planId] || ''} (1 assistente)` : '');
+  const qty = data?.quantity ?? 1;
+  const price = data?.unitPrice ?? (type === 'plan' ? PLAN_PRICES[planId] : 0);
+  const billing = data?.billing || 'recurring';
+
+  tr.innerHTML = `
+    <td class="col-type">
+      <select onchange="onTypeChange(${id})" id="item-type-${id}">
+        <option value="plan" ${type==='plan'?'selected':''}>Plano</option>
+        <option value="service" ${type==='service'?'selected':''}>Serviço</option>
+      </select>
+    </td>
+    <td class="col-desc">
+      <select onchange="onPlanChange(${id})" id="item-plan-${id}" ${type!=='plan'?'style="display:none"':''}>
+        <option value="small" ${planId==='small'?'selected':''}>Small</option>
+        <option value="smart" ${planId==='smart'?'selected':''}>Smart</option>
+        <option value="scale" ${planId==='scale'?'selected':''}>Scale</option>
+      </select>
+      <input type="text" id="item-desc-${id}" value="${esc(desc)}" placeholder="Descrição do serviço" oninput="recalcTotals()" ${type==='plan'?'style="display:none"':''}>
+    </td>
+    <td class="col-qty">
+      <input type="number" id="item-qty-${id}" value="${qty}" min="1" step="1"
+        title="${type==='plan'?'Número de assistentes':''}"
+        oninput="recalcTotals()">
+    </td>
+    <td class="col-price">
+      <input type="number" id="item-price-${id}" value="${price}" min="0" step="0.01" oninput="recalcTotals()">
+    </td>
+    <td class="col-billing">
+      <select id="item-billing-${id}" onchange="recalcTotals()">
+        <option value="recurring" ${billing==='recurring'?'selected':''}>Mensal</option>
+        <option value="once" ${billing==='once'?'selected':''}>Avulso (1x)</option>
+      </select>
+    </td>
+    <td class="subtotal-cell" id="item-sub-${id}">R$ 0,00</td>
+    <td class="col-del">
+      <button type="button" class="btn btn-danger btn-sm btn-icon" onclick="removeItem(${id})">✕</button>
+    </td>
+  `;
+  tbody.appendChild(tr);
+
+  // Set description for plan type
+  if (type === 'plan') {
+    document.getElementById(`item-desc-${id}`).value = `Plano ${PLAN_LABELS[planId]} (1 assistente)`;
+  }
+
+  recalcTotals();
+}
+
+function onTypeChange(id) {
+  const type = document.getElementById(`item-type-${id}`).value;
+  document.getElementById(`item-plan-${id}`).style.display = type === 'plan' ? '' : 'none';
+  document.getElementById(`item-desc-${id}`).style.display = type === 'plan' ? 'none' : '';
+  if (type === 'plan') {
+    const planId = document.getElementById(`item-plan-${id}`).value;
+    document.getElementById(`item-price-${id}`).value = PLAN_PRICES[planId];
+    document.getElementById(`item-desc-${id}`).value = `Plano ${PLAN_LABELS[planId]} (1 assistente)`;
+    document.getElementById(`item-qty-${id}`).title = 'Número de assistentes';
+    document.getElementById(`item-billing-${id}`).value = 'recurring';
+  } else {
+    document.getElementById(`item-qty-${id}`).title = '';
+  }
+  recalcTotals();
+}
+
+function onPlanChange(id) {
+  const planId = document.getElementById(`item-plan-${id}`).value;
+  document.getElementById(`item-price-${id}`).value = PLAN_PRICES[planId];
+  document.getElementById(`item-desc-${id}`).value = `Plano ${PLAN_LABELS[planId]} (1 assistente)`;
+  recalcTotals();
+}
+
+function removeItem(id) {
+  document.getElementById(`item-${id}`)?.remove();
+  recalcTotals();
+}
+
+function getItems() {
+  const rows = document.querySelectorAll('#items-tbody tr');
+  return Array.from(rows).map(tr => {
+    const id = tr.id.replace('item-', '');
+    const type = document.getElementById(`item-type-${id}`)?.value;
+    const planId = document.getElementById(`item-plan-${id}`)?.value;
+    const desc = type === 'plan'
+      ? document.getElementById(`item-desc-${id}`)?.value
+      : document.getElementById(`item-desc-${id}`)?.value;
+    const qty = parseFloat(document.getElementById(`item-qty-${id}`)?.value) || 1;
+    const price = parseFloat(document.getElementById(`item-price-${id}`)?.value) || 0;
+    const billing = document.getElementById(`item-billing-${id}`)?.value;
+    return { type, planId: type === 'plan' ? planId : undefined, description: desc, quantity: qty, unitPrice: price, billing };
+  }).filter(i => i.description);
+}
+
+// ── Totals ─────────────────────────────────────────────────────────────────
+function recalcTotals() {
+  const items = getItems();
+  const discVal = parseFloat(document.getElementById('f-discount-value').value) || 0;
+
+  const rows = document.querySelectorAll('#items-tbody tr');
+  rows.forEach(tr => {
+    const id = tr.id.replace('item-', '');
+    const qty = parseFloat(document.getElementById(`item-qty-${id}`)?.value) || 0;
+    const price = parseFloat(document.getElementById(`item-price-${id}`)?.value) || 0;
+    const sub = document.getElementById(`item-sub-${id}`);
+    if (sub) sub.textContent = `R$ ${fmt(qty * price)}`;
+  });
+
+  const recurringGross = items.filter(i => i.billing === 'recurring').reduce((s, i) => s + i.quantity * i.unitPrice, 0);
+  const onceGross = items.filter(i => i.billing === 'once').reduce((s, i) => s + i.quantity * i.unitPrice, 0);
+  const gross = recurringGross + onceGross;
+
+  let discAmt = discountType === 'percent' ? (gross * discVal / 100) : discVal;
+  discAmt = Math.min(discAmt, gross);
+
+  let firstTotal, recurringDisplay;
+  if (discountScope === 'permanent') {
+    // Permanent: discount splits proportionally, reducing the monthly rate forever
+    const recurringTotal = gross > 0 ? Math.max(0, recurringGross - discAmt * (recurringGross / gross)) : recurringGross;
+    const onceTotal = gross > 0 ? Math.max(0, onceGross - discAmt * (onceGross / gross)) : onceGross;
+    firstTotal = recurringTotal + onceTotal;
+    recurringDisplay = recurringTotal;
+  } else {
+    // First only: discount reduces 1ª fatura; monthly rate unchanged
+    firstTotal = Math.max(0, gross - discAmt);
+    recurringDisplay = recurringGross;
+  }
+
+  const hasOnce = onceGross > 0;
+  document.getElementById('total-first').textContent = `R$ ${fmt(firstTotal)}`;
+  document.getElementById('total-first-sub').textContent = hasOnce ? `1 mensalidade + avulsos` : '1 mensalidade';
+  document.getElementById('total-recurring').textContent = `R$ ${fmt(recurringDisplay)}/mês`;
+}
+
+function setDiscountType(t) {
+  discountType = t;
+  updateDiscountToggle();
+  recalcTotals();
+}
+
+function setDiscountScope(s) {
+  discountScope = s;
+  updateDiscountToggle();
+  recalcTotals();
+}
+
+function updateDiscountToggle() {
+  document.getElementById('disc-fixed-btn').classList.toggle('active', discountType === 'fixed');
+  document.getElementById('disc-pct-btn').classList.toggle('active', discountType === 'percent');
+  document.getElementById('disc-first-btn').classList.toggle('active', discountScope === 'first_only');
+  document.getElementById('disc-perm-btn').classList.toggle('active', discountScope === 'permanent');
+}
+
+// ── Save ───────────────────────────────────────────────────────────────────
+document.getElementById('quote-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearAllErrors();
+
+  const btn = document.getElementById('btn-save');
+  let valid = true;
+
+  const title = document.getElementById('f-title').value.trim();
+  const clientName = document.getElementById('f-client-name').value.trim();
+  const clientEmail = document.getElementById('f-client-email').value.trim();
+  const clientPhone = document.getElementById('f-client-phone').value.replace(/\D/g, '');
+
+  if (!title) { addFieldError('f-title', 'Título obrigatório'); valid = false; }
+  if (!clientName) { addFieldError('f-client-name', 'Nome do cliente obrigatório'); valid = false; }
+  if (clientEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) {
+    addFieldError('f-client-email', 'E-mail inválido'); valid = false;
+  }
+  if (clientPhone && clientPhone.length < 10) {
+    addFieldError('f-client-phone', 'Telefone inválido (mín. 10 dígitos)'); valid = false;
+  }
+
+  const items = getItems();
+  if (!items.length) { notyf.error('Adicione pelo menos um item'); valid = false; }
+
+  if (!valid) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Salvando...';
+
+  const discVal = parseFloat(document.getElementById('f-discount-value').value) || 0;
+  const payload = {
+    title,
+    clientName,
+    clientEmail: clientEmail || undefined,
+    clientPhone: clientPhone ? clientPhone : undefined,
+    items,
+    discount: discVal > 0 ? { type: discountType, value: discVal, scope: discountScope } : undefined,
+    notes: document.getElementById('f-notes').value.trim() || undefined,
+    validUntil: document.getElementById('f-valid-until').value || undefined,
+  };
+
+  const editId = document.getElementById('edit-id').value;
+  const method = editId ? 'PATCH' : 'POST';
+  const url = editId ? `/api/admin/quotes/${editId}` : '/api/admin/quotes';
+
+  try {
+    const r = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.message || d.error || 'Erro ao salvar');
+    const quote = d.data;
+    if (editId) {
+      notyf.success('Orçamento atualizado!');
+      setTimeout(showMain, 1500);
+    } else {
+      showSuccess(quote);
+    }
+  } catch (err) {
+    notyf.error(err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Salvar orçamento';
+  }
+});
+
+function showLinkBox(token) {
+  if (!token) return;
+  const url = `${location.origin}/orcamento/${token}`;
+  document.getElementById('link-url').textContent = url;
+  document.getElementById('link-box').style.display = 'flex';
+}
+
+function copyLink() {
+  const url = document.getElementById('link-url').textContent;
+  navigator.clipboard.writeText(url).then(() => notyf.success('Link copiado!')).catch(() => notyf.error('Erro ao copiar'));
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function fmt(n) {
+  return (Math.round(n * 100) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

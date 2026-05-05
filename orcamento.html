@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+<title>FalaApp · Proposta Comercial</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<style>
+:root{
+  --mid:#24243d;--mid2:#1d1d30;
+  --merc:#87cac3;--wisp:#acb4dc;--sapp:#c5f3f6;
+  --ga:#74ebd5;--gb:#acb6e5;
+  --bord:rgba(172,180,220,.15);--surf:rgba(255,255,255,.035);
+  --muted:rgba(197,243,246,.45);--err:#f47fa4;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--mid);color:var(--sapp);
+  font-family:'Nunito',sans-serif;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:48px 20px 80px;overflow-x:hidden;position:relative;
+}
+.bc{position:fixed;pointer-events:none;border-radius:50%;border:1px solid}
+.bc1{width:600px;height:600px;top:-220px;right:-220px;border-color:rgba(116,235,213,.06)}
+.bc2{width:480px;height:480px;bottom:-180px;left:-180px;border-color:rgba(172,182,229,.05)}
+.bg{position:fixed;pointer-events:none;border-radius:50%}
+.bga{width:500px;height:500px;top:-80px;right:-80px;background:radial-gradient(circle,rgba(116,235,213,.055) 0,transparent 65%)}
+.bgb{width:400px;height:400px;bottom:-60px;left:-80px;background:radial-gradient(circle,rgba(172,182,229,.045) 0,transparent 65%)}
+
+.wrap{position:relative;z-index:1;width:100%;max-width:640px}
+
+/* ── Logo ── */
+.logo-wrap{display:flex;align-items:center;gap:10px;margin-bottom:32px;opacity:0;animation:fd .4s ease .05s forwards;justify-content:center}
+.logo-wrap svg{width:34px;height:34px}
+.logo-text{font-family:'Bree Serif',serif;font-size:20px;color:var(--sapp)}
+
+/* ── Card ── */
+.card{
+  position:relative;z-index:1;
+  background:var(--surf);border:1px solid var(--bord);border-radius:24px;
+  padding:40px 44px;width:100%;
+  backdrop-filter:blur(16px);
+  box-shadow:0 0 0 1px rgba(135,202,195,.04),0 32px 64px rgba(0,0,0,.35);
+  opacity:0;animation:su .45s ease .15s forwards;
+  margin-bottom:20px;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--ga),var(--gb));
+  border-radius:24px 24px 0 0;
+}
+@media(max-width:520px){.card{padding:28px 20px}}
+
+/* ── Header ── */
+.prop-header{margin-bottom:28px}
+.prop-label{font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.prop-title{font-family:'Bree Serif',serif;font-size:26px;color:var(--sapp);line-height:1.2;margin-bottom:10px}
+.prop-client{font-size:15px;color:var(--merc);font-weight:600}
+.prop-meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:10px}
+.prop-meta-item{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.prop-meta-item strong{color:var(--sapp)}
+
+/* ── Section title ── */
+.section-title{
+  font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;
+  color:var(--muted);margin:28px 0 12px;display:flex;align-items:center;gap:8px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--bord)}
+
+/* ── Items table ── */
+.items-table{width:100%;border-collapse:collapse;font-size:13px}
+.items-table th{
+  font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--bord);text-align:left;
+}
+.items-table th.right,.items-table td.right{text-align:right}
+.items-table td{padding:11px 12px;border-bottom:1px solid rgba(172,180,220,.06);vertical-align:top}
+.items-table tr:last-child td{border-bottom:none}
+.item-desc{font-weight:600;color:var(--sapp)}
+.item-qty{font-size:12px;color:var(--muted);margin-top:2px}
+.item-sub{font-weight:700;color:var(--merc);white-space:nowrap}
+
+/* ── Totals ── */
+.totals-block{
+  background:rgba(255,255,255,.025);border:1px solid var(--bord);
+  border-radius:14px;padding:20px 24px;margin-top:20px;
+  display:flex;gap:0;flex-direction:column;
+}
+.totals-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0}
+.totals-row+.totals-row{border-top:1px solid rgba(172,180,220,.08)}
+.totals-row-label{font-size:13px;color:var(--muted)}
+.totals-row-label strong{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:1px;color:var(--wisp)}
+.totals-row-value{font-size:20px;font-weight:800}
+.totals-row-value.recurring{color:var(--merc)}
+.totals-row-value.once{color:var(--wisp)}
+.totals-row.discount .totals-row-value{font-size:14px;color:var(--err)}
+
+/* ── Notes ── */
+.notes-box{
+  background:rgba(255,255,255,.02);border:1px solid var(--bord);
+  border-radius:12px;padding:16px 18px;margin-top:8px;
+  font-size:13px;color:var(--muted);line-height:1.7;white-space:pre-wrap;
+}
+
+/* ── CTA ── */
+.cta-block{text-align:center;margin-top:32px}
+.btn-cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 40px;border-radius:12px;
+  background:linear-gradient(135deg,var(--ga),var(--gb));
+  color:#1d1d30;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;
+  border:none;cursor:pointer;transition:all .2s;
+  box-shadow:0 8px 24px rgba(116,235,213,.18);
+}
+.btn-cta:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 12px 32px rgba(116,235,213,.25)}
+.btn-cta:active{transform:none}
+.cta-sub{font-size:12px;color:var(--muted);margin-top:10px}
+
+/* ── Status screens ── */
+.status-card{
+  text-align:center;padding:56px 44px;
+  background:var(--surf);border:1px solid var(--bord);border-radius:24px;
+  backdrop-filter:blur(16px);
+  box-shadow:0 0 0 1px rgba(135,202,195,.04),0 32px 64px rgba(0,0,0,.35);
+  opacity:0;animation:su .45s ease .15s forwards;
+}
+.status-icon{font-size:48px;margin-bottom:16px}
+.status-title{font-family:'Bree Serif',serif;font-size:22px;margin-bottom:8px}
+.status-sub{font-size:14px;color:var(--muted);line-height:1.65;max-width:380px;margin:0 auto}
+.payment-links{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+.payment-link-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 24px;border-radius:10px;
+  background:rgba(135,202,195,.1);border:1px solid rgba(135,202,195,.25);
+  color:var(--merc);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;
+  text-decoration:none;transition:all .2s;
+}
+.payment-link-btn:hover{background:rgba(135,202,195,.18)}
+
+/* ── Modal ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;
+  opacity:0;transition:opacity .2s;
+}
+.modal-overlay.open{opacity:1}
+.modal{
+  background:#2a2a45;border:1px solid var(--bord);border-radius:20px;
+  padding:32px 32px 28px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;
+  box-shadow:0 24px 64px rgba(0,0,0,.5);
+  transform:translateY(20px);transition:transform .2s;
+}
+.modal-divider{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);opacity:.6;margin:18px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--bord)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-hint{font-size:10px;color:var(--muted);margin-top:3px}
+.modal-overlay.open .modal{transform:none}
+.modal-title{font-family:'Bree Serif',serif;font-size:19px;margin-bottom:6px}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.4px;margin-bottom:5px;text-transform:uppercase}
+.field input{
+  width:100%;background:rgba(255,255,255,.05);border:1px solid var(--bord);
+  border-radius:9px;padding:10px 13px;font-family:'Nunito',sans-serif;
+  font-size:14px;color:var(--sapp);outline:none;transition:border-color .2s;
+}
+.field input:focus{border-color:rgba(135,202,195,.4)}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:11px 20px;border-radius:9px;font-family:'Nunito',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;border:none;
+}
+.btn-primary{background:linear-gradient(135deg,var(--ga),var(--gb));color:#1d1d30;flex:1}
+.btn-primary:hover{opacity:.9}
+.btn-ghost{background:rgba(255,255,255,.05);border:1px solid var(--bord);color:var(--sapp)}
+.btn-ghost:hover{background:rgba(255,255,255,.09)}
+
+/* ── Loading ── */
+.spinner{
+  width:24px;height:24px;border:2px solid rgba(135,202,195,.3);
+  border-top-color:var(--merc);border-radius:50%;animation:spin .7s linear infinite;margin:60px auto;
+}
+@keyframes fd{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes su{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="bc bc1"></div><div class="bc bc2"></div>
+<div class="bg bga"></div><div class="bg bgb"></div>
+
+<div class="wrap">
+  <div class="logo-wrap">
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="40" height="40" rx="10" fill="url(#lg)"/>
+      <path d="M11 14h18M11 20h12M11 26h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#74ebd5"/><stop offset="1" stop-color="#acb6e5"/></linearGradient></defs>
+    </svg>
+    <span class="logo-text">FalaApp</span>
+  </div>
+
+  <!-- Loading -->
+  <div id="screen-loading"><div class="spinner"></div></div>
+
+  <!-- Error / Not found -->
+  <div id="screen-error" style="display:none">
+    <div class="status-card">
+      <div class="status-icon">🔍</div>
+      <div class="status-title">Proposta não encontrada</div>
+      <div class="status-sub">Este link é inválido ou foi removido.</div>
+    </div>
+  </div>
+
+  <!-- Expired -->
+  <div id="screen-expired" style="display:none">
+    <div class="status-card">
+      <div class="status-icon">⏰</div>
+      <div class="status-title">Proposta expirada</div>
+      <div class="status-sub">O prazo de validade desta proposta foi encerrado. Entre em contato para renovar.</div>
+    </div>
+  </div>
+
+  <!-- Already accepted -->
+  <div id="screen-accepted" style="display:none">
+    <div class="status-card">
+      <div class="status-icon">✅</div>
+      <div class="status-title">Proposta aceita!</div>
+      <div class="status-sub">Seu pagamento foi gerado. Acesse os links abaixo para concluir.</div>
+      <div class="payment-links" id="accepted-links"></div>
+    </div>
+  </div>
+
+  <!-- Quote -->
+  <div id="screen-quote" style="display:none">
+    <div class="card">
+      <div class="prop-header">
+        <div class="prop-label">Proposta comercial</div>
+        <div class="prop-title" id="q-title"></div>
+        <div class="prop-client" id="q-client"></div>
+        <div class="prop-meta">
+          <div class="prop-meta-item" id="q-valid-wrap" style="display:none">
+            📅 Válida até <strong id="q-valid"></strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recurring items -->
+      <div id="recurring-section" style="display:none">
+        <div class="section-title">Cobranças mensais recorrentes</div>
+        <table class="items-table">
+          <thead><tr>
+            <th>Descrição</th>
+            <th class="right" style="white-space:nowrap">Qtd</th>
+            <th class="right" style="white-space:nowrap">Valor unit.</th>
+            <th class="right" style="white-space:nowrap">Subtotal</th>
+          </tr></thead>
+          <tbody id="recurring-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Once items -->
+      <div id="once-section" style="display:none">
+        <div class="section-title">Cobranças na primeira fatura</div>
+        <table class="items-table">
+          <thead><tr>
+            <th>Descrição</th>
+            <th class="right" style="white-space:nowrap">Qtd</th>
+            <th class="right" style="white-space:nowrap">Valor unit.</th>
+            <th class="right" style="white-space:nowrap">Subtotal</th>
+          </tr></thead>
+          <tbody id="once-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Totals -->
+      <div class="totals-block">
+        <div id="total-first-row" class="totals-row" style="display:none">
+          <div class="totals-row-label">
+            <strong>1ª Fatura</strong>
+            <span id="total-first-sub">1 mensalidade + avulsos</span>
+          </div>
+          <div class="totals-row-value once" id="t-first"></div>
+        </div>
+        <div id="total-recurring-row" class="totals-row" style="display:none">
+          <div class="totals-row-label">
+            <strong>Mensalidade</strong>
+            A partir do 2º mês
+          </div>
+          <div class="totals-row-value recurring" id="t-recurring"></div>
+        </div>
+        <div id="total-discount-row" class="totals-row discount" style="display:none">
+          <div class="totals-row-label">Desconto aplicado</div>
+          <div class="totals-row-value" id="t-discount"></div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div id="notes-section" style="display:none">
+        <div class="section-title">Observações</div>
+        <div class="notes-box" id="q-notes"></div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-block">
+        <button class="btn-cta" onclick="openModal()">
+          🤝 Contratar agora
+        </button>
+        <div class="cta-sub">Ao clicar, você será direcionado para o pagamento seguro</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MODAL ═══════════ -->
+<div class="modal-overlay" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title">Ativar minha conta</div>
+    <div class="modal-sub" id="modal-sub-values">Confirme seus dados para receber o link de pagamento.</div>
+    <form id="form-accept" onsubmit="submitAccept(event)">
+      <div class="field"><label>Nome completo *</label><input type="text" id="m-name" required placeholder="João Silva" autocomplete="name"></div>
+      <div class="field-row">
+        <div class="field"><label>CPF / CNPJ *</label><input type="text" id="m-cpf" required placeholder="000.000.000-00" inputmode="numeric"></div>
+        <div class="field"><label>WhatsApp *</label><input type="tel" id="m-phone" required placeholder="(11) 99999-9999" autocomplete="tel"><div class="field-hint">Acesso entregue aqui</div></div>
+      </div>
+      <div class="field"><label>E-mail</label><input type="email" id="m-email" placeholder="joao@empresa.com" autocomplete="email"></div>
+
+      <div class="modal-divider">Endereço para faturamento</div>
+
+      <div class="field-row">
+        <div class="field"><label>CEP *</label><input type="text" id="m-cep" required placeholder="00000-000" maxlength="9" inputmode="numeric"><div class="field-hint">Preenche automaticamente</div></div>
+        <div class="field"><label>Estado *</label><input type="text" id="m-state" required placeholder="SP" maxlength="2" style="text-transform:uppercase" autocomplete="address-level1"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Cidade *</label><input type="text" id="m-city" required placeholder="São Paulo" autocomplete="address-level2"></div>
+        <div class="field"><label>Bairro</label><input type="text" id="m-bairro" placeholder="Centro" autocomplete="address-level3"></div>
+      </div>
+      <div class="field-row">
+        <div class="field" style="grid-column:span 2"><label>Logradouro *</label><input type="text" id="m-addr" required placeholder="Rua das Flores" autocomplete="street-address"></div>
+      </div>
+      <div class="field"><label>Número</label><input type="text" id="m-addrnum" placeholder="123"></div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Voltar</button>
+        <button type="submit" class="btn btn-primary" id="btn-accept">Confirmar contratação</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+let quoteData = null;
+let notyf;
+
+window.addEventListener('DOMContentLoaded', () => {
+  notyf = new Notyf({ duration: 4000, position: { x: 'right', y: 'top' } });
+
+  document.getElementById('m-phone').addEventListener('input', function(e) {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length <= 10) v = v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{4})(\d)/, '$1-$2');
+    else                v = v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2');
+    e.target.value = v;
+  });
+
+  document.getElementById('m-cpf').addEventListener('input', function(e) {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 14);
+    if (v.length <= 11) {
+      v = v.replace(/(\d{3})(\d)/, '$1.$2')
+           .replace(/(\d{3})(\d)/, '$1.$2')
+           .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    } else {
+      v = v.replace(/(\d{2})(\d)/, '$1.$2')
+           .replace(/(\d{3})(\d)/, '$1.$2')
+           .replace(/(\d{3})(\d)/, '$1/$2')
+           .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+    }
+    e.target.value = v;
+  });
+
+  document.getElementById('m-cep').addEventListener('input', async function(e) {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 8);
+    e.target.value = v.length > 5 ? v.replace(/(\d{5})(\d)/, '$1-$2') : v;
+    if (v.length === 8) {
+      try {
+        const r = await fetch(`https://viacep.com.br/ws/${v}/json/`);
+        const d = await r.json();
+        if (!d.erro) {
+          document.getElementById('m-addr').value  = d.logradouro || '';
+          document.getElementById('m-bairro').value = d.bairro    || '';
+          document.getElementById('m-city').value   = d.localidade || '';
+          document.getElementById('m-state').value  = d.uf        || '';
+        }
+      } catch (_) {}
+    }
+  });
+
+  const token = location.pathname.split('/').pop();
+  loadQuote(token);
+});
+
+async function loadQuote(token) {
+  try {
+    const r = await fetch(`/api/orcamento/${token}`);
+    if (r.status === 404) { show('error'); return; }
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    quoteData = d.data;
+    renderQuote();
+  } catch { show('error'); }
+}
+
+function renderQuote() {
+  const q = quoteData;
+  if (!q) { show('error'); return; }
+
+  // If already accepted/paid — show subscription link
+  if (q.status === 'ACCEPTED' || q.status === 'PAID') {
+    const links = document.getElementById('accepted-links');
+    if (q.asaasSubscriptionUrl) {
+      links.innerHTML = `<a class="payment-link-btn" href="${esc(q.asaasSubscriptionUrl)}" target="_blank" rel="noopener">💳 Acessar fatura</a>`;
+    } else {
+      links.innerHTML = '<p style="color:var(--muted);font-size:13px">Entre em contato para obter o link de pagamento.</p>';
+    }
+    show('accepted');
+    return;
+  }
+
+  // Expired
+  if (q.status === 'EXPIRED') { show('expired'); return; }
+  if (q.validUntil && new Date(q.validUntil) < new Date()) { show('expired'); return; }
+
+  // Render proposal
+  document.getElementById('q-title').textContent = q.title;
+  document.getElementById('q-client').textContent = `Para: ${q.clientName}`;
+
+  if (q.validUntil) {
+    document.getElementById('q-valid').textContent = new Date(q.validUntil).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+    document.getElementById('q-valid-wrap').style.display = '';
+  }
+
+  // Pre-fill modal name
+  document.getElementById('m-name').value = q.clientName || '';
+
+  // Items
+  const items = Array.isArray(q.items) ? q.items : [];
+  const recurring = items.filter(i => i.billing === 'recurring');
+  const once = items.filter(i => i.billing === 'once');
+
+  if (recurring.length) {
+    document.getElementById('recurring-section').style.display = '';
+    document.getElementById('recurring-tbody').innerHTML = recurring.map(itemRow).join('');
+  }
+  if (once.length) {
+    document.getElementById('once-section').style.display = '';
+    document.getElementById('once-tbody').innerHTML = once.map(itemRow).join('');
+  }
+
+  if (q.recurringTotal > 0) {
+    const hasOnce = (q.onceTotal || 0) > 0;
+    const gross = q.recurringTotal + (q.onceTotal || 0);
+    const scope = q.discount?.scope ?? 'first_only';
+    const discAmt = q.discount?.value > 0
+      ? Math.min(gross, q.discount.type === 'percent' ? gross * q.discount.value / 100 : q.discount.value)
+      : 0;
+
+    let firstTotal, recurringDisplay;
+    if (scope === 'permanent') {
+      const recurringTotal = gross > 0 ? Math.max(0, q.recurringTotal - discAmt * (q.recurringTotal / gross)) : q.recurringTotal;
+      const onceTotal = gross > 0 ? Math.max(0, (q.onceTotal || 0) - discAmt * ((q.onceTotal || 0) / gross)) : (q.onceTotal || 0);
+      firstTotal = recurringTotal + onceTotal;
+      recurringDisplay = recurringTotal;
+    } else {
+      firstTotal = Math.max(0, gross - discAmt);
+      recurringDisplay = q.recurringTotal;
+    }
+
+    document.getElementById('total-first-row').style.display = '';
+    document.getElementById('t-first').textContent = `R$ ${fmt(firstTotal)}`;
+    document.getElementById('total-first-sub').textContent = hasOnce ? '1 mensalidade + avulsos' : '1 mensalidade';
+    document.getElementById('total-recurring-row').style.display = '';
+    document.getElementById('t-recurring').textContent = `R$ ${fmt(recurringDisplay)}/mês`;
+    if (discAmt > 0) {
+      document.getElementById('total-discount-row').style.display = '';
+      document.getElementById('t-discount').textContent = `− R$ ${fmt(discAmt)}`;
+    }
+  }
+
+  // Notes
+  if (q.notes) {
+    document.getElementById('notes-section').style.display = '';
+    document.getElementById('q-notes').textContent = q.notes;
+  }
+
+  show('quote');
+}
+
+function itemRow(i) {
+  const sub = i.quantity * i.unitPrice;
+  return `<tr>
+    <td><div class="item-desc">${esc(i.description)}</div></td>
+    <td class="right" style="color:var(--muted);font-size:13px">${i.quantity}×</td>
+    <td class="right" style="color:var(--muted);font-size:13px">R$ ${fmt(i.unitPrice)}</td>
+    <td class="right item-sub">R$ ${fmt(sub)}</td>
+  </tr>`;
+}
+
+// ── Modal ──────────────────────────────────────────────────────────────────
+function openModal() {
+  const m = document.getElementById('modal');
+  // Mostra os valores no subtítulo do modal
+  if (quoteData) {
+    const gross = (quoteData.recurringTotal || 0) + (quoteData.onceTotal || 0);
+    const scope = quoteData.discount?.scope ?? 'first_only';
+    const discAmt = quoteData.discount?.value > 0
+      ? Math.min(gross, quoteData.discount.type === 'percent' ? gross * quoteData.discount.value / 100 : quoteData.discount.value)
+      : 0;
+    let firstTotal, recurringDisplay;
+    if (scope === 'permanent') {
+      const r = quoteData.recurringTotal || 0;
+      recurringDisplay = gross > 0 ? Math.max(0, r - discAmt * (r / gross)) : r;
+      const o = quoteData.onceTotal || 0;
+      firstTotal = recurringDisplay + (gross > 0 ? Math.max(0, o - discAmt * (o / gross)) : o);
+    } else {
+      firstTotal = Math.max(0, gross - discAmt);
+      recurringDisplay = quoteData.recurringTotal || 0;
+    }
+    const sub = document.getElementById('modal-sub-values');
+    if (firstTotal > 0) {
+      sub.innerHTML = `1ª fatura: <strong>R$ ${fmt(firstTotal)}</strong> · a partir do 2º mês: <strong>R$ ${fmt(recurringDisplay)}/mês</strong>`;
+    }
+  }
+  m.style.display = 'flex';
+  requestAnimationFrame(() => m.classList.add('open'));
+}
+
+function closeModal() {
+  const m = document.getElementById('modal');
+  m.classList.remove('open');
+  setTimeout(() => { m.style.display = 'none'; }, 200);
+}
+
+async function submitAccept(e) {
+  e.preventDefault();
+
+  const name    = document.getElementById('m-name').value.trim();
+  const cpfCnpj = document.getElementById('m-cpf').value.replace(/\D/g, '');
+  const phone   = document.getElementById('m-phone').value.replace(/\D/g, '');
+  const email   = document.getElementById('m-email').value.trim();
+  const cep     = document.getElementById('m-cep').value.replace(/\D/g, '');
+  const state   = document.getElementById('m-state').value.trim().toUpperCase();
+  const city    = document.getElementById('m-city').value.trim();
+  const bairro  = document.getElementById('m-bairro').value.trim();
+  const addr    = document.getElementById('m-addr').value.trim();
+  const addrNum = document.getElementById('m-addrnum').value.trim();
+
+  if (!name)                                              { notyf.error('Nome obrigatório');       document.getElementById('m-name').focus();  return; }
+  if (cpfCnpj.length !== 11 && cpfCnpj.length !== 14)   { notyf.error('CPF ou CNPJ inválido');   document.getElementById('m-cpf').focus();   return; }
+  if (phone.length < 10)                                  { notyf.error('WhatsApp obrigatório');   document.getElementById('m-phone').focus(); return; }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ notyf.error('E-mail inválido');        document.getElementById('m-email').focus(); return; }
+  if (cep.length !== 8)                                   { notyf.error('CEP inválido');           document.getElementById('m-cep').focus();   return; }
+  if (!state)                                             { notyf.error('Estado obrigatório');     document.getElementById('m-state').focus(); return; }
+  if (!city)                                              { notyf.error('Cidade obrigatória');     document.getElementById('m-city').focus();  return; }
+  if (!addr)                                              { notyf.error('Logradouro obrigatório'); document.getElementById('m-addr').focus();  return; }
+
+  const btn = document.getElementById('btn-accept');
+  btn.disabled = true;
+  btn.textContent = 'Processando...';
+
+  const token = location.pathname.split('/').pop();
+  const body = {
+    clientName: name,
+    cpfCnpj,
+    clientPhone: phone,
+    clientEmail: email || undefined,
+    postalCode: cep,
+    address: addr,
+    addressNumber: addrNum || 'S/N',
+    province: bairro || undefined,
+    city,
+    state,
+  };
+
+  try {
+    const r = await fetch(`/api/orcamento/${token}/pagar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.message || d.error || 'Erro ao processar');
+
+    closeModal();
+
+    // Redirect to primary payment URL if available
+    if (d.primaryUrl) {
+      window.open(d.primaryUrl, '_blank', 'noopener');
+    }
+    await loadQuote(token);
+  } catch (err) {
+    notyf.error(err.message);
+    btn.disabled = false;
+    btn.textContent = 'Confirmar contratação';
+  }
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function show(screen) {
+  ['loading','error','expired','accepted','quote'].forEach(s => {
+    const el = document.getElementById(`screen-${s}`);
+    if (el) el.style.display = s === screen ? '' : 'none';
+  });
+}
+
+function fmt(n) {
+  return (Math.round(n * 100) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

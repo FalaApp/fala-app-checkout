@@ -1,10 +1,12 @@
 const express = require("express");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ASAAS_BASE_URL = process.env.ASAAS_BASE_URL || "https://api-sandbox.asaas.com/v3";
 const ASAAS_API_KEY = process.env.ASAAS_API_KEY;
+const FALA_APP_API_URL = process.env.FALA_APP_API_URL || "https://api.fala.app.br";
 
 const FREE_TRIAL_WEBHOOK =
   process.env.FREE_TRIAL_WEBHOOK ||
@@ -48,10 +50,279 @@ const PLANS = {
 };
 
 app.use(express.json({ limit: "256kb" }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public"), { maxAge: "7d" }));
 app.use(express.static(path.join(__dirname)));
 
 app.get("/healthz", (_req, res) => res.json({ ok: true }));
+
+function parseHumanDuration(str) {
+  const match = String(str).match(/^(\d+)(ms|s|m|h|d)?$/);
+  if (!match) return 12 * 60 * 60 * 1000;
+  const n = parseInt(match[1]);
+  const unit = match[2] || 's';
+  const map = { ms: 1, s: 1000, m: 60000, h: 3600000, d: 86400000 };
+  return n * (map[unit] || 1000);
+}
+
+// ── Admin auth middleware ────────────────────────────────────────────────────
+
+async function requireAdmin(req, res, next) {
+  const token = req.cookies?.admin_token;
+  console.log("[requireAdmin] cookies:", JSON.stringify(req.cookies));
+  console.log("[requireAdmin] token present:", !!token);
+  if (!token) return res.status(401).json({ error: "Não autenticado" });
+  try {
+    const profileUrl = `${FALA_APP_API_URL}/own/profile`;
+    console.log("[requireAdmin] fetching profile:", profileUrl);
+    const r = await fetch(profileUrl, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log("[requireAdmin] profile status:", r.status);
+    if (!r.ok) {
+      const errText = await r.text();
+      console.log("[requireAdmin] profile error body:", errText.slice(0, 300));
+      throw new Error("profile_error");
+    }
+    const body = await r.json();
+    console.log("[requireAdmin] profile body keys:", Object.keys(body));
+    const user = body?.data ?? body;
+    console.log("[requireAdmin] user.roles:", JSON.stringify(user?.roles));
+    const isAdmin = user?.roles?.some((rl) => rl?.role?.name === "admin");
+    console.log("[requireAdmin] isAdmin:", isAdmin);
+    if (!isAdmin) throw new Error("not_admin");
+    req.adminUser = user;
+    next();
+  } catch (e) {
+    console.log("[requireAdmin] caught error:", e.message);
+    res.clearCookie("admin_token");
+    return res.status(403).json({ error: "Acesso negado" });
+  }
+}
+
+async function apiProxy(req, res, method, path, body) {
+  const token = req.cookies?.admin_token;
+  const url = `${FALA_APP_API_URL}${path}`;
+  try {
+    const r = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const text = await r.text();
+    const data = text ? JSON.parse(text) : null;
+    return res.status(r.status).json(data);
+  } catch (e) {
+    console.error("[proxy]", method, url, e.message);
+    return res.status(502).json({ error: "Erro ao contatar a API" });
+  }
+}
+
+// ── Admin routes ─────────────────────────────────────────────────────────────
+
+app.get("/admin", (_req, res) =>
+  res.sendFile(path.join(__dirname, "admin", "index.html"))
+);
+
+app.post("/api/admin/login", async (req, res) => {
+  const { email, password } = req.body || {};
+  if (!email || !password) return res.status(400).json({ error: "E-mail e senha obrigatórios" });
+  try {
+    const r = await fetch(`${FALA_APP_API_URL}/sign-in`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const body = await r.json();
+    if (!r.ok) return res.status(r.status).json({ error: body?.message || "Credenciais inválidas" });
+
+    // sign-in retorna { message, data: { token, expiresIn, ... } }
+    const data = body.data ?? body;
+    const expiresIn = data.expiresIn ?? "12h";
+    const expiresMs = typeof expiresIn === "number"
+      ? expiresIn * 1000
+      : parseHumanDuration(expiresIn);
+    console.log("[login] token length:", data.token?.length);
+    console.log("[login] expiresIn:", expiresIn, "→ expiresMs:", expiresMs);
+    res.cookie("admin_token", data.token, {
+      httpOnly: true,
+      path: "/",
+      maxAge: expiresMs || 12 * 60 * 60 * 1000,
+      sameSite: "lax",
+    });
+    console.log("[login] Set-Cookie header:", res.getHeader("set-cookie"));
+    return res.json({ ok: true });
+  } catch (e) {
+    console.error("[admin/login]", e.message);
+    return res.status(502).json({ error: "Erro ao autenticar" });
+  }
+});
+
+app.post("/api/admin/logout", (req, res) => {
+  res.clearCookie("admin_token");
+  return res.json({ ok: true });
+});
+
+// Quotes CRUD (admin)
+app.get("/api/admin/quotes", requireAdmin, (req, res) =>
+  apiProxy(req, res, "GET", "/quotes")
+);
+app.get("/api/admin/quotes/:id", requireAdmin, (req, res) =>
+  apiProxy(req, res, "GET", `/quotes/${req.params.id}`)
+);
+app.post("/api/admin/quotes", requireAdmin, (req, res) =>
+  apiProxy(req, res, "POST", "/quotes", req.body)
+);
+app.patch("/api/admin/quotes/:id", requireAdmin, (req, res) =>
+  apiProxy(req, res, "PATCH", `/quotes/${req.params.id}`, req.body)
+);
+app.delete("/api/admin/quotes/:id", requireAdmin, (req, res) =>
+  apiProxy(req, res, "DELETE", `/quotes/${req.params.id}`)
+);
+
+// ── Public quote routes ───────────────────────────────────────────────────────
+
+app.get("/orcamento/:token", (_req, res) =>
+  res.sendFile(path.join(__dirname, "orcamento.html"))
+);
+
+app.get("/api/orcamento/:token", async (req, res) => {
+  try {
+    const r = await fetch(`${FALA_APP_API_URL}/quotes/public/${req.params.token}`);
+    const data = await r.json();
+    return res.status(r.status).json(data);
+  } catch (e) {
+    return res.status(502).json({ error: "Erro ao obter orçamento" });
+  }
+});
+
+app.post("/api/orcamento/:token/pagar", async (req, res) => {
+  const token = req.params.token;
+  const { clientName, cpfCnpj, clientEmail, clientPhone,
+          postalCode, address, addressNumber, province, city, state } = req.body || {};
+  if (!clientName) return res.status(400).json({ error: "Nome obrigatório" });
+  const cpf = cleanDigits(cpfCnpj);
+  if (cpf.length !== 11 && cpf.length !== 14) return res.status(400).json({ error: "CPF/CNPJ inválido" });
+  const phone = cleanDigits(clientPhone);
+  if (phone.length < 10) return res.status(400).json({ error: "WhatsApp inválido" });
+  if (!postalCode || cleanDigits(postalCode).length !== 8) return res.status(400).json({ error: "CEP inválido" });
+  if (!address) return res.status(400).json({ error: "Logradouro obrigatório" });
+
+  try {
+    // 1. Buscar e validar o orçamento
+    const qr = await fetch(`${FALA_APP_API_URL}/quotes/public/${token}`);
+    const qBody = await qr.json();
+    const quote = qBody?.data ?? qBody;
+    if (!qr.ok || !quote) return res.status(404).json({ error: "Orçamento não encontrado" });
+    if (quote.status !== "DRAFT" && quote.status !== "SENT")
+      return res.status(400).json({ error: "Este orçamento já foi processado" });
+    if (quote.validUntil && new Date(quote.validUntil) < new Date())
+      return res.status(400).json({ error: "Este orçamento está expirado" });
+
+    // 2. Criar cliente no Asaas
+    const customer = await asaas("POST", "/customers", {
+      name: clientName.trim(),
+      cpfCnpj: cpf,
+      email: clientEmail?.trim() || undefined,
+      mobilePhone: phone.startsWith("55") ? phone : `55${phone}`,
+      postalCode: cleanDigits(postalCode),
+      address: address?.trim(),
+      addressNumber: addressNumber?.trim() || "S/N",
+      province: province?.trim() || undefined,
+      notificationDisabled: false,
+      externalReference: `falaapp-quote-${token}`,
+    });
+
+    // 3. Criar assinatura
+    const recurringTotal = quote.recurringTotal || 0;
+    const onceTotal = quote.onceTotal || 0;
+    const gross = recurringTotal + onceTotal;
+    const disc = quote.discount;
+    const discScope = disc?.scope ?? "first_only";
+    let discAmt = 0;
+    if (disc?.value > 0) {
+      discAmt = disc.type === "percent" ? (gross * disc.value / 100) : disc.value;
+      discAmt = Math.min(discAmt, gross);
+    }
+
+    // permanent: discount splits proportionally — recurring rate is reduced forever
+    // first_only: subscription at full recurring rate; only 1ª fatura gets the discount
+    let subscriptionValue, firstMonthValue;
+    if (discScope === "permanent") {
+      subscriptionValue = gross > 0 ? Math.max(0, recurringTotal - discAmt * (recurringTotal / gross)) : recurringTotal;
+      const oncePart = gross > 0 ? Math.max(0, onceTotal - discAmt * (onceTotal / gross)) : onceTotal;
+      firstMonthValue = Math.round((subscriptionValue + oncePart) * 100) / 100;
+      subscriptionValue = Math.round(subscriptionValue * 100) / 100;
+    } else {
+      subscriptionValue = recurringTotal;
+      firstMonthValue = Math.round((gross - discAmt) * 100) / 100;
+    }
+
+    const items = Array.isArray(quote.items) ? quote.items : [];
+    const descParts = items.map(i => `${i.quantity}x ${i.description}`).join(", ");
+
+    const subscription = await asaas("POST", "/subscriptions", {
+      customer: customer.id,
+      billingType: "UNDEFINED",
+      value: subscriptionValue || firstMonthValue,
+      nextDueDate: isoTomorrow(),
+      cycle: "MONTHLY",
+      description: `FalaApp — ${quote.title || "Proposta"}: ${descParts}`,
+      externalReference: `falaapp-quote-${token}`,
+    });
+
+    // 4. Ajustar 1ª fatura se houver avulsos
+    let invoiceUrl = null;
+    try {
+      const list = await asaas("GET", `/subscriptions/${subscription.id}/payments?limit=1`);
+      const firstPayment = list?.data?.[0] || null;
+      if (firstPayment) {
+        if (firstMonthValue !== recurringTotal) {
+          const onceItems = items.filter(i => i.billing === "once");
+          const extraParts = [];
+          if (onceItems.length > 0) extraParts.push(onceItems.map(i => `${i.quantity}x ${i.description}`).join(", "));
+          if (discAmt > 0) extraParts.push(`desconto R$ ${discAmt.toFixed(2)}`);
+          const updated = await asaas("PUT", `/payments/${firstPayment.id}`, {
+            value: firstMonthValue,
+            description: `FalaApp — ${quote.title}: 1ª mensalidade${extraParts.length ? ` + ${extraParts.join(" | ")}` : ""}`,
+          });
+          invoiceUrl = updated.invoiceUrl || null;
+        } else {
+          invoiceUrl = firstPayment.invoiceUrl || null;
+        }
+      }
+    } catch (e) {
+      console.error("[pagar] falha ao ajustar 1ª fatura:", e.message);
+    }
+
+    // 5. Marcar orçamento como aceito na API
+    const acceptUrl = `${FALA_APP_API_URL}/quotes/public/${token}/accept`;
+    const ar = await fetch(acceptUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        clientName: clientName.trim(),
+        clientEmail: clientEmail?.trim() || undefined,
+        clientPhone: phone || undefined,
+        asaasCustomerId: customer.id,
+        asaasSubscriptionId: subscription.id,
+        asaasSubscriptionUrl: invoiceUrl,
+      }),
+    });
+    if (!ar.ok) {
+      const errText = await ar.text();
+      console.error("[pagar] accept error:", ar.status, errText.slice(0, 300));
+    }
+
+    return res.json({ ok: true, primaryUrl: invoiceUrl });
+  } catch (e) {
+    console.error("[pagar] error:", e.message);
+    return res.status(502).json({ error: e.message || "Erro ao processar pagamento" });
+  }
+});
 
 async function asaas(method, endpoint, body) {
   const res = await fetch(`${ASAAS_BASE_URL}${endpoint}`, {
