@@ -7,6 +7,8 @@ RUN npm install --omit=dev
 
 COPY server.js ./
 COPY index.html ./
+COPY orcamento.html ./
+COPY admin ./admin
 COPY public ./public
 
 EXPOSE 3000
