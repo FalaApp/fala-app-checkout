@@ -166,6 +166,20 @@ tr:hover td{background:rgba(255,255,255,.015)}
 }
 .link-url{flex:1;font-size:12px;color:var(--merc);word-break:break-all;font-weight:600}
 
+/* ── DETAIL VIEW ── */
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px 24px;margin-bottom:8px}
+.detail-field{display:flex;flex-direction:column;gap:4px}
+.detail-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+.detail-value{font-size:14px;color:var(--sapp);font-weight:600;word-break:break-all}
+.detail-value.mono{font-family:monospace;font-size:12px;color:var(--wisp)}
+.detail-value a{color:var(--merc);text-decoration:none}
+.detail-value a:hover{text-decoration:underline}
+.detail-items-table{width:100%;border-collapse:collapse;font-size:13px}
+.detail-items-table th{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--bord);text-align:left}
+.detail-items-table td{padding:8px 8px;border-bottom:1px solid rgba(172,180,220,.07);vertical-align:middle}
+.detail-items-table td.right{text-align:right}
+.detail-notes{background:rgba(255,255,255,.03);border:1px solid var(--bord);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--sapp);white-space:pre-wrap;line-height:1.6}
+
 /* ── ANIMATIONS ── */
 @keyframes fd{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 @keyframes su{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
@@ -398,6 +412,96 @@ tr:hover td{background:rgba(255,255,255,.015)}
   </div>
 </div>
 
+<!-- ═══════════════ DETALHE ═══════════════ -->
+<div id="screen-detail" class="wrap" style="display:none">
+  <div class="topbar">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+        <rect width="40" height="40" rx="10" fill="url(#lg5)"/>
+        <path d="M11 14h18M11 20h12M11 26h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="lg5" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#74ebd5"/><stop offset="1" stop-color="#acb6e5"/></linearGradient></defs>
+      </svg>
+      <span class="topbar-title">FalaApp</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="showMain()">← Orçamentos</button>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="page-header">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div class="page-title" id="detail-title"></div>
+      <span class="badge badge-accepted">Aceito</span>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" id="detail-copy-btn" onclick="detailCopyLink()">🔗 Copiar link</button>
+    </div>
+  </div>
+
+  <div class="form-card">
+
+    <div class="section-title">Cliente</div>
+    <div class="detail-grid">
+      <div class="detail-field"><span class="detail-label">Nome</span><span class="detail-value" id="d-client-name"></span></div>
+      <div class="detail-field"><span class="detail-label">E-mail</span><span class="detail-value" id="d-client-email"></span></div>
+      <div class="detail-field"><span class="detail-label">Telefone / WhatsApp</span><span class="detail-value" id="d-client-phone"></span></div>
+    </div>
+
+    <div class="section-title">Itens</div>
+    <div style="overflow-x:auto">
+      <table class="detail-items-table">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Descrição</th>
+            <th class="right">Qtd</th>
+            <th class="right">Valor unit.</th>
+            <th>Cobrança</th>
+            <th class="right">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody id="d-items-tbody"></tbody>
+      </table>
+    </div>
+
+    <div id="d-discount-section">
+      <div class="section-title">Desconto</div>
+      <div class="detail-grid">
+        <div class="detail-field"><span class="detail-label">Tipo</span><span class="detail-value" id="d-disc-type"></span></div>
+        <div class="detail-field"><span class="detail-label">Valor</span><span class="detail-value" id="d-disc-value"></span></div>
+        <div class="detail-field"><span class="detail-label">Aplicação</span><span class="detail-value" id="d-disc-scope"></span></div>
+      </div>
+    </div>
+
+    <div class="section-title">Totais</div>
+    <div class="totals-box">
+      <div class="totals-item">
+        <span class="totals-label">1ª Fatura</span>
+        <span class="totals-value once" id="d-total-first"></span>
+      </div>
+      <div class="totals-item">
+        <span class="totals-label">Mensalidade</span>
+        <span class="totals-value" id="d-total-recurring"></span>
+      </div>
+    </div>
+
+    <div id="d-notes-section">
+      <div class="section-title">Observações</div>
+      <div class="detail-notes" id="d-notes"></div>
+    </div>
+
+    <div class="section-title">Asaas</div>
+    <div class="detail-grid">
+      <div class="detail-field"><span class="detail-label">Cliente ID</span><span class="detail-value mono" id="d-asaas-customer"></span></div>
+      <div class="detail-field"><span class="detail-label">Assinatura ID</span><span class="detail-value mono" id="d-asaas-sub"></span></div>
+      <div class="detail-field"><span class="detail-label">Link 1ª fatura</span><span class="detail-value" id="d-asaas-url"></span></div>
+      <div class="detail-field"><span class="detail-label">Aceito em</span><span class="detail-value" id="d-accepted-at"></span></div>
+    </div>
+
+  </div>
+</div>
+
 <script>
 // ── Masks ──────────────────────────────────────────────────────────────────
 function maskPhone(e) {
@@ -496,6 +600,7 @@ function showScreen(name) {
   document.getElementById('screen-main').style.display = name === 'main' ? 'block' : 'none';
   document.getElementById('screen-form').style.display = name === 'form' ? 'block' : 'none';
   document.getElementById('screen-success').style.display = name === 'success' ? 'block' : 'none';
+  document.getElementById('screen-detail').style.display = name === 'detail' ? 'block' : 'none';
 }
 
 function showMain() { showScreen('main'); loadQuotes(); }
@@ -553,7 +658,7 @@ async function loadQuotes() {
           <div style="display:flex;gap:6px;justify-content:flex-end">
             <button class="btn btn-ghost btn-sm btn-icon" title="Copiar link" onclick="copyQuoteLink('${q.token}')">🔗</button>
             <button class="btn btn-ghost btn-sm" onclick="editQuote('${q.id}')">Editar</button>
-            <button class="btn btn-danger btn-sm btn-icon" onclick="deleteQuote('${q.id}',this)">✕</button>
+            ${q.status !== 'ACCEPTED' ? `<button class="btn btn-danger btn-sm btn-icon" onclick="deleteQuote('${q.id}',this)">✕</button>` : ''}
           </div>
         </td>
       </tr>
@@ -596,7 +701,83 @@ async function editQuote(id) {
   const body = await r.json();
   const q = body.data ?? body;
   if (!q) { notyf.error('Não encontrado'); return; }
+  if (q.status === 'ACCEPTED') { showDetail(q); return; }
   openForm(q);
+}
+
+let _detailToken = null;
+
+function showDetail(q) {
+  _detailToken = q.token || null;
+  document.getElementById('detail-title').textContent = q.title || '—';
+
+  document.getElementById('d-client-name').textContent = q.clientName || '—';
+  document.getElementById('d-client-email').textContent = q.clientEmail || '—';
+  document.getElementById('d-client-phone').textContent = q.clientPhone || '—';
+
+  const items = Array.isArray(q.items) ? q.items : [];
+  const typeLabel = { plan: 'Plano', service: 'Serviço' };
+  const billingLabel = { recurring: 'Recorrente', once: 'Avulso' };
+  document.getElementById('d-items-tbody').innerHTML = items.map(i => {
+    const sub = i.quantity * i.unitPrice;
+    return `<tr>
+      <td>${esc(typeLabel[i.type] || i.type)}</td>
+      <td>${esc(i.description)}</td>
+      <td class="right">${i.quantity}×</td>
+      <td class="right">R$ ${fmt(i.unitPrice)}</td>
+      <td>${esc(billingLabel[i.billing] || i.billing)}</td>
+      <td class="right" style="font-weight:700;color:var(--merc)">R$ ${fmt(sub)}</td>
+    </tr>`;
+  }).join('');
+
+  const disc = q.discount;
+  const discSection = document.getElementById('d-discount-section');
+  if (disc && disc.value > 0) {
+    discSection.style.display = '';
+    document.getElementById('d-disc-type').textContent = disc.type === 'fixed' ? 'Valor fixo (R$)' : 'Percentual (%)';
+    document.getElementById('d-disc-value').textContent = disc.type === 'fixed' ? `R$ ${fmt(disc.value)}` : `${disc.value}%`;
+    document.getElementById('d-disc-scope').textContent = (disc.scope ?? 'first_only') === 'permanent' ? 'Permanente' : 'Somente 1ª fatura';
+  } else {
+    discSection.style.display = 'none';
+  }
+
+  const scope = disc?.scope ?? 'first_only';
+  const itemsGross = items.reduce((s, i) => s + i.quantity * i.unitPrice, 0);
+  const gross = scope === 'permanent' ? itemsGross : ((q.recurringTotal || 0) + (q.onceTotal || 0));
+  const discAmt = (disc?.value > 0) ? Math.min(gross, disc.type === 'percent' ? gross * disc.value / 100 : disc.value) : 0;
+  const firstTotal = scope === 'permanent'
+    ? (q.recurringTotal || 0) + (q.onceTotal || 0)
+    : Math.max(0, gross - discAmt);
+  document.getElementById('d-total-first').textContent = `R$ ${fmt(firstTotal)}`;
+  document.getElementById('d-total-recurring').textContent = `R$ ${fmt(q.recurringTotal || 0)}/mês`;
+
+  const notesSection = document.getElementById('d-notes-section');
+  if (q.notes) {
+    notesSection.style.display = '';
+    document.getElementById('d-notes').textContent = q.notes;
+  } else {
+    notesSection.style.display = 'none';
+  }
+
+  document.getElementById('d-asaas-customer').textContent = q.asaasCustomerId || '—';
+  document.getElementById('d-asaas-sub').textContent = q.asaasSubscriptionId || '—';
+  const urlEl = document.getElementById('d-asaas-url');
+  if (q.asaasSubscriptionUrl) {
+    urlEl.innerHTML = `<a href="${esc(q.asaasSubscriptionUrl)}" target="_blank" rel="noopener">Abrir fatura ↗</a>`;
+  } else {
+    urlEl.textContent = '—';
+  }
+  document.getElementById('d-accepted-at').textContent = q.updatedAt
+    ? new Date(q.updatedAt).toLocaleString('pt-BR')
+    : '—';
+
+  showScreen('detail');
+}
+
+function detailCopyLink() {
+  if (!_detailToken) return;
+  const url = `${location.origin}/orcamento/${_detailToken}`;
+  navigator.clipboard.writeText(url).then(() => notyf.success('Link copiado!')).catch(() => notyf.error('Erro ao copiar'));
 }
 
 // ── Form ───────────────────────────────────────────────────────────────────

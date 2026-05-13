@@ -32,7 +32,6 @@ const PLANS = {
     id: "small",
     name: "Plano Small",
     value: 247.0,
-    firstMonthValue: 29.9,
     description: "FalaApp · Plano Small (120k palavras · 7.500 disparos)",
   },
   smart: {
@@ -235,10 +234,9 @@ app.post("/api/orcamento/:token/pagar", async (req, res) => {
     // first_only: subscription at full recurring rate; only 1ª fatura gets the discount
     let subscriptionValue, firstMonthValue;
     if (discScope === "permanent") {
-      subscriptionValue = gross > 0 ? Math.max(0, recurringTotal - discAmt * (recurringTotal / gross)) : recurringTotal;
-      const oncePart = gross > 0 ? Math.max(0, onceTotal - discAmt * (onceTotal / gross)) : onceTotal;
-      firstMonthValue = Math.round((subscriptionValue + oncePart) * 100) / 100;
-      subscriptionValue = Math.round(subscriptionValue * 100) / 100;
+      // calcTotals already stored discounted values — use them directly
+      subscriptionValue = Math.round(recurringTotal * 100) / 100;
+      firstMonthValue = Math.round((recurringTotal + onceTotal) * 100) / 100;
     } else {
       subscriptionValue = recurringTotal;
       firstMonthValue = Math.round((gross - discAmt) * 100) / 100;

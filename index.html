@@ -212,7 +212,7 @@ body{
 
 /* badges */
 .badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;white-space:nowrap;text-transform:uppercase;letter-spacing:.4px}
-.b-pop{background:linear-gradient(135deg,var(--ga),var(--gb));color:var(--mid)}
+.b-pop{background:linear-gradient(135deg,var(--promo-a),var(--promo-b));color:#1a1200}
 .b-def{background:rgba(172,180,220,.1);color:var(--wisp);border:1px solid rgba(172,180,220,.18)}
 .b-qnt{background:rgba(116,235,213,.06);color:var(--merc);border:1px solid rgba(116,235,213,.15)}
 .b-promo{
@@ -291,12 +291,35 @@ body{
 }
 .useful-for strong{color:var(--wisp);font-weight:700;font-style:normal}
 
-/* Smart "Recomendado" — destaque visual extra */
-.plan-item[data-id="smart"]{position:relative}
-.plan-item[data-id="smart"].sel{
-  border-color:rgba(116,235,213,.5) !important;
-  box-shadow:0 0 0 1px rgba(116,235,213,.25), 0 10px 28px rgba(116,235,213,.08);
+/* Smart "Recomendado" — caixa amarela inteira para chamar atenção */
+.plan-item[data-id="smart"]{
+  position:relative;
+  border-color:rgba(247,201,72,.35) !important;
+  background:rgba(247,201,72,.05) !important;
 }
+.plan-item[data-id="smart"]:hover{
+  border-color:rgba(247,201,72,.55) !important;
+  background:rgba(247,201,72,.08) !important;
+}
+.plan-item[data-id="smart"].sel{
+  border-color:rgba(247,201,72,.75) !important;
+  background:rgba(247,201,72,.1) !important;
+  box-shadow:0 0 0 1px rgba(247,201,72,.25), 0 10px 28px rgba(247,201,72,.12) !important;
+}
+.plan-item[data-id="smart"].sel::after{
+  background:linear-gradient(180deg,var(--promo-a),var(--promo-b)) !important;
+}
+.plan-item[data-id="smart"] .radio{border-color:rgba(247,201,72,.35)}
+.plan-item[data-id="smart"].sel .radio{border-color:var(--promo-a);background:rgba(247,201,72,.1)}
+.plan-item[data-id="smart"].sel .rdot{background:linear-gradient(135deg,var(--promo-a),var(--promo-b))}
+.plan-item[data-id="smart"].sel .ph-name{color:var(--promo-a)}
+.plan-item[data-id="smart"].sel .ph-price{background:linear-gradient(135deg,var(--promo-a),var(--promo-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.plan-item[data-id="smart"].sel .exp-price-val{background:linear-gradient(135deg,var(--promo-a),var(--promo-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.plan-item[data-id="smart"].sel .exp-cta{
+  background:linear-gradient(135deg,var(--promo-a),var(--promo-b));
+  color:#1a1200;
+}
+.plan-item[data-id="smart"].sel .exp-cta:hover{box-shadow:0 10px 28px rgba(247,201,72,.25)}
 
 /* ─── EXPAND PANEL ─── */
 .plan-expand{
@@ -986,62 +1009,182 @@ input.invalid{border-color:var(--err);box-shadow:0 0 0 3px rgba(244,127,164,.1)}
   animation: gradFlow 4s ease infinite;
 }
 
-/* ── escala geral maior ── */
+/* ── escala base (telas médias — sem breakpoint, aplica-se a tudo acima de mobile) ── */
 body { font-size: 16px; }
 .card { max-width: 660px; padding: 48px 52px; border-radius: 28px; }
-.logo-wrap svg { width: 200px !important; }
-.ch h1 { font-size: 28px; margin-bottom: 10px; }
-.ch p { font-size: 15px; }
 
-/* planos */
-.plan-head { padding: 18px 20px; gap: 16px; }
-.ph-name { font-size: 16px; }
-.ph-sub { font-size: 13px; }
-.ph-price { font-size: 17px; }
-.ph-price span { font-size: 12px !important; }
-.radio { width: 24px; height: 24px; }
-.rdot { width: 10px; height: 10px; }
-.badge { font-size: 11px; padding: 3px 11px; }
+/* ── tablet (≥ 768 px) ── */
+@media (min-width: 768px) {
+  body { padding: 48px 32px; }
+  .card { max-width: 780px; padding: 44px 52px; }
+  .logo-wrap svg { width: 190px !important; }
+  .ch h1 { font-size: 26px; }
+  .plan-head { padding: 17px 20px; gap: 14px; }
+  .ph-name { font-size: 15px; }
+  .ph-price { font-size: 16px; }
+  .expand-inner { padding: 18px 20px 20px; }
+  .exp-price-val { font-size: 32px; }
+  .how-it-works { gap: 12px; }
+}
 
-/* expand */
-.expand-inner { padding: 20px 20px 22px; }
-.exp-price-val { font-size: 34px; }
-.exp-price-unit { font-size: 14px; }
-.exp-tagline { font-size: 14px; margin-bottom: 16px; }
-.feat { font-size: 14px; gap: 10px; }
-.feat .fi { width: 18px; height: 18px; }
-.feat.hl::after { font-size: 10px; padding: 2px 9px; }
-.int-label { font-size: 11px; }
-.chip { font-size: 12px; padding: 4px 14px; }
-.franquia { font-size: 13px; padding: 10px 14px; }
-.promo-notice-text { font-size: 13px; }
-.eco-box { font-size: 13px; padding: 10px 14px; }
-.upgrade-hint { font-size: 12px; padding: 10px 14px; }
-.exp-cta { font-size: 16px; padding: 14px 18px; border-radius: 13px; }
-.plan-separator { font-size: 11px; }
+/* ── notebook / desktop (≥ 1024 px) — card mais largo, sem grid ainda ── */
+@media (min-width: 1024px) {
+  body { padding: 52px 40px; }
+  .card { max-width: 900px; padding: 48px 56px; }
+  .logo-wrap svg { width: 200px !important; }
+  .ch h1 { font-size: 28px; margin-bottom: 10px; }
+  .ch p { font-size: 15px; }
+  .plan-head { padding: 18px 20px; gap: 16px; }
+  .ph-name { font-size: 16px; }
+  .ph-sub { font-size: 13px; }
+  .ph-price { font-size: 17px; }
+  .ph-price span { font-size: 12px !important; }
+  .radio { width: 24px; height: 24px; }
+  .rdot { width: 10px; height: 10px; }
+  .badge { font-size: 11px; padding: 3px 11px; }
+  .expand-inner { padding: 20px 20px 22px; }
+  .exp-price-val { font-size: 34px; }
+  .exp-price-unit { font-size: 14px; }
+  .exp-tagline { font-size: 14px; margin-bottom: 16px; }
+  .feat { font-size: 14px; gap: 10px; }
+  .feat .fi { width: 18px; height: 18px; }
+  .chip { font-size: 12px; padding: 4px 14px; }
+  .franquia { font-size: 13px; padding: 10px 14px; }
+  .upgrade-hint { font-size: 12px; padding: 10px 14px; }
+  .exp-cta { font-size: 16px; padding: 14px 18px; border-radius: 13px; }
+  .feat.hl::after { font-size: 10px; padding: 2px 9px; }
+  .int-label { font-size: 11px; }
+  .promo-notice-text { font-size: 13px; }
+  .eco-box { font-size: 13px; padding: 10px 14px; }
+  .plan-separator { font-size: 11px; }
+  .how-it-works { gap: 14px; margin-bottom: 24px; }
+  .hiw-step { padding: 16px 14px; }
+  .hiw-title { font-size: 13px; }
+  .hiw-sub { font-size: 12px; }
+  .sel-pill { font-size: 15px; padding: 13px 16px; }
+  label { font-size: 12px; }
+  input { font-size: 15px; padding: 13px 15px 13px 44px; }
+  .iw .ico { width: 18px; height: 18px; left: 14px; }
+  .div { font-size: 12px; margin: 24px 0 18px; }
+  .err { font-size: 12px; }
+  .hint { font-size: 12px; }
+  .btn { font-size: 18px; padding: 17px; border-radius: 16px; }
+  .btn-ghost { font-size: 15px; padding: 15px; border-radius: 16px; }
+  .suc h2 { font-size: 28px; }
+  .suc p { font-size: 15px; }
+  .sbadge { font-size: 14px; padding: 8px 20px; }
+  .plbl { font-size: 13px; }
+  .footer { font-size: 13px; }
+}
 
-/* step 2 */
-.sel-pill { font-size: 15px; padding: 13px 16px; }
-label { font-size: 12px; }
-input { font-size: 15px; padding: 13px 15px 13px 44px; }
-.iw .ico { width: 18px; height: 18px; left: 14px; }
-.div { font-size: 12px; margin: 24px 0 18px; }
-.err { font-size: 12px; }
-.hint { font-size: 12px; }
-.btn { font-size: 18px; padding: 17px; border-radius: 16px; }
-.btn-ghost { font-size: 15px; padding: 15px; border-radius: 16px; }
+/* ── wide desktop (≥ 1280 px) — 4 planos lado a lado, sempre expandidos ── */
+@media (min-width: 1280px) {
+  .card { max-width: 1200px; padding: 52px 60px; }
+  .ch h1 { font-size: 30px; }
 
-/* success */
-.suc h2 { font-size: 28px; }
-.suc p { font-size: 15px; }
-.sbadge { font-size: 14px; padding: 8px 20px; }
+  /* grid externo: row 1 = cabeçalho (altura compartilhada), row 2 = corpo */
+  .plan-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto 1fr;
+    gap: 14px;
+  }
 
-/* progress dots */
-.plbl { font-size: 13px; }
+  /* cada card ocupa as 2 linhas do grid e usa subgrid internamente */
+  .plan-item {
+    display: grid;
+    grid-row: span 2;
+    grid-template-rows: subgrid;
+  }
 
-/* footer */
-.footer { font-size: 13px; }
+  /* corpo flexível: empurra CTA para o fundo */
+  .plan-expand { display: flex; flex-direction: column; }
+  .expand-inner { flex: 1; display: flex; flex-direction: column; padding: 20px 16px 20px; }
+  .exp-cta { margin-top: auto; }
 
+  /* sempre expandido */
+  .plan-expand { max-height: none !important; opacity: 1 !important; overflow: visible; transition: none; }
+  .expand-inner { border-top: 1px solid var(--bord); }
+
+  /* cabeçalho — grid 2 linhas: (radio | nome | preço) / (radio | limite | badge)
+     mantém todas as informações alinhadas em slots fixos entre cards */
+  .plan-head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "name  price"
+      "sub   badge";
+    column-gap: 12px;
+    row-gap: 6px;
+    padding: 16px;
+    align-items: start;
+  }
+  .plan-head .radio { display: none; }
+  .plan-head .ph-info { display: contents; }
+  .plan-head .ph-name {
+    grid-area: name;
+    font-size: 14px;
+    line-height: 1.25;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 22px;
+  }
+  .plan-head .ph-sub {
+    grid-area: sub;
+    display: block;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--muted);
+    margin-top: 0;
+    min-height: 32px;
+  }
+  .plan-head .ph-right { display: contents; }
+  .plan-head .ph-price {
+    grid-area: price;
+    white-space: nowrap;
+    align-self: center;
+    text-align: right;
+  }
+  .plan-head .badge {
+    grid-area: badge;
+    justify-self: end;
+    align-self: start;
+    white-space: nowrap;
+  }
+
+  /* preço: altura fixa para ancorar o início do conteúdo */
+  .exp-price { min-height: 52px; align-items: baseline; margin-bottom: 10px; }
+  .exp-price-val { font-size: 28px; }
+
+  /* tagline: altura mínima para 3 linhas (o mais longo é Scale) */
+  .exp-tagline { font-size: 12px; line-height: 1.5; min-height: 56px; margin-bottom: 12px; }
+
+  /* features compactas, crescem para preencher espaço */
+  .features { gap: 6px; margin-bottom: 28px; flex: 1; align-content: start; display: flex; flex-direction: column; }
+  .feat { font-size: 12px; gap: 7px; }
+  .feat .fi { width: 13px; height: 13px; }
+
+  /* esconde seções densas */
+  .upgrade-hint { display: none; }
+  .platform-section { display: none; }
+  .int-section { display: none; }
+  .franquia-box { display: none; }
+  .useful-for { display: none; }
+
+  /* franquia compacta */
+  .franquia { font-size: 11px; padding: 7px 10px; margin-top: 8px; }
+  .platform-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── ultra-wide (≥ 1536 px) ── */
+@media (min-width: 1536px) {
+  .card { max-width: 1380px; }
+  .plan-head { padding: 18px 16px; gap: 12px; }
+  .ph-name { font-size: 15px; }
+  .expand-inner { padding: 18px 16px 20px; }
+}
 /* ── ribbon diagonal ── */
 .plan-ribbon {
   position: absolute;
@@ -1221,8 +1364,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
 
     <!-- SMALL -->
-    <div class="plan-item promo-plan" onclick="selPlan(this)" data-id="small" data-lbl="Plano Small · R$29,90 no 1º mês, depois R$247/mês" data-url="https://www.asaas.com/c/zsh36088j3mwsfzv" data-currency="BRL" data-recurring-value="247" data-first-payment-value="29.9">
-      <div class="plan-ribbon">Oferta Limitada</div>
+    <div class="plan-item" onclick="selPlan(this)" data-id="small" data-lbl="Plano Small · R$247/mês" data-url="https://www.asaas.com/c/zsh36088j3mwsfzv" data-currency="BRL" data-recurring-value="247" data-first-payment-value="247">
       <div class="plan-head">
         <div class="radio"><div class="rdot"></div></div>
         <div class="ph-info">
@@ -1230,23 +1372,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="ph-sub">Limite: 120k palavras (~120 atendimentos/mês)</div>
         </div>
         <div class="ph-right">
-          <span class="ph-price"><span style="font-size:11px;font-family:Nunito,sans-serif;text-decoration:line-through;opacity:.45;margin-right:3px">R$247</span>R$29,90<span style="font-size:10px;font-family:Nunito,sans-serif;opacity:.7"> 1º mês</span></span>
-          <span class="badge b-promo">R$29,90 no 1º mês</span>
+          <span class="ph-price">R$247<span style="font-size:10px;font-family:Nunito,sans-serif;opacity:.7">/mês</span></span>
         </div>
       </div>
       <div class="plan-expand">
         <div class="expand-inner">
-          <div class="exp-price-promo">
-            <div class="exp-price-promo-label">Oferta 1º mês</div>
-            <div class="exp-price-promo-main">
-              <span class="exp-price-val">R$29,90</span>
-              <span class="exp-price-unit">/ 1º mês</span>
-            </div>
-            <div class="exp-price-promo-after">
-              Depois: <s>R$247,00</s> <strong>R$247/mês</strong> · Cancele quando quiser
-            </div>
-            <div class="exp-price-promo-save">Economize R$217,10 no 1º mês</div>
-          </div>
+          <div class="exp-price"><span class="exp-price-val">R$247,00</span><span class="exp-price-unit">/ mês</span></div>
           <div class="upgrade-hint">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
             <span>Por <strong>+R$200/mês</strong>, o Smart lê imagens e faz follow-up automático com clientes que sumiram.</span>
@@ -2020,7 +2151,9 @@ function selPlan(el){
     el.classList.add('sel');
     plan=planFromElement(el);
     document.getElementById('btnS1').disabled=false;
-    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+    if(!el.dataset.skipScroll){
+      setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+    }
     gtmPush('plan_selected', planTrackingParams(plan));
     pushEcommerceEvent('select_item', {
       currency: plan.currency || 'BRL',
@@ -2301,8 +2434,24 @@ function goPayment(){
 // Auto-seleciona o plano Smart ao carregar
 window.addEventListener('DOMContentLoaded', function(){
   const smart = document.querySelector('.plan-item[data-id="smart"]');
-  if(smart) selPlan(smart);
+  // Marca para selPlan pular o scroll interno só nesta seleção inicial
+  if(smart){
+    smart.dataset.skipScroll = '1';
+    selPlan(smart);
+    delete smart.dataset.skipScroll;
+  }
   gtmPush('page_view', {page: 'checkout', step: 'plan_selection'});
+
+  // Auto-scroll: alinha o topo do plano Smart com o topo da viewport.
+  // Roda DEPOIS da transição CSS de expansão (~400ms) e usa scroll instantâneo
+  // para não brigar com nenhum scroll suave residual.
+  if(smart){
+    setTimeout(function(){
+      const rect = smart.getBoundingClientRect();
+      const targetY = rect.top + window.pageYOffset - 12;
+      window.scrollTo({top: Math.max(0, targetY), behavior: 'smooth'});
+    }, 500);
+  }
 
   document.addEventListener('click', function(event){
     const clickable = event.target.closest('button, a, .change');
