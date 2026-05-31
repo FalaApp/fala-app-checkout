@@ -5,6 +5,7 @@
   "description": "Checkout do FalaApp com integração Asaas",
   "main": "server.js",
   "scripts": {
+    "build": "echo 'no build step required' && exit 0",
     "start": "node --env-file=.env server.js",
     "start:no-env": "node server.js",
     "dev": "node --env-file=.env --watch server.js"
