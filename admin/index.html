@@ -545,6 +545,7 @@ const PLAN_LABELS = { small: 'Small', smart: 'Smart', scale: 'Scale' };
 let discountType = 'fixed';
 let discountScope = 'first_only';
 let currentQuoteToken = null;
+let isAdminUser = false; // comercial não vê o botão de excluir
 let notyf;
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -629,6 +630,10 @@ function editSuccessQuote() {
 
 // ── Quotes list ────────────────────────────────────────────────────────────
 async function loadQuotes() {
+  try {
+    const me = await fetch('/api/admin/me');
+    if (me.ok) isAdminUser = !!(await me.json()).isAdmin;
+  } catch {}
   const tbody = document.getElementById('quotes-tbody');
   tbody.innerHTML = '<tr class="empty-row"><td colspan="7"><div class="spinner" style="margin:0 auto"></div></td></tr>';
   try {
@@ -658,7 +663,7 @@ async function loadQuotes() {
           <div style="display:flex;gap:6px;justify-content:flex-end">
             <button class="btn btn-ghost btn-sm btn-icon" title="Copiar link" onclick="copyQuoteLink('${q.token}')">🔗</button>
             <button class="btn btn-ghost btn-sm" onclick="editQuote('${q.id}')">Editar</button>
-            ${q.status !== 'ACCEPTED' ? `<button class="btn btn-danger btn-sm btn-icon" onclick="deleteQuote('${q.id}',this)">✕</button>` : ''}
+            ${isAdminUser && q.status !== 'ACCEPTED' ? `<button class="btn btn-danger btn-sm btn-icon" onclick="deleteQuote('${q.id}',this)">✕</button>` : ''}
           </div>
         </td>
       </tr>

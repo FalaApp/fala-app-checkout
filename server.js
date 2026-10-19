@@ -76,9 +76,15 @@ async function requireAdmin(req, res, next) {
     if (!r.ok) throw new Error("profile_error");
     const body = await r.json();
     const user = body?.data ?? body;
-    const isAdmin = user?.roles?.some((rl) => rl?.role?.name === "admin");
-    if (!isAdmin) throw new Error("not_admin");
+    // Admin ou comercial (papel integreMe reaproveitado como "comercial",
+    // ver commercial.guard.ts na API). Excluir orçamento segue só para admin
+    // — a própria API recusa para o comercial.
+    const roleNames = (user?.roles ?? []).map((rl) => rl?.role?.name);
+    const isAdmin = roleNames.includes("admin");
+    const isCommercial = roleNames.includes("integreMe");
+    if (!isAdmin && !isCommercial) throw new Error("not_admin");
     req.adminUser = user;
+    req.isAdmin = isAdmin;
     next();
   } catch (e) {
     res.clearCookie("admin_token");
@@ -142,6 +148,10 @@ app.post("/api/admin/login", async (req, res) => {
     return res.status(502).json({ error: "Erro ao autenticar" });
   }
 });
+
+app.get("/api/admin/me", requireAdmin, (req, res) =>
+  res.json({ name: req.adminUser?.name ?? null, isAdmin: !!req.isAdmin })
+);
 
 app.post("/api/admin/logout", (req, res) => {
   res.clearCookie("admin_token");
