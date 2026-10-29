@@ -13,7 +13,7 @@ const FREE_TRIAL_WEBHOOK =
   "https://make.fala.app.br/webhook/a5984e82-da61-4e83-8fcf-001c44b48c35";
 
 const FREE_TRIAL_DEFAULTS = {
-  group: "120363227948093356@g.us",
+  group: "120363313684416987@g.us",
   apiUrl: "https://api.fala.app.br",
   sessionId: "a23483ce-62e2-439f-b04d-b9eb472a7ea2",
   moduleIds: [
