@@ -1372,6 +1372,15 @@ body.bf .sp-toast{border-radius:0;background:#0f0f22}
 body.bf .sp-live{border-radius:0}
 @media (max-width:600px){.sp-toast{left:12px;right:84px;bottom:14px;width:auto;max-width:none;font-size:14px;padding:13px 34px 13px 12px}.sp-toast .sp-ic{width:38px;height:38px}.sp-live{font-size:13px;padding:8px 14px}}
 @media (prefers-reduced-motion:reduce){.sp-toast{transition:opacity .2s}.sp-live i,.sp-live-inline i,.sp-toast.show .sp-ic{animation:none}}
+
+.wz-next-steps{border:1px solid rgba(116,235,213,.35);background:rgba(116,235,213,.06);border-radius:12px;padding:14px 16px;margin-bottom:6px}
+.wz-next-steps .wz-box-t{display:block;margin-bottom:10px}
+.wz-steps{list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:wz}
+.wz-steps li{position:relative;padding-left:34px;font-size:13.5px;line-height:1.45;color:var(--sapp);counter-increment:wz}
+.wz-steps li::before{content:counter(wz);position:absolute;left:0;top:-1px;width:24px;height:24px;border-radius:50%;background:var(--ga);color:#0f0f22;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+.wz-steps strong{color:#fff}
+body.bf .wz-next-steps{border-radius:0}
+body.bf .wz-steps li::before{border-radius:0}
 </style>
 </head>
 <body>
@@ -1927,13 +1936,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Etapa 4: revisão -->
     <div class="wz-panel" data-panel="revisao" hidden>
       <div class="wz-review" id="wzReview"></div>
-    <div class="next-hint">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      <div class="next-hint-txt">
-        Ao concluir, sua assinatura é <strong>criada no Asaas</strong> e a 1ª fatura é gerada automaticamente.<br>
-        <strong>O FalaApp é ativado após a confirmação do pagamento.</strong>
-      </div>
-    </div>
+    <div class="wz-next-steps" id="wzNextSteps"></div>
       <div class="sp-live-inline" id="spLiveInline"><i></i><span id="spLiveInlineTxt"></span></div>
       <button type="submit" class="btn" id="btnSub">
         <div class="bi"><div class="spinner"></div><span class="btxt">Ir para o pagamento</span></div>
@@ -2507,6 +2510,15 @@ function wzRenderReview(){
       '<div class="wz-line">'+esc(document.getElementById('cpf').value)+'</div>'+
       '<div class="wz-line"><span>'+esc(end)+'</span></div>'+
     '</div>';
+  // O que acontece depois: a Lana chama no WhatsApp digitado com os acessos.
+  const zap = esc(document.getElementById('phone').value);
+  document.getElementById('wzNextSteps').innerHTML =
+    '<span class="wz-box-t">O que acontece depois</span>'+
+    '<ol class="wz-steps">'+
+      '<li>Abrimos a sua fatura para você pagar por <strong>Pix, boleto ou cartão</strong>.</li>'+
+      '<li>Assim que o pagamento é confirmado, a <strong>Lana</strong> chama você no WhatsApp <strong>'+zap+'</strong>.</li>'+
+      '<li>Ela envia o seu <strong>login e senha do painel</strong> do FalaApp.</li>'+
+    '</ol>';
 }
 
 
