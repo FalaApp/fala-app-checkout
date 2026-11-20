@@ -48,12 +48,104 @@ const PLANS = {
   },
 };
 
+// Black Friday 2026: com ?black no checkout, o 1º mês do Small sai por R$ 29,90
+// (depois R$ 247/mês). Só vale até 30/11/2026 23h59 (Brasília); quem decide é o
+// servidor, para o preço não depender do que o navegador manda.
+const BLACK_FRIDAY = {
+  planId: "small",
+  firstMonthValue: 29.9,
+  until: new Date("2026-11-30T23:59:59-03:00").getTime(),
+};
+function blackFridayFirstMonth(body, plan) {
+  if (body?.promo !== "black") return null;
+  if (plan.id !== BLACK_FRIDAY.planId) return null;
+  if (Date.now() > BLACK_FRIDAY.until) return null;
+  return BLACK_FRIDAY.firstMonthValue;
+}
+
 app.use(express.json({ limit: "256kb" }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public"), { maxAge: "7d" }));
 app.use(express.static(path.join(__dirname)));
 
 app.get("/healthz", (_req, res) => res.json({ ok: true }));
+
+// ── Prova social com dado real ───────────────────────────────
+// Nada aqui é inventado: as compras vêm dos pagamentos confirmados no Asaas e o
+// número de pessoas vem de quem está com o checkout aberto agora (heartbeat).
+// Sem nome de cliente (LGPD): só cidade/UF, plano e o dia.
+
+// Compras recentes: pagamentos RECEIVED/CONFIRMED dos planos do checkout, últimos 30 dias.
+const RECENT_TTL_MS = 5 * 60 * 1000;
+const RECENT_DAYS = 30;
+let recentCache = { at: 0, items: [] };
+const customerPlace = new Map(); // customerId -> { city, state }
+
+function planFromDescription(desc) {
+  const m = /Plano (Small|Smart|Scale)/i.exec(desc || "");
+  return m ? `Plano ${m[1][0].toUpperCase()}${m[1].slice(1).toLowerCase()}` : null;
+}
+async function placeOf(customerId) {
+  if (customerPlace.has(customerId)) return customerPlace.get(customerId);
+  let place = null;
+  try {
+    const c = await asaas("GET", `/customers/${customerId}`);
+    if (c?.cityName && c?.state) place = { city: c.cityName, state: c.state };
+  } catch (e) {
+    console.error("[social-proof] cliente", customerId, e.message);
+  }
+  customerPlace.set(customerId, place);
+  return place;
+}
+async function loadRecentPurchases() {
+  const since = new Date(Date.now() - RECENT_DAYS * 86400000).toISOString().slice(0, 10);
+  const lists = await Promise.all(
+    ["RECEIVED", "CONFIRMED"].map((st) =>
+      asaas("GET", `/payments?status=${st}&paymentDate[ge]=${since}&limit=100`).catch((e) => {
+        console.error("[social-proof] pagamentos", st, e.message);
+        return { data: [] };
+      })
+    )
+  );
+  const pays = lists
+    .flatMap((l) => l?.data || [])
+    .map((p) => ({ p, plan: planFromDescription(p.description), day: p.paymentDate || p.confirmedDate }))
+    .filter((x) => x.plan && x.day)
+    .sort((a, b) => (a.day < b.day ? 1 : -1))
+    .slice(0, 12);
+  const items = [];
+  for (const { p, plan, day } of pays) {
+    const place = await placeOf(p.customer);
+    if (place) items.push({ city: place.city, state: place.state, plan, day });
+  }
+  return items;
+}
+app.get("/api/social-proof/recent", async (_req, res) => {
+  if (!ASAAS_API_KEY) return res.json({ items: [] });
+  if (Date.now() - recentCache.at > RECENT_TTL_MS) {
+    try {
+      recentCache = { at: Date.now(), items: await loadRecentPurchases() };
+    } catch (e) {
+      console.error("[social-proof]", e.message);
+      recentCache = { at: Date.now(), items: recentCache.items };
+    }
+  }
+  res.set("Cache-Control", "public, max-age=60");
+  res.json({ items: recentCache.items });
+});
+
+// Pessoas no checkout agora: cada aba manda um id aleatório a cada 20 s; conta
+// quem deu sinal nos últimos 45 s. Em memória (uma instância só no App Platform).
+const PRESENCE_WINDOW_MS = 45 * 1000;
+const presence = new Map(); // id -> lastSeen
+app.post("/api/presence", (req, res) => {
+  const id = String(req.body?.id || "");
+  if (!/^[a-z0-9]{8,32}$/i.test(id)) return res.status(400).json({ error: "id inválido" });
+  const now = Date.now();
+  if (presence.size < 10000 || presence.has(id)) presence.set(id, now);
+  for (const [k, t] of presence) if (now - t > PRESENCE_WINDOW_MS) presence.delete(k);
+  res.json({ viewers: presence.size });
+});
 
 function parseHumanDuration(str) {
   const match = String(str).match(/^(\d+)(ms|s|m|h|d)?$/);
@@ -373,6 +465,8 @@ app.post("/api/create-subscription", async (req, res) => {
   if (err) return res.status(400).json({ error: err });
 
   const plan = PLANS[req.body.planId];
+  const promoFirstMonth = blackFridayFirstMonth(req.body, plan);
+  const firstMonthValue = promoFirstMonth ?? plan.firstMonthValue;
   const cpfCnpj = cleanDigits(req.body.cpfCnpj);
   const mobilePhone = cleanDigits(req.body.mobilePhone);
 
@@ -405,10 +499,10 @@ app.post("/api/create-subscription", async (req, res) => {
       const list = await asaas("GET", `/subscriptions/${subscription.id}/payments?limit=1`);
       firstPayment = list?.data?.[0] || null;
 
-      if (firstPayment && plan.firstMonthValue && plan.firstMonthValue !== plan.value) {
+      if (firstPayment && firstMonthValue && firstMonthValue !== plan.value) {
         const updated = await asaas("PUT", `/payments/${firstPayment.id}`, {
-          value: plan.firstMonthValue,
-          description: `${plan.description} · 1º mês promocional`,
+          value: firstMonthValue,
+          description: `${plan.description} · 1º mês ${promoFirstMonth ? "Black Friday" : "promocional"}`,
         });
         firstPayment = updated;
       }
@@ -420,6 +514,9 @@ app.post("/api/create-subscription", async (req, res) => {
       ok: true,
       customerId: customer.id,
       subscriptionId: subscription.id,
+      firstMonthValue: firstPayment?.value ?? firstMonthValue ?? plan.value,
+      recurringValue: plan.value,
+      promo: promoFirstMonth ? "black" : undefined,
       invoiceUrl: firstPayment?.invoiceUrl || null,
       bankSlipUrl: firstPayment?.bankSlipUrl || null,
     });

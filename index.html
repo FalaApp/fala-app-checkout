@@ -1289,6 +1289,89 @@ body { font-size: 16px; }
   margin-top:16px;font-size:12px;color:var(--muted);font-weight:400;
   animation:rise .4s ease .58s both;
 }
+
+/* ─── Black Friday (?black): mesmo clima da LP fala.app.br/black/2 ───
+   Ativo só com body.bf (PROMO_BLACK). Mint #74EBD5, ink #0f0f22, canto reto, inclinação. */
+body.bf{background:radial-gradient(120% 70% at 70% 8%,#2f2f5c 0%,var(--mid) 38%,#0f0f22 78%) fixed;padding-top:84px}
+body.bf .bc,body.bf .bg,body.bf #bgCanvas{display:none}
+.bf-marquee{position:absolute;top:0;left:0;right:0;z-index:5;background:var(--ga);color:#0f0f22;overflow:hidden;white-space:nowrap;font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:13px}
+.bf-marquee-track{display:inline-flex;padding:9px 0;animation:bfslide 28s linear infinite}
+.bf-marquee-track span{padding:0 22px}
+.bf-marquee-track span::after{content:"/";margin-left:44px;opacity:.5}
+@keyframes bfslide{to{transform:translateX(-50%)}}
+body.bf .card{border-radius:0;border-color:rgba(172,182,229,.28);background:rgba(15,15,34,.55);box-shadow:none}
+body.bf .card::before{border-radius:0;height:4px;background:var(--ga)}
+body.bf .dot.active{border-radius:0;background:var(--ga)}
+body.bf .ch h1 span{background:none;-webkit-text-fill-color:var(--ga);color:var(--ga)}
+.bf-offer{margin:-6px 0 26px;text-align:center}
+.bf-tag{display:inline-block;font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ga);border:1px solid var(--ga);padding:5px 10px;margin-bottom:16px}
+.bf-stamp{display:inline-block;transform:skewX(-8deg);background:var(--ga);color:#0f0f22;padding:12px 26px 14px}
+.bf-stamp>*{transform:skewX(8deg);display:block}
+.bf-stamp .k{font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.bf-stamp .big{font-family:'Bree Serif',serif;font-size:clamp(46px,13vw,64px);line-height:1;white-space:nowrap}
+.bf-stamp .sub{font-weight:800;font-size:13px}
+.bf-count-lab{margin-top:20px;font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gb)}
+.bf-count{display:flex;justify-content:center;gap:8px;margin-top:8px}
+.bf-count div{border:1px solid rgba(172,182,229,.28);background:rgba(15,15,34,.55);min-width:62px;padding:7px 6px 5px;text-align:center}
+.bf-count b{display:block;font-family:'Bree Serif',serif;font-weight:400;font-size:26px;line-height:1.1;color:#fff}
+.bf-count i{font-style:normal;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.bf-ended{display:none;margin-top:16px;font-weight:700;font-size:13px;color:var(--err)}
+body.bf.bf-over .bf-count,body.bf.bf-over .bf-count-lab,body.bf.bf-over .bf-stamp{display:none}
+body.bf.bf-over .bf-ended{display:block}
+body.bf .sel-pill,body.bf input,body.bf select,body.bf .btn-ghost{border-radius:0}
+body.bf .sel-pill{background:rgba(116,235,213,.08);border-color:rgba(116,235,213,.35);color:var(--ga)}
+body.bf #btnSub,body.bf .wz-next{background:var(--ga);border-radius:0;transform:skewX(-8deg);font-family:'Nunito',sans-serif;font-weight:800;font-size:17px;color:#0f0f22;animation:bfpulse 2.4s ease-in-out infinite}
+body.bf #btnSub .bi,body.bf .wz-next .btxt{display:inline-block;transform:skewX(8deg)}
+body.bf #btnSub:hover,body.bf .wz-next:hover{background:#fff;box-shadow:none}
+body.bf #btnSub:disabled{animation:none}
+@keyframes bfpulse{0%,100%{transform:skewX(-8deg) scale(1)}50%{transform:skewX(-8deg) scale(1.025)}}
+@media (prefers-reduced-motion:reduce){.bf-marquee-track{animation:none}body.bf #btnSub,body.bf .wz-next{animation:none}}
+
+/* ─── Wizard da compra: plano → contato → fatura → revisão → pagamento ─── */
+.wz-panel[hidden]{display:none}
+.wz-panel{animation:wzin .25s ease}
+@keyframes wzin{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+.wz-panel .row:has(#state){grid-template-columns:110px 1fr}
+.wz-review{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+.wz-box{border:1px solid var(--bord);background:rgba(255,255,255,.02);border-radius:12px;padding:14px 16px}
+.wz-box-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.wz-box-t{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--merc)}
+.wz-edit{background:none;border:0;font:inherit;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);cursor:pointer}
+.wz-edit:hover{color:var(--merc)}
+.wz-line{font-size:14px;line-height:1.55;color:var(--sapp);word-break:break-word}
+.wz-line span{color:var(--muted)}
+.wz-total{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:6px;padding-top:10px;border-top:1px solid var(--bord)}
+.wz-total b{white-space:nowrap;font-family:'Bree Serif',serif;font-weight:400;font-size:26px;color:#fff}
+.wz-total small{font-size:12px;color:var(--muted)}
+body.bf .wz-box{border-radius:0;border-color:rgba(172,182,229,.28)}
+body.bf .wz-total b{color:var(--ga)}
+body.bf .bf-offer.wz-compact .bf-tag,body.bf .bf-offer.wz-compact br,body.bf .bf-offer.wz-compact .bf-stamp{display:none}
+body.bf .bf-offer.wz-compact .bf-count-lab{margin-top:0}
+@media (max-width:480px){.wz-panel .row:has(#state){grid-template-columns:90px 1fr}}
+
+/* ─── Prova social (dado real: /api/social-proof/recent e /api/presence) ─── */
+.sp-live{position:relative;z-index:1;display:none;align-items:center;gap:10px;margin:-8px 0 20px;padding:9px 18px;border:1px solid rgba(247,201,72,.55);border-radius:999px;background:rgba(247,201,72,.12);font-size:14px;font-weight:800;color:#fff;box-shadow:0 0 24px rgba(247,201,72,.15)}
+.sp-live.on{display:inline-flex;animation:spin-live .4s ease}
+@keyframes spin-live{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.sp-live b{color:var(--promo-a);font-size:16px}
+.sp-live i{width:10px;height:10px;border-radius:50%;background:#ff5a5f;box-shadow:0 0 0 0 rgba(255,90,95,.6);animation:sppulse 1.4s infinite}
+@keyframes sppulse{0%{box-shadow:0 0 0 0 rgba(255,90,95,.6)}70%{box-shadow:0 0 0 10px rgba(255,90,95,0)}100%{box-shadow:0 0 0 0 rgba(255,90,95,0)}}
+.sp-live-inline{display:none;align-items:center;justify-content:center;gap:8px;margin:4px 0 12px;font-size:13.5px;font-weight:800;color:var(--promo-a)}
+.sp-live-inline.on{display:flex}
+.sp-live-inline i{width:8px;height:8px;border-radius:50%;background:#ff5a5f;animation:sppulse 1.4s infinite}
+.sp-toast{position:fixed;left:24px;bottom:24px;z-index:60;display:flex;align-items:center;gap:14px;width:380px;max-width:calc(100vw - 48px);padding:16px 40px 16px 16px;border:1px solid rgba(116,235,213,.55);border-left:5px solid var(--ga);border-radius:16px;background:#14142a;box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 0 1px rgba(116,235,213,.08),0 0 40px rgba(116,235,213,.18);color:var(--sapp);font-size:15px;line-height:1.4;transform:translateX(-120%);opacity:0;transition:transform .5s cubic-bezier(.2,1.3,.4,1),opacity .3s ease}
+.sp-toast.show{transform:none;opacity:1}
+.sp-toast .sp-ic{flex-shrink:0;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--ga);color:#0f0f22}
+.sp-toast .sp-ic svg{width:22px;height:22px}
+.sp-toast.show .sp-ic{animation:sppop .6s ease .25s both}
+@keyframes sppop{0%{transform:scale(.4)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.sp-toast strong{color:#fff;font-weight:800}
+.sp-toast small{display:block;color:var(--ga);font-size:12.5px;font-weight:700;margin-top:3px}
+.sp-toast .sp-x{position:absolute;top:8px;right:10px;background:none;border:0;color:var(--muted);font-size:18px;line-height:1;cursor:pointer;padding:4px}
+body.bf .sp-toast{border-radius:0;background:#0f0f22}
+body.bf .sp-live{border-radius:0}
+@media (max-width:600px){.sp-toast{left:12px;right:84px;bottom:14px;width:auto;max-width:none;font-size:14px;padding:13px 34px 13px 12px}.sp-toast .sp-ic{width:38px;height:38px}.sp-live{font-size:13px;padding:8px 14px}}
+@media (prefers-reduced-motion:reduce){.sp-toast{transition:opacity .2s}.sp-live i,.sp-live-inline i,.sp-toast.show .sp-ic{animation:none}}
 </style>
 </head>
 <body>
@@ -1310,10 +1393,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <path text="Fala App" fill="#c5f3f6" space="preserve" text-anchor="start" offset="0" font-scale="contain" font-size="48" font-family="Bree Serif" transform="matrix(1.365229081230063, 0, 0, 1.365229081230063, 184.0330482240865, 261.71174835054893)" font-weight="400" font-style="normal" letter-spacing="-3" data-fl-textpath="" d="M 14.74 0L 1.63 0L 1.63-3.89L 3.22-4.03Q 4.61-4.18  4.61-5.38L 4.61-5.38L 4.61-27.7L 1.87-27.84L 1.87-31.92L 25.06-31.92L 25.06-23.95L 20.16-23.62L 20.16-25.54Q 20.16-26.35  19.92-26.69Q 19.68-27.02  18.77-27.02L 18.77-27.02L 10.46-27.02L 10.46-18.53L 22.27-18.53L 22.27-13.63L 10.46-13.63L 10.46-4.22L 14.74-4.08L 14.74 0ZM 46.204-23.18L 46.204-23.18L 46.204-5.33Q 46.204-4.56  46.464-4.27Q 46.724-3.98  47.404-3.94L 47.404-3.94L 48.934-3.84L 48.934 0L 41.304 0L 41.304-2.78L 41.164-2.83Q 38.764 0.62  34.584 0.62L 34.584 0.62Q 29.684 0.62  27.334-2.5Q 24.984-5.62  24.984-11.04L 24.984-11.04Q 24.984-17.57  28.154-21.22Q 31.324-24.86  37.654-24.86L 37.654-24.86Q 41.734-24.86  46.204-23.18ZM 40.634-7.63L 40.634-7.63L 40.634-20.06Q 39.284-20.69  36.934-20.69L 36.934-20.69Q 33.724-20.69  32.284-18.1Q 30.844-15.5  30.844-11.23L 30.844-11.23Q 30.844-3.46  35.834-3.46L 35.834-3.46Q 37.944-3.46  39.284-4.73Q 40.634-6  40.634-7.63ZM 48.86-34.22L 57.46-34.22L 57.46-3.98L 60.19-3.84L 60.19 0L 48.77 0L 48.77-3.65L 50.35-3.79Q 51.74-3.94  51.74-5.33L 51.74-5.33L 51.74-28.99Q 51.74-30.05  50.54-30.14L 50.54-30.14L 48.86-30.24L 48.86-34.22ZM 81.724-23.18L 81.724-23.18L 81.724-5.33Q 81.724-4.56  81.984-4.27Q 82.244-3.98  82.924-3.94L 82.924-3.94L 84.454-3.84L 84.454 0L 76.824 0L 76.824-2.78L 76.684-2.83Q 74.284 0.62  70.104 0.62L 70.104 0.62Q 65.204 0.62  62.854-2.5Q 60.504-5.62  60.504-11.04L 60.504-11.04Q 60.504-17.57  63.674-21.22Q 66.844-24.86  73.174-24.86L 73.174-24.86Q 77.254-24.86  81.724-23.18ZM 76.154-7.63L 76.154-7.63L 76.154-20.06Q 74.804-20.69  72.454-20.69L 72.454-20.69Q 69.244-20.69  67.804-18.1Q 66.364-15.5  66.364-11.23L 66.364-11.23Q 66.364-3.46  71.354-3.46L 71.354-3.46Q 73.464-3.46  74.804-4.73Q 76.154-6  76.154-7.63ZM 92.66-5.38L 92.66-5.38L 100.39-27.74L 97.37-28.03L 97.37-31.92L 108.36-31.92L 118.15-4.22L 118.2-4.22L 120.94-4.08L 120.94 0L 108.55 0L 108.55-3.89L 110.38-4.03Q 111.19-4.13  111.48-4.42Q 111.77-4.7  111.53-5.47L 111.53-5.47L 110.52-8.45L 99.29-8.45L 97.85-4.22L 100.73-4.08L 100.73 0L 89.64 0L 89.64-3.89L 91.22-4.03Q 92.23-4.13  92.66-5.38ZM 105.05-26.54L 104.9-26.54L 100.44-12.86L 109.37-12.86L 105.05-26.54ZM 121.486 4.56L 121.486 4.56L 121.486-18.67Q 121.486-19.49  121.226-19.8Q 120.956-20.11  120.286-20.11L 120.286-20.11L 118.276-20.26L 118.276-24.14L 126.386-24.14L 126.386-21.02Q 127.156-22.46  129.166-23.66Q 131.186-24.86  133.966-24.86L 133.966-24.86Q 142.656-24.86  142.656-12.67L 142.656-12.67Q 142.656-6.19  139.826-2.74Q 136.996 0.72  132.146 0.72L 132.146 0.72Q 129.266 0.72  127.006-0.67L 127.006-0.67L 127.006 5.95L 130.896 6.14L 130.896 9.94L 118.516 9.94L 118.516 6.29L 120.096 6.14Q 120.816 6.05  121.156 5.74Q 121.486 5.42  121.486 4.56ZM 136.706-12.19L 136.706-12.19Q 136.706-20.21  131.856-20.21L 131.856-20.21Q 129.836-20.21  128.426-18.98Q 127.006-17.76  127.006-16.08L 127.006-16.08L 127.006-5.04Q 128.836-3.84  131.446-3.84Q 134.066-3.84  135.386-6.24Q 136.706-8.64  136.706-12.19ZM 145.75 4.56L 145.75 4.56L 145.75-18.67Q 145.75-19.49  145.49-19.8Q 145.22-20.11  144.55-20.11L 144.55-20.11L 142.54-20.26L 142.54-24.14L 150.65-24.14L 150.65-21.02Q 151.42-22.46  153.43-23.66Q 155.45-24.86  158.23-24.86L 158.23-24.86Q 166.92-24.86  166.92-12.67L 166.92-12.67Q 166.92-6.19  164.09-2.74Q 161.26 0.72  156.41 0.72L 156.41 0.72Q 153.53 0.72  151.27-0.67L 151.27-0.67L 151.27 5.95L 155.16 6.14L 155.16 9.94L 142.78 9.94L 142.78 6.29L 144.36 6.14Q 145.08 6.05  145.42 5.74Q 145.75 5.42  145.75 4.56ZM 160.97-12.19L 160.97-12.19Q 160.97-20.21  156.12-20.21L 156.12-20.21Q 154.1-20.21  152.69-18.98Q 151.27-17.76  151.27-16.08L 151.27-16.08L 151.27-5.04Q 153.1-3.84  155.71-3.84Q 158.33-3.84  159.65-6.24Q 160.97-8.64  160.97-12.19Z" />
 </svg></div>
 <div class="prog" id="prog">
-  <div class="dot active" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div>
-  <span class="plbl" id="plbl">Escolha seu plano</span>
+  <div class="dot active" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div><div class="dot" id="d4"></div><div class="dot" id="d5"></div>
+  <span class="plbl" id="plbl">Etapa 1 de 5 · Plano</span>
 </div>
 
+<div class="sp-live" id="spLive" aria-live="polite"><i></i><span id="spLiveTxt"></span></div>
+<div class="sp-toast" id="spToast" role="status" aria-live="polite"><div class="sp-ic"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div><div id="spToastTxt"></div><button type="button" class="sp-x" aria-label="Fechar" onclick="spDismiss()">×</button></div>
 <div class="card">
 <div id="s1">
   <div class="ch">
@@ -1743,6 +1828,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </button>
   </div>
   <form id="form" novalidate>
+    <!-- Etapa 2: contato -->
+    <div class="wz-panel" data-panel="contato">
     <div class="field">
       <label>Nome completo <span class="req">*</span></label>
       <div class="iw">
@@ -1751,6 +1838,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="err" id="eNome">Informe o nome completo.</div>
     </div>
+    <div class="field">
+      <label>WhatsApp <span class="req">*</span></label>
+      <div class="iw">
+        <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z"/></svg>
+        <input type="tel" id="phone" placeholder="(81) 99999-0000" required>
+      </div>
+      <div class="err" id="eTel">Número inválido.</div>
+    </div>
+  <div class="field">
+    <label>E-mail</label>
+    <div class="iw">
+      <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      <input type="email" id="email" placeholder="joao@empresa.com.br">
+    </div>
+  </div>
+      <button type="submit" class="btn wz-next"><span class="btxt">Continuar</span></button>
+      <button type="button" class="btn-ghost" onclick="goS1()">← Voltar aos planos</button>
+    </div>
+
+    <!-- Etapa 3: dados da fatura -->
+    <div class="wz-panel" data-panel="fatura" hidden>
     <div class="row">
       <div class="field">
         <label>CPF / CNPJ <span class="req">*</span></label>
@@ -1761,24 +1869,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="err" id="eCpf">CPF ou CNPJ inválido.</div>
       </div>
       <div class="field">
-        <label>WhatsApp <span class="req">*</span></label>
-        <div class="iw">
-          <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z"/></svg>
-          <input type="tel" id="phone" placeholder="(81) 99999-0000" required>
-        </div>
-        <div class="err" id="eTel">Número inválido.</div>
-      </div>
-    </div>
-    <div class="field">
-      <label>E-mail</label>
-      <div class="iw">
-        <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-        <input type="email" id="email" placeholder="joao@empresa.com.br">
-      </div>
-    </div>
-    <div class="div">Endereço</div>
-    <div class="row">
-      <div class="field">
         <label>CEP <span class="req">*</span></label>
         <div class="iw">
           <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -1787,16 +1877,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="err" id="eCep">CEP obrigatório.</div>
         <div class="hint">Preenche automaticamente</div>
       </div>
+    </div>
+    <div class="row">
       <div class="field">
         <label>Estado <span class="req">*</span></label>
         <div class="iw">
           <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
           <input type="text" id="state" placeholder="PE" maxlength="2" style="text-transform:uppercase" required>
+        </div>
         <div class="err" id="eState">Estado obrigatório.</div>
       </div>
-      </div>
-    </div>
-    <div class="row">
       <div class="field">
         <label>Cidade <span class="req">*</span></label>
         <div class="iw">
@@ -1805,22 +1895,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <div class="err" id="eCity">Cidade obrigatória.</div>
       </div>
+    </div>
+    <div class="row">
       <div class="field">
         <label>Bairro</label>
         <div class="iw">
           <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
           <input type="text" id="bairro" placeholder="Boa Viagem">
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="field">
-        <label>Logradouro <span class="req">*</span></label>
-        <div class="iw">
-          <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-          <input type="text" id="addr" placeholder="Rua das Flores" required>
-        </div>
-        <div class="err" id="eAddr">Logradouro obrigatório.</div>
       </div>
       <div class="field">
         <label>Número</label>
@@ -1830,6 +1912,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
     </div>
+      <div class="field">
+        <label>Logradouro <span class="req">*</span></label>
+        <div class="iw">
+          <svg class="ico" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+          <input type="text" id="addr" placeholder="Rua das Flores" required>
+        </div>
+        <div class="err" id="eAddr">Logradouro obrigatório.</div>
+      </div>
+      <button type="submit" class="btn wz-next"><span class="btxt">Revisar pedido</span></button>
+      <button type="button" class="btn-ghost" onclick="wzGo('contato')">← Voltar</button>
+    </div>
+
+    <!-- Etapa 4: revisão -->
+    <div class="wz-panel" data-panel="revisao" hidden>
+      <div class="wz-review" id="wzReview"></div>
     <div class="next-hint">
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       <div class="next-hint-txt">
@@ -1837,10 +1934,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <strong>O FalaApp é ativado após a confirmação do pagamento.</strong>
       </div>
     </div>
-    <button type="submit" class="btn" id="btnSub">
-      <div class="bi"><div class="spinner"></div><span class="btxt">Continuar para pagamento</span></div>
-    </button>
-    <button type="button" class="btn-ghost" onclick="goS1()">← Voltar</button>
+      <div class="sp-live-inline" id="spLiveInline"><i></i><span id="spLiveInlineTxt"></span></div>
+      <button type="submit" class="btn" id="btnSub">
+        <div class="bi"><div class="spinner"></div><span class="btxt">Ir para o pagamento</span></div>
+      </button>
+      <button type="button" class="btn-ghost" onclick="wzGo('fatura')">← Voltar</button>
+    </div>
   </form>
 </div>
 
@@ -2023,6 +2122,70 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 const API_ENDPOINT='/api/create-subscription';
 let plan=null;
 
+// Black Friday 2026 (LP fala.app.br/black/2): ?black abre direto no formulário
+// do Small com o 1º mês a R$ 29,90. O valor cobrado é decidido no servidor.
+const BLACK_FRIDAY_UNTIL = new Date('2026-11-30T23:59:59-03:00').getTime();
+const PROMO_BLACK = new URLSearchParams(location.search).has('black') && Date.now() <= BLACK_FRIDAY_UNTIL;
+// Clima da LP: faixa no topo, selo do preço, contagem até 30/11 e botão no estilo da Black.
+function setupBlackFridayTheme(){
+  document.body.classList.add('bf');
+  const itens = ['Black Friday Fala App','1º mês por R$ 29,90','Condição até 30/11'];
+  const seq = [...itens, ...itens, ...itens].map(t => '<span>'+t+'</span>').join('');
+  const marquee = document.createElement('div');
+  marquee.className = 'bf-marquee'; marquee.setAttribute('aria-hidden','true');
+  marquee.innerHTML = '<div class="bf-marquee-track">'+seq+seq+'</div>';
+  document.body.prepend(marquee);
+
+  const h1 = document.querySelector('#s2 .ch h1');
+  if(h1) h1.innerHTML = 'Garanta sua <span>Black Friday</span>';
+  const sub = document.querySelector('#s2 .ch p');
+  if(sub) sub.textContent = 'Preencha seus dados para travar o 1º mês por R$ 29,90.';
+
+  const offer = document.createElement('div');
+  offer.className = 'bf-offer';
+  offer.innerHTML =
+    '<span class="bf-tag">Condição especial</span><br>'+
+    '<div class="bf-stamp"><span class="k">Primeiro mês</span><span class="big">R$ 29,90</span><span class="sub">Plano Small. Do 2º mês em diante, R$ 247/mês.</span></div>'+
+    '<p class="bf-count-lab">A condição acaba em</p>'+
+    '<div class="bf-count" role="timer" aria-label="Tempo restante da oferta">'+
+      '<div><b id="bf-d">--</b><i>dias</i></div><div><b id="bf-h">--</b><i>horas</i></div><div><b id="bf-m">--</b><i>min</i></div><div><b id="bf-s">--</b><i>seg</i></div>'+
+    '</div>'+
+    '<p class="bf-ended">A condição da Black Friday terminou. O valor do plano volta a ser R$ 247/mês.</p>';
+  const ch = document.querySelector('#s2 .ch');
+  if(ch) ch.after(offer);
+
+  const btxt = document.querySelector('#btnSub .btxt');
+  if(btxt) btxt.textContent = 'Garantir o 1º mês por R$ 29,90 →';
+
+  const el = {d:document.getElementById('bf-d'),h:document.getElementById('bf-h'),m:document.getElementById('bf-m'),s:document.getElementById('bf-s')};
+  const dois = n => (n<10?'0':'')+n;
+  let timer;
+  function tick(){
+    const resto = BLACK_FRIDAY_UNTIL - Date.now();
+    if(resto <= 0){
+      document.body.classList.add('bf-over');
+      if(btxt) btxt.textContent = 'Continuar para pagamento';
+      clearInterval(timer); return;
+    }
+    const t = Math.floor(resto/1000);
+    el.d.textContent = dois(Math.floor(t/86400));
+    el.h.textContent = dois(Math.floor(t%86400/3600));
+    el.m.textContent = dois(Math.floor(t%3600/60));
+    el.s.textContent = dois(t%60);
+  }
+  tick(); timer = setInterval(tick, 1000);
+}
+
+function applyBlackFridayToSmall(){
+  const small = document.querySelector('.plan-item[data-id="small"]');
+  if(!small) return null;
+  small.dataset.lbl = 'Plano Small · 1º mês R$29,90 · depois R$247/mês';
+  small.dataset.firstPaymentValue = '29.9';
+  const price = small.querySelector('.exp-price');
+  if(price) price.innerHTML = '<span class="exp-price-val">R$29,90</span><span class="exp-price-unit">no 1º mês · depois R$247/mês</span>';
+  return small;
+}
+
 // ── GTM dataLayer helper ─────────────────────────────────────
 window.dataLayer = window.dataLayer || [];
 function compactObject(obj){
@@ -2172,8 +2335,7 @@ function goS2(){
   document.getElementById('s1').style.display='none';
   document.getElementById('s2').style.display='block';
   document.getElementById('pillTxt').textContent=plan.label;
-  dot('d1','done');dot('d2','active');
-  document.getElementById('plbl').textContent='Seus dados';
+  wzGo('contato', {silent:true});
   window.scrollTo({top:0,behavior:'smooth'});
   gtmPush('checkout_step_2', planTrackingParams(plan));
   pushEcommerceEvent('begin_checkout', {
@@ -2186,8 +2348,7 @@ function goS2(){
 function goS1(){
   document.getElementById('s2').style.display='none';
   document.getElementById('s1').style.display='block';
-  dot('d2','');dot('d1','active');
-  document.getElementById('plbl').textContent='Escolha seu plano';
+  setStep(1);
   window.scrollTo({top:0,behavior:'smooth'});
   gtmPush('checkout_step_1', planTrackingParams(plan));
   clearTrialNudgeTimers();
@@ -2204,6 +2365,7 @@ function clearTrialNudgeTimers(){
 }
 function startTrialNudgeTimers(){
   clearTrialNudgeTimers();
+  if(PROMO_BLACK) return; // quem veio da Black já escolheu pagar; não oferece o teste grátis
   if(trialNudgeShown) return;
   if(sessionStorage.getItem('trialNudgeDismissed')==='1') return;
   trialNudgeTimers.idle = setTimeout(()=>showTrialNudge('idle_initial'), TRIAL_NUDGE_IDLE_MS);
@@ -2260,6 +2422,156 @@ document.getElementById('cep').addEventListener('input',function(e){
   e.target.value=v;
   if(v.replace('-','').length===8) viaCep(v.replace('-',''));
 });
+// ── Wizard: etapas 2-4 dentro do #form ──────────────────────
+const WZ = {
+  contato: {n:2, rotulo:'Contato', titulo:'Como falamos <span>com você</span>', sub:'Usamos o WhatsApp para enviar seus acessos.'},
+  fatura:  {n:3, rotulo:'Fatura', titulo:'Dados da <span>fatura</span>', sub:'Digite o CEP e o endereço se preenche sozinho.'},
+  revisao: {n:4, rotulo:'Revisão', titulo:'Confira e <span>finalize</span>', sub:'Revise antes de gerar a sua fatura.'}
+};
+const STEP_LBL = {1:'Plano', 2:'Contato', 3:'Fatura', 4:'Revisão', 5:'Pagamento'};
+let wzAtual = 'contato';
+function setStep(n){
+  for(let i=1;i<=5;i++) dot('d'+i, i<n?'done':(i===n?'active':''));
+  document.getElementById('plbl').textContent='Etapa '+n+' de 5 · '+STEP_LBL[n];
+}
+function wzGo(nome, opts){
+  opts = opts || {};
+  wzAtual = nome;
+  document.querySelectorAll('.wz-panel').forEach(p => { p.hidden = p.dataset.panel !== nome; });
+  const cfg = WZ[nome];
+  setStep(cfg.n);
+  const h1 = document.querySelector('#s2 .ch h1');
+  const sub = document.querySelector('#s2 .ch p');
+  if(h1) h1.innerHTML = (PROMO_BLACK && nome==='contato') ? 'Garanta sua <span>Black Friday</span>' : cfg.titulo;
+  if(sub) sub.textContent = (PROMO_BLACK && nome==='contato') ? 'Preencha seus dados para travar o 1º mês por R$ 29,90.' : cfg.sub;
+  const offer = document.querySelector('.bf-offer');
+  if(offer) offer.classList.toggle('wz-compact', nome!=='contato');
+  const pill = document.querySelector('#s2 .sel-pill');
+  if(pill) pill.style.display = nome==='revisao' ? 'none' : '';
+  if(nome==='revisao') wzRenderReview();
+  if(!opts.silent){
+    document.getElementById('s2').scrollIntoView({behavior:'smooth', block:'start'});
+    const first = document.querySelector('.wz-panel[data-panel="'+nome+'"] input');
+    if(first && !first.value && window.matchMedia('(min-width:700px)').matches) setTimeout(()=>first.focus(), 260);
+  }
+  gtmPush('checkout_wizard_step', Object.assign({step_name: nome, step_number: cfg.n}, planTrackingParams(plan)));
+}
+function wzCheck(id, errId, ok){
+  if(ok){ hd(errId); um(id); } else { sh(errId); mk(id); }
+  return ok;
+}
+// Valida só os campos da etapa; devolve a lista de campos inválidos (nomes do GTM).
+function wzValidate(nome){
+  const bad = [];
+  const digits = id => document.getElementById(id).value.replace(/\D/g,'');
+  if(nome==='contato'){
+    if(!wzCheck('name','eNome', !!v('name'))) bad.push('name');
+    if(!wzCheck('phone','eTel', digits('phone').length>=10)) bad.push('mobile_phone');
+  }
+  if(nome==='fatura'){
+    const c = digits('cpf').length;
+    if(!wzCheck('cpf','eCpf', c===11||c===14)) bad.push('cpf_cnpj');
+    if(!wzCheck('cep','eCep', digits('cep').length===8)) bad.push('postal_code');
+    if(!wzCheck('state','eState', !!v('state'))) bad.push('state');
+    if(!wzCheck('city','eCity', !!v('city'))) bad.push('city');
+    if(!wzCheck('addr','eAddr', !!v('addr'))) bad.push('address');
+  }
+  if(bad.length){
+    gtmPush('form_validation_error', Object.assign({
+      form_id: 'checkout_form', wizard_step: nome,
+      invalid_fields: bad.join(','), invalid_field_count: bad.length
+    }, planTrackingParams(plan)));
+    const first = document.getElementById({name:'name',mobile_phone:'phone',cpf_cnpj:'cpf',postal_code:'cep',state:'state',city:'city',address:'addr'}[bad[0]]);
+    if(first) first.focus();
+  }
+  return bad;
+}
+function esc(t){ const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+function brl(n){ return 'R$ '+Number(n).toFixed(2).replace('.',','); }
+function wzRenderReview(){
+  const first = toNumber(plan && plan.firstPaymentValue) ?? toNumber(plan && plan.recurringValue);
+  const rec = toNumber(plan && plan.recurringValue);
+  const promo = first!=null && rec!=null && first!==rec;
+  const end = [v('addr') + (v('addrNum') ? ', '+v('addrNum') : ''), v('bairro'), v('city')+'/'+v('state').toUpperCase(), document.getElementById('cep').value].filter(Boolean).join(' · ');
+  document.getElementById('wzReview').innerHTML =
+    '<div class="wz-box"><div class="wz-box-h"><span class="wz-box-t">Plano</span><button type="button" class="wz-edit" onclick="goS1()">Trocar</button></div>'+
+      '<div class="wz-line">'+esc(plan ? plan.label : '')+'</div>'+
+      '<div class="wz-total"><small>'+(promo ? 'Hoje você paga (1º mês)' : 'Valor mensal')+'</small><b>'+(first!=null ? brl(first) : '')+'</b></div>'+
+      (promo ? '<div class="wz-line"><span>A partir do 2º mês: '+brl(rec)+'/mês</span></div>' : '')+
+    '</div>'+
+    '<div class="wz-box"><div class="wz-box-h"><span class="wz-box-t">Contato</span><button type="button" class="wz-edit" onclick="wzGo(\'contato\')">Editar</button></div>'+
+      '<div class="wz-line">'+esc(v('name'))+'</div>'+
+      '<div class="wz-line"><span>'+esc(document.getElementById('phone').value)+(v('email') ? ' · '+esc(v('email')) : '')+'</span></div>'+
+    '</div>'+
+    '<div class="wz-box"><div class="wz-box-h"><span class="wz-box-t">Fatura</span><button type="button" class="wz-edit" onclick="wzGo(\'fatura\')">Editar</button></div>'+
+      '<div class="wz-line">'+esc(document.getElementById('cpf').value)+'</div>'+
+      '<div class="wz-line"><span>'+esc(end)+'</span></div>'+
+    '</div>';
+}
+
+
+// ── Prova social com dado real ──────────────────────────────
+// Compras: pagamentos confirmados no Asaas (só cidade/UF, plano e dia; nunca nome).
+// Pessoas agora: abas com o checkout aberto nos últimos 45 s. Sem dado, nada aparece.
+(function(){
+  const sid = (crypto.randomUUID ? crypto.randomUUID().replace(/-/g,'') : Math.random().toString(36).slice(2)+Date.now().toString(36)).slice(0,24);
+  const live = document.getElementById('spLive');
+  const liveTxt = document.getElementById('spLiveTxt');
+  async function ping(){
+    if(document.visibilityState !== 'visible') return;
+    try{
+      const r = await fetch('/api/presence',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:sid})});
+      const d = await r.json();
+      const outros = (d.viewers||0) - 1;
+      const inl = document.getElementById('spLiveInline');
+      if(outros >= 1){
+        liveTxt.innerHTML = outros===1 ? '<b>1 pessoa</b> além de você está no checkout agora' : '<b>'+outros+' pessoas</b> além de você estão no checkout agora';
+        document.getElementById('spLiveInlineTxt').textContent = outros===1 ? 'Mais 1 pessoa está fechando a compra agora' : 'Mais '+outros+' pessoas estão fechando a compra agora';
+        live.classList.add('on'); inl.classList.add('on');
+      } else { live.classList.remove('on'); inl.classList.remove('on'); }
+    }catch(_){}
+  }
+  ping(); setInterval(ping, 20000);
+  document.addEventListener('visibilitychange', ping);
+
+  const toast = document.getElementById('spToast');
+  const toastTxt = document.getElementById('spToastTxt');
+  let itens = [], idx = 0, mostrados = 0, fechado = false;
+  const MAX = 6;
+  function quando(day){
+    const hoje = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Sao_Paulo'}));
+    hoje.setHours(0,0,0,0);
+    const [y,m,dd] = day.split('-').map(Number);
+    const dias = Math.round((hoje - new Date(y,m-1,dd)) / 86400000);
+    if(dias <= 0) return 'hoje';
+    if(dias === 1) return 'ontem';
+    return 'há '+dias+' dias';
+  }
+  function podeMostrar(){
+    if(fechado || mostrados >= MAX || !itens.length) return false;
+    if(document.getElementById('s3').style.display === 'block') return false;
+    const tm = document.getElementById('trialModal');
+    if(tm && tm.classList.contains('open')) return false;
+    return document.visibilityState === 'visible';
+  }
+  function mostrar(){
+    if(!podeMostrar()) return;
+    const it = itens[idx++ % itens.length];
+    toastTxt.innerHTML = 'Uma empresa de <strong>'+esc(it.city)+'/'+esc(it.state)+'</strong> assinou o <strong>'+esc(it.plan)+'</strong><small>'+quando(it.day)+' · pagamento confirmado</small>';
+    toast.classList.add('show');
+    mostrados++;
+    gtmPush('social_proof_shown', {proof_city: it.city, proof_plan: it.plan, step: currentStep()});
+    setTimeout(()=>toast.classList.remove('show'), 8000);
+  }
+  window.spDismiss = function(){ fechado = true; toast.classList.remove('show'); };
+  fetch('/api/social-proof/recent').then(r=>r.json()).then(d=>{
+    itens = (d && d.items) || [];
+    if(!itens.length) return;
+    setTimeout(mostrar, 4000);
+    setInterval(mostrar, 18000);
+  }).catch(()=>{});
+})();
+
 async function viaCep(c){
   try{
     const r=await fetch(`https://viacep.com.br/ws/${c}/json/`);
@@ -2269,34 +2581,24 @@ async function viaCep(c){
       document.getElementById('bairro').value=d.bairro||'';
       document.getElementById('city').value=d.localidade||'';
       document.getElementById('state').value=d.uf||'';
+      ['addr','city','state'].forEach(id=>{ if(v(id)) um(id); });
+      if(d.logradouro) document.getElementById('addrNum').focus();
     }
   }catch(e){}
 }
 document.getElementById('form').addEventListener('input', cancelIdleTrialNudge);
 document.getElementById('form').addEventListener('submit',async function(e){
   e.preventDefault();
+  // Etapas 2 e 3: Enter ou "Continuar" valida só a etapa e avança.
+  if(wzAtual==='contato'){ if(!wzValidate('contato').length) wzGo('fatura'); return; }
+  if(wzAtual==='fatura'){ if(!wzValidate('fatura').length) wzGo('revisao'); return; }
   clearTrialNudgeTimers();
-  let ok=true;
-  const invalidFields=[];
+  if(wzValidate('contato').length){ wzGo('contato'); wzValidate('contato'); return; }
+  if(wzValidate('fatura').length){ wzGo('fatura'); wzValidate('fatura'); return; }
   const name=v('name');
-  if(!name){sh('eNome');mk('name');ok=false;invalidFields.push('name')}else{hd('eNome');um('name')}
   const cpf=document.getElementById('cpf').value.replace(/\D/g,'');
-  if(cpf.length!==11&&cpf.length!==14){sh('eCpf');mk('cpf');ok=false;invalidFields.push('cpf_cnpj')}else{hd('eCpf');um('cpf')}
   const phone=document.getElementById('phone').value.replace(/\D/g,'');
-  if(phone.length<10){sh('eTel');mk('phone');ok=false;invalidFields.push('mobile_phone')}else{hd('eTel');um('phone')}
   const cep=document.getElementById('cep').value.replace(/\D/g,'');
-  if(cep.length<8){sh('eCep');mk('cep');ok=false;invalidFields.push('postal_code')}else{hd('eCep');um('cep')}
-  if(!v('state')){sh('eState');mk('state');ok=false;invalidFields.push('state')}else{hd('eState');um('state')}
-  if(!v('city')){sh('eCity');mk('city');ok=false;invalidFields.push('city')}else{hd('eCity');um('city')}
-  if(!v('addr')){sh('eAddr');mk('addr');ok=false;invalidFields.push('address')}else{hd('eAddr');um('addr')}
-  if(!ok){
-    gtmPush('form_validation_error', Object.assign({
-      form_id: 'checkout_form',
-      invalid_fields: invalidFields.join(','),
-      invalid_field_count: invalidFields.length
-    }, planTrackingParams(plan)));
-    return;
-  }
   if(!plan||!plan.id){sh('eNome');return}
   const btn=document.getElementById('btnSub');
   btn.classList.add('loading');btn.disabled=true;
@@ -2311,7 +2613,8 @@ document.getElementById('form').addEventListener('submit',async function(e){
     addressNumber:v('addrNum')||undefined,
     province:v('bairro')||undefined,
     city:v('city')||undefined,
-    state:document.getElementById('state').value.trim().toUpperCase()||undefined
+    state:document.getElementById('state').value.trim().toUpperCase()||undefined,
+    promo:PROMO_BLACK?'black':undefined
   };
   Object.keys(body).forEach(k=>body[k]===undefined&&delete body[k]);
   gtmPush('form_submit', Object.assign({
@@ -2360,8 +2663,7 @@ document.getElementById('form').addEventListener('submit',async function(e){
     document.getElementById('s2').style.display='none';
     document.getElementById('s3').style.display='block';
     document.getElementById('sbadge').textContent='Assinatura: '+(data.subscriptionId||'criada');
-    dot('d2','done');dot('d3','active');
-    document.getElementById('plbl').textContent='Pagamento pendente';
+    setStep(5);
     const btnPay=document.getElementById('btnPay');
     const btnReopen=document.getElementById('btnReopen');
     if(btnPay){
@@ -2431,16 +2733,24 @@ function goPayment(){
   goS2();
 }
 
-// Auto-seleciona o plano Smart ao carregar
+// Auto-seleciona o plano Smart ao carregar (ou o Small da Black Friday)
 window.addEventListener('DOMContentLoaded', function(){
-  const smart = document.querySelector('.plan-item[data-id="smart"]');
+  if(PROMO_BLACK) setupBlackFridayTheme();
+  const blackSmall = PROMO_BLACK ? applyBlackFridayToSmall() : null;
+  const smart = blackSmall ? null : document.querySelector('.plan-item[data-id="smart"]');
+  if(blackSmall){
+    blackSmall.dataset.skipScroll = '1';
+    selPlan(blackSmall);
+    delete blackSmall.dataset.skipScroll;
+    goS2();
+  }
   // Marca para selPlan pular o scroll interno só nesta seleção inicial
   if(smart){
     smart.dataset.skipScroll = '1';
     selPlan(smart);
     delete smart.dataset.skipScroll;
   }
-  gtmPush('page_view', {page: 'checkout', step: 'plan_selection'});
+  gtmPush('page_view', compactObject({page: 'checkout', step: blackSmall ? 'form' : 'plan_selection', promo: PROMO_BLACK ? 'black' : null}));
 
   // Auto-scroll: alinha o topo do plano Smart com o topo da viewport.
   // Roda DEPOIS da transição CSS de expansão (~400ms) e usa scroll instantâneo
