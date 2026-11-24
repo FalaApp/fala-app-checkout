@@ -84,6 +84,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 (function(){
   var BF_PIXEL = '1487099193554989';
   if(!new URLSearchParams(location.search).has('black')) return;
+  fbq('set', 'autoConfig', false, BF_PIXEL);
   fbq('init', BF_PIXEL);
   fbq('trackSingle', BF_PIXEL, 'PageView');
   window.bfPixel = function(evento, params, opcoes){
@@ -91,7 +92,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   };
 })();
 </script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1487099193554989&ev=PageView&noscript=1"/></noscript>
 <style>
 :root{
   --mid:#24243d;--mid2:#1d1d30;
@@ -2299,6 +2299,9 @@ function gtmPush(event, params){
 // dispara ao criar a assinatura (antes de pagar). Compra real so por servidor, no webhook do Asaas.
 const BF_PIXEL_FIRED = {};
 function bfPixelMap(event, params){
+  try{ bfPixelMapInner(event, params); }catch(_){ /* BF_PIXEL_SAFE: tracking nunca quebra o checkout */ }
+}
+function bfPixelMapInner(event, params){
   if(!window.bfPixel) return;
   let p = Object.assign({}, params || {});
   try{ if(plan) p = Object.assign({}, planTrackingParams(plan), p); }catch(_){}
