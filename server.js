@@ -89,7 +89,7 @@ function partnerOf(req) {
   const code = normalizePartnerCode(req.body?.partner) || normalizePartnerCode(req.cookies?.fa_partner);
   if (!code) return null;
   const entry = PARTNERS[code];
-  return { code, name: entry?.name || null, registered: !!entry };
+  return { code, name: entry?.name || null, registered: !!entry && entry.ativo !== false };
 }
 
 app.use(express.json({ limit: "256kb" }));
@@ -103,7 +103,7 @@ app.get("/healthz", (_req, res) => res.json({ ok: true }));
 app.get("/api/partner/:code", (req, res) => {
   const code = normalizePartnerCode(req.params.code);
   const entry = code && PARTNERS[code];
-  if (!entry) return res.status(404).json({ ok: false });
+  if (!entry || entry.ativo === false) return res.status(404).json({ ok: false });
   return res.json({ ok: true, code, name: entry.name });
 });
 

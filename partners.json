@@ -1,4 +1,7 @@
 {
-  "_comentario": "Parceiros/afiliados com link de indicação. Chave = código do link (?p=codigo), só letras minúsculas, números e hífen. Código fora desta lista também é gravado; a lista só dá o nome.",
-  "parceiros": {}
+  "_comentario": "Parceiros com link de indicação (pagamento.fala.app.br/?p=codigo). Chave = código: só letras minúsculas, números e hífen. tipo: afiliado (só indica) ou vendedor (prospecta e negocia). Código fora desta lista também é gravado; a lista dá o nome. Parceiro que saiu: mude ativo para false (as vendas novas continuam gravadas, mas ficam marcadas).",
+  "parceiros": {
+    "ana-nail": { "name": "Ana (Nail Design)", "tipo": "afiliado", "ativo": true, "desde": "2026-11-26" },
+    "leo": { "name": "Leo", "tipo": "vendedor", "ativo": true, "desde": "2026-11-26" }
+  }
 }
