@@ -1,0 +1,4 @@
+{
+  "_comentario": "Parceiros/afiliados com link de indicação. Chave = código do link (?p=codigo), só letras minúsculas, números e hífen. Código fora desta lista também é gravado; a lista só dá o nome.",
+  "parceiros": {}
+}

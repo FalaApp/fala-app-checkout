@@ -63,12 +63,49 @@ function blackFridayFirstMonth(body, plan) {
   return BLACK_FRIDAY.firstMonthValue;
 }
 
+// ── Indicação de parceiro (link ?p=codigo) ─────────────────────
+// O navegador guarda o código do 1º link de parceiro por 60 dias (cookie fa_partner
+// no domínio .fala.app.br) e manda junto no pedido. Aqui o código vira grupo e
+// observação do cliente no Asaas e vai no webhook do teste grátis, para a
+// atribuição ficar gravada desde a 1ª assinatura. Código fora da lista também é
+// gravado: a lista (partners.json) só dá o nome.
+let PARTNERS = {};
+try {
+  PARTNERS = require("./partners.json").parceiros || {};
+} catch (e) {
+  console.error("[partner] partners.json inválido:", e.message);
+}
+function normalizePartnerCode(raw) {
+  const code = String(raw || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9-]/g, "")
+    .slice(0, 40);
+  return code.length >= 2 ? code : null;
+}
+function partnerOf(req) {
+  const code = normalizePartnerCode(req.body?.partner) || normalizePartnerCode(req.cookies?.fa_partner);
+  if (!code) return null;
+  const entry = PARTNERS[code];
+  return { code, name: entry?.name || null, registered: !!entry };
+}
+
 app.use(express.json({ limit: "256kb" }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public"), { maxAge: "7d" }));
 app.use(express.static(path.join(__dirname)));
 
 app.get("/healthz", (_req, res) => res.json({ ok: true }));
+
+// Nome do parceiro do link (para o checkout mostrar "Indicação de …"). Só os cadastrados.
+app.get("/api/partner/:code", (req, res) => {
+  const code = normalizePartnerCode(req.params.code);
+  const entry = code && PARTNERS[code];
+  if (!entry) return res.status(404).json({ ok: false });
+  return res.json({ ok: true, code, name: entry.name });
+});
 
 // ── Prova social com dado real ───────────────────────────────
 // Nada aqui é inventado: as compras vêm dos pagamentos confirmados no Asaas e o
@@ -469,6 +506,7 @@ app.post("/api/create-subscription", async (req, res) => {
   const firstMonthValue = promoFirstMonth ?? plan.firstMonthValue;
   const cpfCnpj = cleanDigits(req.body.cpfCnpj);
   const mobilePhone = cleanDigits(req.body.mobilePhone);
+  const partner = partnerOf(req);
 
   try {
     const customer = await asaas("POST", "/customers", {
@@ -482,6 +520,12 @@ app.post("/api/create-subscription", async (req, res) => {
       addressNumber: req.body.addressNumber?.trim() || "S/N",
       notificationDisabled: false,
       externalReference: `falaapp-${Date.now()}`,
+      ...(partner
+        ? {
+            groupName: `Parceiro ${partner.code}`,
+            observations: `Indicação do parceiro ${partner.name ? `${partner.name} ` : ""}(código ${partner.code}) pelo checkout em ${new Date().toISOString()}`,
+          }
+        : {}),
     });
 
     const subscription = await asaas("POST", "/subscriptions", {
@@ -510,10 +554,18 @@ app.post("/api/create-subscription", async (req, res) => {
       console.error("[asaas] Falha ao ajustar 1ª cobrança:", e.message);
     }
 
+    if (partner) {
+      // Cópia no log da atribuição (o Asaas é a fonte; isto é a rede de segurança).
+      console.log(
+        `[partner] venda code=${partner.code} registered=${partner.registered} customer=${customer.id} subscription=${subscription.id} plan=${plan.id}`,
+      );
+    }
+
     return res.json({
       ok: true,
       customerId: customer.id,
       subscriptionId: subscription.id,
+      partner: partner ? partner.code : undefined,
       firstMonthValue: firstPayment?.value ?? firstMonthValue ?? plan.value,
       recurringValue: plan.value,
       promo: promoFirstMonth ? "black" : undefined,
@@ -536,12 +588,15 @@ app.post("/api/free-trial", async (req, res) => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: "E-mail inválido" });
   if (phone.length < 10) return res.status(400).json({ error: "Telefone inválido" });
 
+  const partner = partnerOf(req);
   const payload = {
     name,
     email,
     phone: phone.startsWith("55") ? phone : `55${phone}`,
     ...FREE_TRIAL_DEFAULTS,
+    ...(partner ? { partnerCode: partner.code, partnerName: partner.name || partner.code } : {}),
   };
+  if (partner) console.log(`[partner] teste code=${partner.code} registered=${partner.registered}`);
 
   try {
     const r = await fetch(FREE_TRIAL_WEBHOOK, {
