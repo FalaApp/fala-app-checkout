@@ -85,11 +85,33 @@ function normalizePartnerCode(raw) {
     .slice(0, 40);
   return code.length >= 2 ? code : null;
 }
-function partnerOf(req) {
+// Cadastro de parceiros vem da API do FalaApp (/public/partners/:code), com cache de
+// 5 min; partners.json fica como reserva se a API não responder.
+const partnerCache = new Map(); // code -> { at, entry }
+const PARTNER_TTL_MS = 5 * 60 * 1000;
+async function lookupPartner(code) {
+  const cached = partnerCache.get(code);
+  if (cached && Date.now() - cached.at < PARTNER_TTL_MS) return cached.entry;
+  try {
+    const r = await fetch(`${FALA_APP_API_URL}/public/partners/${encodeURIComponent(code)}`, {
+      signal: AbortSignal.timeout(4000),
+    });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+    const entry = d?.ok && d.name ? { name: d.name, ativo: true } : null;
+    partnerCache.set(code, { at: Date.now(), entry });
+    return entry;
+  } catch (e) {
+    console.error("[partner] API indisponível, usando partners.json:", e.message);
+    const local = PARTNERS[code];
+    return local && local.ativo !== false ? local : null;
+  }
+}
+async function partnerOf(req) {
   const code = normalizePartnerCode(req.body?.partner) || normalizePartnerCode(req.cookies?.fa_partner);
   if (!code) return null;
-  const entry = PARTNERS[code];
-  return { code, name: entry?.name || null, registered: !!entry && entry.ativo !== false };
+  const entry = await lookupPartner(code);
+  return { code, name: entry?.name || null, registered: !!entry };
 }
 
 app.use(express.json({ limit: "256kb" }));
@@ -100,10 +122,10 @@ app.use(express.static(path.join(__dirname)));
 app.get("/healthz", (_req, res) => res.json({ ok: true }));
 
 // Nome do parceiro do link (para o checkout mostrar "Indicação de …"). Só os cadastrados.
-app.get("/api/partner/:code", (req, res) => {
+app.get("/api/partner/:code", async (req, res) => {
   const code = normalizePartnerCode(req.params.code);
-  const entry = code && PARTNERS[code];
-  if (!entry || entry.ativo === false) return res.status(404).json({ ok: false });
+  const entry = code ? await lookupPartner(code) : null;
+  if (!entry) return res.status(404).json({ ok: false });
   return res.json({ ok: true, code, name: entry.name });
 });
 
@@ -506,7 +528,7 @@ app.post("/api/create-subscription", async (req, res) => {
   const firstMonthValue = promoFirstMonth ?? plan.firstMonthValue;
   const cpfCnpj = cleanDigits(req.body.cpfCnpj);
   const mobilePhone = cleanDigits(req.body.mobilePhone);
-  const partner = partnerOf(req);
+  const partner = await partnerOf(req);
 
   try {
     const customer = await asaas("POST", "/customers", {
@@ -588,7 +610,7 @@ app.post("/api/free-trial", async (req, res) => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: "E-mail inválido" });
   if (phone.length < 10) return res.status(400).json({ error: "Telefone inválido" });
 
-  const partner = partnerOf(req);
+  const partner = await partnerOf(req);
   const payload = {
     name,
     email,
