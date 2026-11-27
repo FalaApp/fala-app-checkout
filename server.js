@@ -121,7 +121,25 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public"), { maxAge: "7d" }));
 app.use(express.static(path.join(__dirname)));
 
-app.get("/healthz", (_req, res) => res.json({ ok: true }));
+app.get("/healthz", async (req, res) => {
+  if (req.query.partner === undefined) return res.json({ ok: true });
+  // Diagnóstico do cadastro de parceiros: para qual API aponta e se ela responde.
+  let apiStatus = null;
+  let apiError = null;
+  try {
+    const r = await fetch(`${FALA_APP_API_URL}/public/partners/leo`, { signal: AbortSignal.timeout(4000) });
+    apiStatus = r.status;
+  } catch (e) {
+    apiError = String(e?.message || e).slice(0, 120);
+  }
+  let apiHost = null;
+  try {
+    apiHost = new URL(FALA_APP_API_URL).host;
+  } catch {
+    apiHost = "URL inválida";
+  }
+  return res.json({ ok: true, apiHost, apiStatus, apiError, cached: partnerCache.size });
+});
 
 // Nome do parceiro do link (para o checkout mostrar "Indicação de …"). Só os cadastrados.
 app.get("/api/partner/:code", async (req, res) => {
