@@ -2147,8 +2147,8 @@ let plan=null;
 // Indicação de parceiro: link pagamento.fala.app.br/?p=codigo (ou ?parceiro=codigo).
 // Guarda o código por 60 dias (localStorage + cookie no domínio .fala.app.br, que o
 // site também pode gravar) e manda junto na assinatura e no teste grátis.
-// Vale o 1º parceiro dentro da janela: um link novo não troca a indicação, a não ser
-// que o código guardado não seja de parceiro cadastrado (aí o link cadastrado assume).
+// Vale o ÚLTIMO link de parceiro aberto: um link novo sobrescreve o código guardado
+// e renova os 60 dias. Sem código na URL, vale o guardado.
 const PARTNER_DAYS = 60;
 const partnerNorm = s=>String(s||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9-]/g,'').slice(0,40);
 const PARTNER_URL_CODE = (function(){const q=new URLSearchParams(location.search);const c=partnerNorm(q.get('p')||q.get('parceiro'));return c.length>=2?c:null})();
@@ -2167,10 +2167,11 @@ let PARTNER_CODE = (function(){
   const cookie=norm(readCookie());
   const qs=new URLSearchParams(location.search);
   const fromUrl=norm(qs.get('p')||qs.get('parceiro'));
-  const code=(stored&&stored.code)||cookie||fromUrl;
+  const urlCode=fromUrl.length>=2?fromUrl:'';
+  const code=urlCode||(stored&&stored.code)||cookie;
   if(!code||code.length<2) return null;
-  if(!stored||stored.code!==code){try{localStorage.setItem(KEY,JSON.stringify({code,ts:Date.now()}))}catch(e){}}
-  if(!cookie){
+  if(urlCode||!stored||stored.code!==code){try{localStorage.setItem(KEY,JSON.stringify({code,ts:Date.now()}))}catch(e){}}
+  if(urlCode||cookie!==code){
     const domain=location.hostname.endsWith('fala.app.br')?'; domain=.fala.app.br':'';
     document.cookie='fa_partner='+encodeURIComponent(code)+'; max-age='+(DAYS*86400)+'; path=/; SameSite=Lax'+domain;
   }
@@ -2835,7 +2836,7 @@ function goPayment(){
 // Auto-seleciona o plano Smart ao carregar (ou o Small da Black Friday)
 window.addEventListener('DOMContentLoaded', function(){
   // Selo "Indicação de <parceiro>": só para parceiros cadastrados e ativos.
-  // Se o código guardado não é de parceiro cadastrado e o link atual é, o link assume.
+  // O código vem do link atual (se houver) ou do guardado.
   (async function(){
     const lookup=async c=>{try{const r=await fetch('/api/partner/'+encodeURIComponent(c));const d=r.ok?await r.json():null;return d&&d.ok&&d.name?d:null}catch(e){return null}};
     let found=PARTNER_CODE?await lookup(PARTNER_CODE):null;

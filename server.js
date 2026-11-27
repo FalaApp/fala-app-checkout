@@ -64,7 +64,7 @@ function blackFridayFirstMonth(body, plan) {
 }
 
 // ── Indicação de parceiro (link ?p=codigo) ─────────────────────
-// O navegador guarda o código do 1º link de parceiro por 60 dias (cookie fa_partner
+// O navegador guarda o código do último link de parceiro por 60 dias (cookie fa_partner
 // no domínio .fala.app.br) e manda junto no pedido. Aqui o código vira grupo e
 // observação do cliente no Asaas e vai no webhook do teste grátis, para a
 // atribuição ficar gravada desde a 1ª assinatura. Código fora da lista também é
