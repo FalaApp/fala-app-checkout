@@ -91,7 +91,9 @@ const partnerCache = new Map(); // code -> { at, entry }
 const PARTNER_TTL_MS = 5 * 60 * 1000;
 async function lookupPartner(code) {
   const cached = partnerCache.get(code);
-  if (cached && Date.now() - cached.at < PARTNER_TTL_MS) return cached.entry;
+  // "Não encontrado" vale só 30 s: parceiro recém-cadastrado aparece quase na hora.
+  const ttl = cached && cached.entry ? PARTNER_TTL_MS : 30 * 1000;
+  if (cached && Date.now() - cached.at < ttl) return cached.entry;
   try {
     const r = await fetch(`${FALA_APP_API_URL}/public/partners/${encodeURIComponent(code)}`, {
       signal: AbortSignal.timeout(4000),
