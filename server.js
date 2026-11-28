@@ -149,6 +149,64 @@ app.get("/api/partner/:code", async (req, res) => {
   return res.json({ ok: true, code, name: entry.name });
 });
 
+// Acesso ao link do parceiro (?p=codigo). O navegador avisa no máximo 1x por dia por
+// código; aqui ainda limitamos por IP para ninguém inflar a contagem à mão.
+const visitHits = new Map(); // ip -> { at, n }
+const VISIT_WINDOW_MS = 60 * 60 * 1000;
+const VISIT_MAX_PER_IP = 20;
+function clientIp(req) {
+  return String(req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0].trim();
+}
+app.post("/api/partner/:code/visit", async (req, res) => {
+  const code = normalizePartnerCode(req.params.code);
+  if (!code) return res.status(400).json({ ok: false });
+  const ip = clientIp(req);
+  const now = Date.now();
+  const hit = visitHits.get(ip);
+  if (hit && now - hit.at < VISIT_WINDOW_MS) {
+    if (hit.n >= VISIT_MAX_PER_IP) return res.json({ ok: false, limited: true });
+    hit.n += 1;
+  } else {
+    visitHits.set(ip, { at: now, n: 1 });
+  }
+  if (visitHits.size > 5000) {
+    for (const [k, v] of visitHits) if (now - v.at >= VISIT_WINDOW_MS) visitHits.delete(k);
+  }
+  try {
+    const r = await fetch(`${FALA_APP_API_URL}/public/partners/${encodeURIComponent(code)}/visit`, {
+      method: "POST",
+      signal: AbortSignal.timeout(4000),
+    });
+    const d = await r.json().catch(() => ({}));
+    return res.json({ ok: !!d?.ok });
+  } catch (e) {
+    console.error("[partner] falha ao contar acesso:", e.message);
+    return res.json({ ok: false });
+  }
+});
+
+// Cadastro de quem quer ser parceiro (página /parceiro).
+app.get("/parceiro", (_req, res) => res.sendFile(path.join(__dirname, "parceiro.html")));
+app.post("/api/partner-application", async (req, res) => {
+  try {
+    const r = await fetch(`${FALA_APP_API_URL}/public/partners/applications`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(req.body || {}),
+      signal: AbortSignal.timeout(8000),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      const message = Array.isArray(d?.message) ? d.message[0] : d?.message;
+      return res.status(400).json({ ok: false, message: message || "Não foi possível enviar agora. Tente de novo." });
+    }
+    return res.json({ ok: true });
+  } catch (e) {
+    console.error("[partner] falha no cadastro:", e.message);
+    return res.status(502).json({ ok: false, message: "Não foi possível enviar agora. Tente de novo em instantes." });
+  }
+});
+
 // ── Prova social com dado real ───────────────────────────────
 // Nada aqui é inventado: as compras vêm dos pagamentos confirmados no Asaas e o
 // número de pessoas vem de quem está com o checkout aberto agora (heartbeat).
